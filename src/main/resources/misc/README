@@ -1,0 +1,33 @@
+
+README of misc directory
+====================================================================
+Last modified: Mon Nov  1 04:25:04 UTC 1999
+
+This directory contains some scripts to exec WeirdX easily.
+
+- weirdx.jar:
+  Byte codes of WeirdX are included in this file.
+
+- weirdx: 
+  This file is a shell script for running WeirdX on U*nx.
+
+- weirdx-Java2: 
+  This file is a shell script for running WeirdX on U*nx with Java2.
+
+- weirdx.bat: 
+  This file is for Windows 9X/NT platform users.
+
+- weirdx-Java2.bat: 
+  This file is for Windows 9X/NT platform users, who have Java2.
+
+- weirdx.cmd: 
+  This file is for OS/2 users.
+
+- weirdx-JRE12.html: 
+  This is a html file, which kicks off WeirdX with Java Plug-in 1.2. 
+
+- weirdx-JRE112.html
+  This is a html file, which kicks off WeirdX with Java Plug-in 1.1.2.
+
+- config/props:
+  Some property settings are written here.

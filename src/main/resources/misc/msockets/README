@@ -1,0 +1,26 @@
+
+README of misc/msockets directory
+====================================================================
+Last modified: Wed Dec 12 06:51:09 UTC 2001
+
+This directory contains 'de.linuxtest.msockets' package and
+a patch file for JDxpc.
+
+The 'de.linuxtest.msockets' package is a library for thread communication
+behaving like ordinary Java sockets. This package was written by
+Marcus Schiesser(info@linuxtest.de) and his motivation for hacking this work
+was to solve the problem that WeirdX and JDxpc applets could not work without
+digital signing. Thanks to this package, WeirdX and JDxpc can communicate
+without local TCP sockets, which are forbidden by JVM security system.
+
+ymnk wrote a patch 'jdxpc-0.0.6-msockets.patch' for JDxpc,
+but first patch is little bit ugly and ymnk has hesitated to apply it to 
+formal tree. If you have comments/suggestions, please write ymnk@jcraft.com
+
+If you are interested in this hack, try apply above patche to
+jdxpc-0.0.6 and add following lines,
+
+weirdx.jdxpc=yes
+weirdx.jdxpc.socket=de.linuxtest.msockets.MemorySocket
+weirdx.displaysocket=de.linuxtest.msockets.MemoryServerSocket
+.

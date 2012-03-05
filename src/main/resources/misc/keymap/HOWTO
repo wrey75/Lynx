@@ -1,0 +1,20 @@
+
+HOWTO generate Keymap_*.java and Keymodifier_*.java
+====================================================================
+Last modified: Thu Sep 21 08:15:37 UTC 2000
+
+'genkeymap.pl' will generate java classes for handling your keyboard, 
+which has not been supported on WeirdX yet.
+
+Step 1. Try to find working X server, which has been connected target keyboard.
+
+Step 2. On this X server, try 
+        $ xmodmap -pk -pm | ./genkeymap.pl -n foo
+        You will get Keymap_foo.java and Keymodifier_foo.java in
+        the current directory. Of course, substitute 'foo' with 
+        your favorite name.
+
+Step 3. Copy those files to ./com/jcraft/weirdx/ directory.
+
+Step 4. Compile them and run WeirdX with a property 'weirdx.display.keymap'
+        as 'foo'.

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z "$WEIRDX_HOME" ] ; then
+    WEIRDX_HOME=`pwd`
+fi
+
+cd $WEIRDX_HOME
+
+CLASSPATH="${WEIRDX_HOME}":"${WEIRDX_HOME}"/weirdx.jar
+
+CMD="java -classpath ${CLASSPATH} com.jcraft.weirdx.WeirdX"
+
+${CMD}

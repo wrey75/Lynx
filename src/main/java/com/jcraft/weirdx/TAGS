@@ -1,0 +1,878 @@
+
+Acl.java,393
+final class Acl Acl24,868
+  static void parse(Acl.parse32,1060
+  static synchronized void add(Acl.add98,2573
+  static synchronized void delete(Acl.delete114,2929
+  static boolean check(Acl.check126,3251
+  static void reqChangeHosts(Acl.reqChangeHosts143,3707
+  static void reqSetAccessControl(Acl.reqSetAccessControl170,4390
+  static void reqListHosts(Acl.reqListHosts175,4527
+
+Atom.java,516
+final class Atom Atom24,837
+  private static Hashtable nameTablePredefined(Atom.nameTablePredefined109,2514
+  static int make(Atom.make120,2738
+  static int make(Atom.make123,2871
+  static synchronized int make(Atom.make127,2967
+  static boolean valid(Atom.valid144,3476
+  static String find(Atom.find146,3542
+  static int find(Atom.find152,3665
+  static int find(Atom.find163,3865
+  static void reqInternAtom(Atom.reqInternAtom174,4077
+  static void reqGetAtomName(Atom.reqGetAtomName203,4624
+
+Client.java,1156
+final class Client Client27,881
+  Client(Client.Client97,2697
+  Client(Client.Client99,2722
+  public void run(Client.run148,3704
+  void writeByte(Client.writeByte692,14233
+  private final void prolog(Client.prolog724,15258
+  private final void init(Client.init742,15711
+  private static final void reqGrabServer(Client.reqGrabServer751,15892
+  private static final void reqUngrabServer(Client.reqUngrabServer784,16624
+  private static final void reqKillClient(Client.reqKillClient798,16923
+  static final void closeDownRetainedResources(Client.closeDownRetainedResources818,17347
+  static final void closeDownAll(Client.closeDownAll832,17609
+  private final void closeDown(Client.closeDown842,17783
+  final int sendEvent(Client.sendEvent888,18812
+  void sendEvent(Client.sendEvent906,19228
+  Drawable lookupDrawable(Client.lookupDrawable926,19589
+  Window lookupWindow(Client.lookupWindow942,20008
+  GC lookupGC(Client.lookupGC950,20204
+  static void flushCache(Client.flushCache966,20606
+  private static final int setGraber(Client.setGraber992,21143
+  private static final void unGraber(Client.unGraber999,21303
+
+Clients.java,170
+class Clients Clients22,790
+  Clients(Clients.Clients25,854
+  final boolean sameClient(Clients.sameClient30,946
+  final Client getClient(Clients.getClient35,1075
+
+Clip.java,28
+interface Clip{Clip22,840
+
+ClipPixmap.java,136
+final class ClipPixmap ClipPixmap22,790
+  ClipPixmap(ClipPixmap.ClipPixmap24,847
+  public Object getMask(ClipPixmap.getMask28,902
+
+ClipRectangles.java,253
+final class ClipRectangles ClipRectangles22,790
+  ClipRectangles(ClipRectangles.ClipRectangles32,1115
+  void add(ClipRectangles.add39,1254
+  boolean validate(ClipRectangles.validate65,1822
+  public Object getMask(ClipRectangles.getMask69,1866
+
+Colormap.java,3445
+final class Colormap Colormap28,874
+  Colormap(Colormap.Colormap72,2038
+  private int alloc(Colormap.alloc115,2994
+  private void alloc(Colormap.alloc127,3184
+  private void alloc(Colormap.alloc137,3396
+  private void free(Colormap.free144,3560
+  void freeAll(Colormap.freeAll156,3774
+  int rgb2pixel(Colormap.rgb2pixel165,3931
+  static void reqCreateColormap(Colormap.reqCreateColormap188,4548
+  static void reqStoreColors(Colormap.reqStoreColors232,5505
+  static void reqUninstallColormap(Colormap.reqUninstallColormap256,6052
+  static void reqInstallColormap(Colormap.reqInstallColormap288,6894
+  static void reqListInstalledColormaps(Colormap.reqListInstalledColormaps311,7519
+  static void reqFreeColors(Colormap.reqFreeColors340,8202
+  static void reqAllocColorPlanes(Colormap.reqAllocColorPlanes357,8616
+  static void reqAllocColorCells(Colormap.reqAllocColorCells399,9635
+  static void reqLookupColor(Colormap.reqLookupColor452,10835
+  static void reqAllocColor(Colormap.reqAllocColor504,12267
+  static void reqQueryColors(Colormap.reqQueryColors561,13550
+  static void reqStoreNamedColor(Colormap.reqStoreNamedColor584,14046
+  static void reqAllocNamedColor(Colormap.reqAllocNamedColor634,15249
+  Color getColor(Colormap.getColor702,16930
+  static private int chopspace(Colormap.chopspace714,17124
+  static int isMapInstalled(Colormap.isMapInstalled730,17410
+  static void init(Colormap.init736,17512
+  void delete(Colormap.delete746,17694
+  private void freeCell(Colormap.freeCell754,17855
+  void freePixels(Colormap.freePixels780,18273
+  int allocColor Colormap.allocColor792,18528
+  private int findBestPixel(Colormap.findBestPixel833,19512
+  private int findColor(Colormap.findColor837,19618
+  private void update(Colormap.update902,20924
+  private void allocColorPlanes Colormap.allocColorPlanes928,21432
+  private boolean allocShared Colormap.allocShared1010,23308
+  private void chkShareEntry(Colormap.chkShareEntry1123,26147
+  private void chkLocalEntry(Colormap.chkLocalEntry1129,26261
+  private void allocColorCells Colormap.allocColorCells1135,26375
+  private boolean allocPseudo Colormap.allocPseudo1173,27286
+  private boolean allocCP Colormap.allocCP1193,27905
+  private void freeColors Colormap.freeColors1345,31168
+  void freeColors Colormap.freeColors1360,31535
+  private void freeCo Colormap.freeCo1376,31947
+  private void storeColors Colormap.storeColors1467,33757
+  private int storeColor(Colormap.storeColor1506,34614
+  private void queryColors Colormap.queryColors1575,35753
+  private static int lowbit(Colormap.lowbit1611,36633
+  private int[] expand(Colormap.expand1620,36809
+  void mkIcm(Colormap.mkIcm1626,36996
+class Entry{Entry1635,37212
+  Entry(Entry.Entry1638,37257
+  boolean eq(Entry.eq1641,37286
+  void copy(Entry.copy1644,37342
+  public String toString(Entry.toString1654,37643
+class LocalEntry LocalEntry1659,37734
+  LocalEntry(LocalEntry.LocalEntry1663,37794
+  boolean eq(LocalEntry.eq1666,37832
+class SharedEntry SharedEntry1671,37922
+  SharedEntry(SharedEntry.SharedEntry1673,37978
+  boolean eq(SharedEntry.eq1676,38016
+class SharedColor SharedColor1680,38123
+class ClientColormap ClientColormap1684,38159
+  ClientColormap(ClientColormap.ClientColormap1688,38226
+  void delete(ClientColormap.delete1693,38363
+class RGBTXT{RGBTXT1699,38533
+  static void init(2361,55565
+
+Cursor.java,515
+final class Cursor Cursor26,848
+  Cursor(Cursor.Cursor46,1483
+  Cursor(Cursor.Cursor50,1611
+  private int getType(Cursor.getType57,1833
+  Cursor(Cursor.Cursor180,5191
+  static void reqCreateGlyphCursor(Cursor.reqCreateGlyphCursor188,5397
+  static void reqFreeCursor(Cursor.reqFreeCursor225,6422
+  void recolor(Cursor.recolor238,6766
+  void delete(Cursor.delete240,6834
+  static void reqRecolorCursor(Cursor.reqRecolorCursor243,6891
+  static void reqCreateCursor(Cursor.reqCreateCursor266,7529
+
+DDXFont.java,1047
+class DDXFont DDXFont24,828
+  DDXFont(DDXFont.DDXFont41,1108
+  void init(DDXFont.init43,1124
+  int[] getProp(DDXFont.getProp116,3244
+  void initprop(DDXFont.initprop121,3321
+  int getAscent(DDXFont.getAscent126,3451
+  int getDescent(DDXFont.getDescent127,3499
+  int getLeading(DDXFont.getLeading128,3549
+  int getHeight(DDXFont.getHeight129,3599
+  int getMaxAdvance(DDXFont.getMaxAdvance130,3647
+  int getMaxAscent(DDXFont.getMaxAscent131,3702
+  int getMaxDescent(DDXFont.getMaxDescent132,3753
+  int[] getWidths(DDXFont.getWidths133,3806
+  String getFamily(DDXFont.getFamily135,3857
+  String getWeight(DDXFont.getWeight136,3897
+  String getStyle(DDXFont.getStyle137,3937
+  String getFontSize(DDXFont.getFontSize138,3976
+  String getSpace(DDXFont.getSpace139,4018
+  String getSetName(DDXFont.getSetName140,4058
+  private String chop(DDXFont.chop142,4101
+  private int skip(DDXFont.skip149,4249
+  boolean getScalable(DDXFont.getScalable154,4344
+  DDXFont getScalableFont(DDXFont.getScalableFont161,4481
+
+DDXWindow.java,2678
+class DDXWindow DDXWindow39,1264
+  static void init(DDXWindow.init44,1471
+  DDXWindow(DDXWindow.DDXWindow66,1870
+  void init(DDXWindow.init69,1890
+  void setBorder(DDXWindow.setBorder84,2213
+  public void setVisible(DDXWindow.setVisible91,2305
+  public void setLocation(DDXWindow.setLocation114,2818
+  public void setSize(DDXWindow.setSize157,4289
+  private void allocImage(DDXWindow.allocImage255,6795
+  private void freeImage(DDXWindow.freeImage276,7239
+  public void setBackground(DDXWindow.setBackground288,7420
+  public void setBackground(DDXWindow.setBackground297,7669
+  public Dimension getPreferredSize(DDXWindow.getPreferredSize301,7763
+  public boolean isOptimizedDrawingEnabled(DDXWindow.isOptimizedDrawingEnabled305,7829
+  void draw(DDXWindow.draw309,7899
+  void draw(DDXWindow.draw314,8018
+  public void paintBorder(DDXWindow.paintBorder319,8082
+  public void paintComponent(DDXWindow.paintComponent322,8126
+  public boolean isOpaque(DDXWindow.isOpaque365,9208
+  private final void expunion(DDXWindow.expunion375,9375
+  private final boolean expcontains(DDXWindow.expcontains383,9664
+  public void update(DDXWindow.update394,9957
+  public void paint(DDXWindow.paint396,10026
+  public void setBorderPixmap(DDXWindow.setBorderPixmap416,10516
+  public void mouseClicked(DDXWindow.mouseClicked419,10562
+  public void mouseEntered(DDXWindow.mouseEntered421,10608
+  public void mouseExited(DDXWindow.mouseExited456,11579
+  public void mousePressed(DDXWindow.mousePressed491,12549
+  private void procPressed(DDXWindow.procPressed495,12616
+  public void mouseReleased(DDXWindow.mouseReleased542,14155
+  private void procReleased(DDXWindow.procReleased545,14223
+  public void mouseDragged(DDXWindow.mouseDragged577,15292
+  public void mouseMoved(DDXWindow.mouseMoved638,16696
+  public void processKeyEvent(DDXWindow.processKeyEvent678,17668
+  public void keyPressed(DDXWindow.keyPressed686,17927
+  public void keyReleased(DDXWindow.keyReleased754,19842
+  public void keyTyped(DDXWindow.keyTyped792,20812
+  Image getImage(DDXWindow.getImage796,20894
+  Image getImage(DDXWindow.getImage801,20969
+  Graphics getGraphics2(DDXWindow.getGraphics2811,21334
+  final Graphics getGraphics(DDXWindow.getGraphics824,21579
+  void drawImage(DDXWindow.drawImage891,23309
+  void drawImage(DDXWindow.drawImage914,24050
+  void fillImage(DDXWindow.fillImage918,24197
+  void fillImage(DDXWindow.fillImage936,24489
+  void copyArea(DDXWindow.copyArea982,25517
+  void copyArea(DDXWindow.copyArea1012,26492
+  void delete(DDXWindow.delete1045,27139
+  void restoreClip(DDXWindow.restoreClip1059,27395
+
+Depth.java,344
+final class Depth Depth23,808
+  int getDepth(Depth.getDepth26,862
+  void setDepth(Depth.setDepth27,897
+  Visual[] getVisual(Depth.getVisual28,933
+  void setVisual(Depth.setVisual29,975
+  int visuals(Depth.visuals30,1018
+  Depth(Depth.Depth31,1060
+  void writeByte(Depth.writeByte39,1227
+  int getLength(Depth.getLength51,1540
+
+Draw.java,725
+final class Draw{Draw27,891
+  static void reqPolyPoint(Draw.reqPolyPoint28,909
+  static void reqFillPolyArc(Draw.reqFillPolyArc98,2448
+  static void reqPolyArc(Draw.reqPolyArc155,3769
+  static void reqPolyText16(Draw.reqPolyText16215,5141
+  static void reqImageText16(Draw.reqImageText16326,7558
+  static void reqPolyText8(Draw.reqPolyText8406,9308
+  static void reqImageText8(Draw.reqImageText8493,11213
+  static void reqPolySegment(Draw.reqPolySegment550,12630
+  static void reqPolyLine(Draw.reqPolyLine627,14437
+  static void reqFillPoly(Draw.reqFillPoly699,16114
+  static void reqPolyRectangle(Draw.reqPolyRectangle780,17860
+  static void reqPolyFillRectangle(Draw.reqPolyFillRectangle842,19116
+
+Drawable.java,86
+public abstract class Drawable Drawable24,827
+  Drawable(Drawable.Drawable45,1362
+
+DummySHAPEExtension.java,366
+final class DummySHAPEExtension DummySHAPEExtension26,853
+  DummySHAPEExtension(DummySHAPEExtension.DummySHAPEExtension42,1268
+  void dispatch(DummySHAPEExtension.dispatch50,1410
+  void sendShapeNotify(DummySHAPEExtension.sendShapeNotify321,7724
+  void mkShapeNotify(DummySHAPEExtension.mkShapeNotify337,8249
+  void swap(DummySHAPEExtension.swap351,8651
+
+Error.java,32
+final class Error{Error22,790
+
+Event.java,3065
+final class Event Event25,829
+  Event(Event.Event165,6396
+  Event(Event.Event166,6428
+  void clear(Event.clear168,6462
+  void writeByte(Event.writeByte173,6542
+  void writeShort(Event.writeShort177,6599
+  void writeInt(Event.writeInt182,6711
+  void writePad(Event.writePad189,6907
+  void _clear(Event._clear191,6943
+  private void _writeByte(Event._writeByte196,7024
+  private void _writeShort(Event._writeShort200,7090
+  private void _writeInt(Event._writeInt206,7212
+  private void _writePad(Event._writePad214,7418
+  void putEvent(Event.putEvent216,7463
+  void putSequence(Event.putSequence221,7524
+  private int readShort(Event.readShort226,7594
+  int getState(Event.getState233,7727
+  int getSameScreen(Event.getSameScreen237,7788
+  int getDetail(Event.getDetail238,7831
+  int getFlags(Event.getFlags239,7869
+  void fixUpEventFromWindow(Event.fixUpEventFromWindow241,7908
+  void mkCirculateRequest(Event.mkCirculateRequest277,8658
+  void mkCirculateNotify(Event.mkCirculateNotify287,8911
+  void mkColormapNotify(Event.mkColormapNotify297,9178
+  void mkFocusIn(Event.mkFocusIn308,9448
+  void mkFocusOut(Event.mkFocusOut317,9661
+  void mkPropertyNotify(Event.mkPropertyNotify326,9876
+  void mkSelectionNotify(Event.mkSelectionNotify341,10149
+  void mkSelectionRequest(Event.mkSelectionRequest356,10471
+  void mkSelectionClear(Event.mkSelectionClear371,10829
+  void mkVisibilityNotify(Event.mkVisibilityNotify381,11060
+  void mkGravityNotify(Event.mkGravityNotify390,11263
+  void mkReparentNotify(Event.mkReparentNotify402,11518
+  void mkError(Event.mkError416,11847
+  void mkDestroyNotify(Event.mkDestroyNotify426,12083
+  void mkEnterNotify(Event.mkEnterNotify435,12274
+  void mkLeaveNotify(Event.mkLeaveNotify452,12803
+  void mkKeyPress(Event.mkKeyPress469,13332
+  void mkKeyRelease(Event.mkKeyRelease526,14749
+  void mkNoExposure(Event.mkNoExposure583,16168
+  void mkButtonPress(Event.mkButtonPress593,16405
+  void mkResizeRequest(Event.mkResizeRequest610,16904
+  void mkCreateNotify(Event.mkCreateNotify619,17114
+  void mkConfigureNotify(Event.mkConfigureNotify633,17495
+  void mkConfigureRequest(Event.mkConfigureRequest648,17893
+  void mkButtonRelease(Event.mkButtonRelease663,18318
+  void mkMotionNotify(Event.mkMotionNotify680,18819
+  void mkPointer(Event.mkPointer697,19321
+  void setPointer(Event.setPointer715,19761
+  void setType(Event.setType732,20184
+  byte getType(Event.getType733,20222
+  void mkExpose(Event.mkExpose735,20258
+  void mkGraphicsExposure(Event.mkGraphicsExposure745,20528
+  void mkMapNotify(Event.mkMapNotify759,20955
+  void mkUnmapNotify(Event.mkUnmapNotify769,21193
+  void mkMapRequest(Event.mkMapRequest778,21403
+  void swapShort(Event.swapShort789,21610
+  void swapInt(Event.swapInt796,21731
+  private void _swapShort(Event._swapShort806,21931
+  private void _swapInt(Event._swapInt813,22061
+  void swap(Event.swap823,22270
+  void swap(Event.swap829,22369
+  private void swapaux(Event.swapaux834,22422
+
+Extension.java,353
+abstract class Extension Extension24,809
+  static void init(Extension.init31,1020
+  static void load(Extension.load45,1311
+  static final void dispatch(Extension.dispatch77,2133
+  static void swap(Extension.swap88,2415
+  abstract void dispatch(Extension.dispatch100,2686
+  static void reqQueryExtension(Extension.reqQueryExtension142,3563
+
+Font.java,1382
+final class Font Font24,828
+  static void addFont(Font.addFont87,3867
+  static void addFont(Font.addFont98,4181
+  private static void addAlias(Font.addAlias122,4769
+  static void addAlias(Font.addAlias152,5532
+  static void init(Font.init174,6005
+  static void loadCharSet(Font.loadCharSet201,6592
+  java.awt.Font getFont(Font.getFont211,6841
+  int bytesWidth(Font.bytesWidth213,6889
+  int charsWidth(Font.charsWidth217,6981
+  private static boolean match_aux(Font.match_aux221,7073
+  private static boolean match_scalable(Font.match_scalable247,7707
+  static byte[] genScaleName(Font.genScaleName297,8980
+  Font(Font.Font388,10840
+  static void reqQueryTextExtents(Font.reqQueryTextExtents432,11807
+  static void reqListFontsWithInfo(Font.reqListFontsWithInfo487,13008
+  static void reqSetFontPath(Font.reqSetFontPath724,19406
+  static void reqGetFontPath(Font.reqGetFontPath746,19868
+  static void reqListFonts(Font.reqListFonts768,20376
+  static void reqCloseFont(Font.reqCloseFont860,22501
+  void delete(Font.delete867,22685
+  static void reqOpenFont(Font.reqOpenFont873,22791
+  static void reqQueryFont(Font.reqQueryFont904,23404
+  int[] getProp(Font.getProp978,25756
+  boolean hasCharInfo(Font.hasCharInfo982,25807
+  void dumpCharInfo(Font.dumpCharInfo986,25904
+class Alias{Alias1016,27091
+  Alias(Alias.Alias1019,27135
+
+Font_CharSet.java,44
+interface Font_CharSet{Font_CharSet22,790
+
+Format.java,107
+final class Format Format22,790
+  Format(Format.Format27,888
+  void writeByte(Format.writeByte30,962
+
+GC.java,741
+final class GC GC23,808
+  GC(GC.GC143,5127
+  private void init(GC.init149,5216
+  static void reqSetDashes(GC.reqSetDashes171,5658
+  static void reqSetClipRectangles(GC.reqSetClipRectangles208,6275
+  static void reqFreeGC(GC.reqFreeGC260,7263
+  void delete(GC.delete276,7565
+  static void reqCopyGC(GC.reqCopyGC297,8038
+  static void reqChangeGC(GC.reqChangeGC321,8552
+  static void reqCreateGC(GC.reqCreateGC341,8938
+  private void copyAttr(GC.copyAttr364,9395
+  private void changeAttr(GC.changeAttr495,11983
+  static private int lowbit(GC.lowbit736,16911
+  static private GC getGC(GC.getGC745,17097
+  static private synchronized GC get(GC.get756,17343
+  static private synchronized void put(GC.put765,17541
+
+Grab.java,1052
+final class Grab Grab24,827
+  Grab(Grab.Grab32,1094
+  boolean isEnabled(Grab.isEnabled41,1261
+  void enable(Grab.enable42,1299
+  void disable(Grab.disable43,1329
+  boolean sameClient(Grab.sameClient48,1395
+  void set(Grab.set51,1485
+  Client getClient(Grab.getClient74,2005
+  static Grab createGrab(Grab.createGrab78,2116
+  void freeGrab(Grab.freeGrab98,2701
+  boolean grabSupersedesSecond(Grab.grabSupersedesSecond100,2724
+  boolean grabMatchesSecond(Grab.grabMatchesSecond110,3016
+  int addPassiveGrabToList(Grab.addPassiveGrabToList126,3632
+  static void deactivatePointerGrab(Grab.deactivatePointerGrab144,4042
+  void activatePointerGrab(Grab.activatePointerGrab149,4208
+  boolean deletePassiveGrabFromList(Grab.deletePassiveGrabFromList156,4452
+  void delete(Grab.delete192,5241
+class Detail Detail209,5512
+  boolean isInGrabMask(Detail.isInGrabMask213,5562
+  static boolean identicalExactDetails(Detail.identicalExactDetails223,5855
+  boolean detailSupersedesSecond(Detail.detailSupersedesSecond230,6109
+
+IO.java,713
+abstract class IO{IO25,829
+  IO(IO.IO34,1052
+  abstract int readShort(IO.readShort36,1111
+  void setOutputStream(IO.setOutputStream42,1399
+  int available(IO.available43,1457
+  int readByte(IO.readByte47,1561
+  void readByte(IO.readByte52,1692
+  void readByte(IO.readByte55,1792
+  void readPad(IO.readPad76,2229
+  protected final void read(IO.read91,2449
+  void writeByte(IO.writeByte108,2809
+  void writeByte(IO.writeByte113,2950
+  void writeByte(IO.writeByte117,3035
+  void writeByte(IO.writeByte121,3138
+  void writePad(IO.writePad141,3586
+  synchronized void flush(IO.flush157,3821
+  synchronized void immediateWrite(IO.immediateWrite162,3963
+  void close(IO.close165,4085
+
+IOLSB.java,193
+final class IOLSB IOLSB25,829
+  int readShort(IOLSB.readShort26,859
+  int readInt(IOLSB.readInt34,1046
+  void writeShort(IOLSB.writeShort44,1313
+  void writeInt(IOLSB.writeInt50,1518
+
+IOMSB.java,193
+final class IOMSB IOMSB25,829
+  int readShort(IOMSB.readShort26,860
+  int readInt(IOMSB.readInt33,1056
+  void writeShort(IOMSB.writeShort42,1343
+  void writeInt(IOMSB.writeInt47,1547
+
+Keyboard.java,886
+final class Keyboard Keyboard23,808
+  public int keysym(Keyboard.keysym32,990
+  public int group1(Keyboard.group138,1152
+  public int group2(Keyboard.group242,1222
+  Keyboard(Keyboard.Keyboard48,1356
+  void writeByte(Keyboard.writeByte53,1469
+  public void getMap(Keyboard.getMap58,1589
+  void led(Keyboard.led67,1803
+  void bell(Keyboard.bell70,1844
+  static void reqGrabKeyboard(Keyboard.reqGrabKeyboard73,1875
+  static void reqGetKeyboardControl(Keyboard.reqGetKeyboardControl89,2228
+  static void reqQueryKeymap(Keyboard.reqQueryKeymap108,2743
+  static void reqChangeKeyboardMapping(Keyboard.reqChangeKeyboardMapping120,3002
+  static void reqGetKeyboardMapping(Keyboard.reqGetKeyboardMapping138,3378
+  static void reqSetModifierMapping(Keyboard.reqSetModifierMapping163,3888
+  static void reqGetModifierMapping(Keyboard.reqGetModifierMapping184,4225
+
+Keycode.java,36
+final class Keycode Keycode24,840
+
+Keymap.java,129
+class Keymap Keymap25,859
+  Keymap(Keymap.Keymap33,998
+  Keymap(Keymap.Keymap35,1014
+  int getCode(Keymap.getCode42,1158
+
+Keymap_101.java,188
+final class Keymap_101 Keymap_10125,859
+  Keymap_101(Keymap_101.Keymap_101137,2862
+  final int getCode(Keymap_101.getCode144,2938
+  public static void main(Keymap_101.main433,9751
+
+Keymodifier.java,130
+class Keymodifier Keymodifier23,808
+  Keymodifier(Keymodifier.Keymodifier26,884
+  Keymodifier(Keymodifier.Keymodifier29,930
+
+Keymodifier_gen.java,110
+final class Keymodifier_gen Keymodifier_gen23,808
+  Keymodifier_gen(Keymodifier_gen.Keymodifier_gen29,936
+
+LogoImage.java,375
+final class LogoImage{LogoImage28,873
+  static void init(LogoImage.init37,1096
+  static void storeImage(LogoImage.storeImage40,1155
+  static boolean loadLogo(LogoImage.loadLogo45,1262
+  static boolean loadLogo(LogoImage.loadLogo62,1759
+  static void toggle(LogoImage.toggle65,1819
+  static void up(LogoImage.up69,1900
+  static void down(LogoImage.down74,1973
+
+OtherClients.java,137
+final class OtherClients OtherClients24,819
+  OtherClients(OtherClients.OtherClients27,890
+  void delete(OtherClients.delete29,926
+
+Pix.java,76
+final class Pix{Pix24,827
+  Pix(Pix.Pix28,887
+  Pix dup(Pix.dup29,899
+
+Pixmap.java,2780
+class Pixmap Pixmap29,943
+  static void init(Pixmap.init31,975
+  Pixmap(Pixmap.Pixmap64,1697
+  void ref(Pixmap.ref86,2209
+  void mkMIS(Pixmap.mkMIS90,2242
+  byte[] getData(Pixmap.getData95,2366
+  Image getImage(Pixmap.getImage103,2484
+  Image getImage(Pixmap.getImage107,2525
+  Image getImage(Pixmap.getImage111,2594
+  Image getImage(Pixmap.getImage115,2686
+  Image getImage(Pixmap.getImage148,3417
+  Image getImage(Pixmap.getImage153,3547
+  void draw(Pixmap.draw172,4191
+  void image2data(Pixmap.image2data175,4237
+  void image2data(Pixmap.image2data180,4389
+  void reset(Pixmap.reset204,5085
+  static void reqFreePixmap(Pixmap.reqFreePixmap206,5104
+  static void reqGetImage(Pixmap.reqGetImage220,5472
+  static void reqPutImage(Pixmap.reqPutImage417,9834
+  static void reqCreatePixmap(Pixmap.reqCreatePixmap676,15480
+  static Pixmap createPixmap(Pixmap.createPixmap720,16341
+  Graphics getGraphics(Pixmap.getGraphics729,16606
+  Graphics getGraphics(Pixmap.getGraphics733,16654
+  void copyPlane(Pixmap.copyPlane776,17792
+  void copyArea(Pixmap.copyArea781,17928
+  Colormap getColormap(Pixmap.getColormap819,18797
+  void delete(Pixmap.delete823,18849
+  void restoreClip(Pixmap.restoreClip839,19113
+class ImageFactory ImageFactory844,19182
+  static void init(ImageFactory.init846,19233
+  static Image createImage(ImageFactory.createImage849,19309
+class FBFilter FBFilter854,19416
+  void setFgBg(FBFilter.setFgBg859,19559
+  public int filterRGB(FBFilter.filterRGB871,19810
+class Pixmap1 Pixmap1878,19941
+  Pixmap1(Pixmap1.Pixmap1882,20019
+  Image getImage(Pixmap1.getImage887,20134
+  Image getImage(Pixmap1.getImage892,20236
+  void reset(Pixmap1.reset897,20398
+  static void putData(Pixmap1.putData906,20606
+  void delete(Pixmap1.delete1032,22988
+  void setFgBg(Pixmap1.setFgBg1045,23194
+  void copyArea(Pixmap1.copyArea1052,23384
+interface Resizable Resizable1061,23608
+class ResizablePixmap ResizablePixmap1068,23747
+  ResizablePixmap(ResizablePixmap.ResizablePixmap1072,23848
+  public void setColormap(ResizablePixmap.setColormap1079,24029
+  static Pixmap createPixmap(ResizablePixmap.createPixmap1083,24108
+  public void setSize(ResizablePixmap.setSize1092,24391
+  public int getRealWidth(ResizablePixmap.getRealWidth1115,25037
+  public int getRealHeight(ResizablePixmap.getRealHeight1118,25093
+class ResizablePixmap1 ResizablePixmap11123,25154
+  ResizablePixmap1(ResizablePixmap1.ResizablePixmap11127,25258
+  public void setColormap(ResizablePixmap1.setColormap1134,25421
+  public void setSize(ResizablePixmap1.setSize1137,25472
+  public int getRealWidth(ResizablePixmap1.getRealWidth1159,26117
+  public int getRealHeight(ResizablePixmap1.getRealHeight1162,26173
+
+Property.java,727
+final class Property{Property23,808
+  Property(Property.Property35,1040
+  static Property getProperty(Property.getProperty36,1056
+  static void delProperty(Property.delProperty50,1313
+  static void changeWindowProperty(Property.changeWindowProperty82,1961
+  static void reqRotateProperties(Property.reqRotateProperties153,3568
+  static void reqDeleteProperty(Property.reqDeleteProperty223,5003
+  static void reqGetProperty(Property.reqGetProperty242,5418
+  static void reqListProperties(Property.reqListProperties343,7603
+  static void reqChangeProperty(Property.reqChangeProperty367,8082
+  private final static void swapS(Property.swapS425,9375
+  private final static void swapL(Property.swapL437,9595
+
+Resource.java,1355
+class Resource{Resource24,828
+  static synchronized int newType(Resource.newType59,2057
+  static synchronized int newClss(Resource.newClss65,2224
+  Resource(Resource.Resource75,2420
+  Resource(Resource.Resource76,2435
+  public int hashCode(Resource.hashCode80,2505
+  public boolean equals(Resource.equals84,2550
+  static void add(Resource.add96,2916
+  static void RemoveResource(Resource.RemoveResource102,3063
+  static void RemoveResource(Resource.RemoveResource108,3230
+  static void freeResource(Resource.freeResource115,3409
+  static void freeResourceByType(Resource.freeResourceByType128,3668
+  static Resource lookupIDByClass(Resource.lookupIDByClass141,3940
+  static Resource lookupIDByType(Resource.lookupIDByType159,4338
+  static void freeClientNeverResources(Resource.freeClientNeverResources174,4714
+  static void freeClientResources(Resource.freeClientResources189,5115
+  static void deleteit(Resource.deleteit201,5422
+  void delete(Resource.delete209,5611
+  static Client lookupClient(Resource.lookupClient211,5650
+  static void initClientResource(Resource.initClientResource223,5963
+  static int fakeClientId(Resource.fakeClientId230,6229
+class ClientResource ClientResource275,7428
+class Key Key282,7539
+  public int hashCode(Key.hashCode284,7581
+  public boolean equals(Key.equals287,7625
+
+RootWindow.java,137
+class RootWindow RootWindow39,1201
+  RootWindow(RootWindow.RootWindow42,1300
+  public boolean contains(RootWindow.contains130,3794
+
+SaveSet.java,305
+final class SaveSet{SaveSet24,828
+  private SaveSet(SaveSet.SaveSet29,960
+  static void reqChangeSaveSet(SaveSet.reqChangeSaveSet33,1008
+  void proc(SaveSet.proc54,1497
+  void delete(SaveSet.delete62,1635
+  static void delete(SaveSet.delete67,1719
+  static void handle(SaveSet.handle76,1943
+
+Screen.java,1611
+final class Screen Screen23,808
+  static Screen[] init(Screen.init57,1618
+  int getRootId(Screen.getRootId62,1694
+  void setRootId(Screen.setRootId63,1731
+  byte getRootDepth(Screen.getRootDepth64,1774
+  void setRootDepth(Screen.setRootDepth65,1818
+  int getRootVisual(Screen.getRootVisual67,1869
+  void setRootVisual(Screen.setRootVisual68,1914
+  Window getRoot(Screen.getRoot70,1966
+  void setRoot(Screen.setRoot71,2002
+  Depth[] getDepth(Screen.getDepth73,2051
+  void setDepth(Screen.setDepth74,2090
+  int depths(Screen.depths76,2131
+  Colormap defaultColormap(Screen.defaultColormap78,2172
+  int defaultColormapId(Screen.defaultColormapId79,2229
+  int getWhite(Screen.getWhite81,2286
+  void setWhite(Screen.setWhite82,2321
+  int getBlack(Screen.getBlack84,2358
+  void setBlack(Screen.setBlack85,2393
+  int getCurrentInputMasks(Screen.getCurrentInputMasks87,2430
+  void setCurrentInputMasks(Screen.setCurrentInputMasks88,2489
+  int getMinInstalledMaps(Screen.getMinInstalledMaps90,2550
+  void setMinInstalledMaps(Screen.setMinInstalledMaps91,2607
+  int getMaxInstalledMaps(Screen.getMaxInstalledMaps93,2666
+  void setMaxInstalledMaps(Screen.setMaxInstalledMaps94,2723
+  int getBackingStores(Screen.getBackingStores96,2786
+  void setBackingStores(Screen.setBackingStores97,2837
+  int getSaveUnders(Screen.getSaveUnders99,2890
+  void setSaveUnders(Screen.setSaveUnders100,2935
+  Screen(Screen.Screen102,2982
+  void writeByte(Screen.writeByte136,3779
+  int getLength(Screen.getLength159,4482
+  static void resetScreen(Screen.resetScreen169,4636
+
+Selection.java,551
+final class Selection{Selection23,808
+  Selection(Selection.Selection34,1013
+  static Selection getSelection(Selection.getSelection42,1190
+  static void addSelection(Selection.addSelection54,1473
+  static void reqConvertSelection(Selection.reqConvertSelection67,1950
+  static void reqSetSelectionOwner(Selection.reqSetSelectionOwner129,3304
+  static void reqGetSelectionOwner(Selection.reqGetSelectionOwner185,4462
+  static synchronized void delete(Selection.delete209,4960
+  static synchronized void delete(Selection.delete229,5378
+
+TransparentFilter.java,181
+final class TransparentFilter TransparentFilter25,894
+  TransparentFilter(TransparentFilter.TransparentFilter32,1014
+  public int filterRGB(TransparentFilter.filterRGB82,2199
+
+Visual.java,990
+final class Visual Visual24,828
+  Depth getDepth(Visual.getDepth35,1023
+  void setDepth(Visual.setDepth36,1060
+  int getVisualClass(Visual.getVisualClass42,1171
+  void setVisualClass(Visual.setVisualClass43,1211
+  int getBitsPerRGB(Visual.getBitsPerRGB45,1253
+  void setBitsPerRGB(Visual.setBitsPerRGB46,1298
+  int getColormapEntries(Visual.getColormapEntries48,1345
+  void setColormapEntries(Visual.setColormapEntries49,1400
+  int getRedMask(Visual.getRedMask51,1457
+  void setRedMask(Visual.setRedMask52,1496
+  int getGreenMask(Visual.getGreenMask54,1537
+  void setGreenMask(Visual.setGreenMask55,1580
+  int getBlueMask(Visual.getBlueMask56,1624
+  void setBlueMask(Visual.setBlueMask57,1665
+  Visual(Visual.Visual59,1708
+  void writeByte(Visual.writeByte70,2016
+  static Visual[] getStaticGray1(Visual.getStaticGray180,2293
+  static Visual[] getStaticGray8(Visual.getStaticGray886,2451
+  static Visual[] getPsudoColor8(Visual.getPsudoColor892,2611
+
+WeirdX.java,439
+public final class WeirdX WeirdX32,1029
+  void weirdx_init(WeirdX.weirdx_init75,2302
+  void weirdx_start(WeirdX.weirdx_start255,6823
+  public void destroy(WeirdX.destroy327,8650
+  public void stop(WeirdX.stop343,8930
+  static void close(WeirdX.close359,9207
+  public void init(WeirdX.init363,9288
+  public void start(WeirdX.start419,10583
+  public static void main(WeirdX.main426,10684
+  void kill(WeirdX.kill550,14454
+
+WeirdXBeanInfo.java,51
+public class WeirdXBeanInfo WeirdXBeanInfo24,812
+
+Window.java,8347
+class Window Window29,1013
+  Window(Window.Window222,8484
+  Window(Window.Window226,8533
+  private final void changeAttr(Window.changeAttr434,14515
+  private int eventSuppress(Window.eventSuppress762,21878
+  static final void reqCirculateWindow(Window.reqCirculateWindow789,22480
+  static final void reqAllowEvents(Window.reqAllowEvents839,23762
+  static final void reqGetMotionEvents(Window.reqGetMotionEvents866,24262
+  static final void reqTranslateCoordinates(Window.reqTranslateCoordinates888,24716
+  static final void reqGetScreenSaver(Window.reqGetScreenSaver943,25766
+  static final void reqQueryBestSize(Window.reqQueryBestSize958,26086
+  static final void reqDestroySubwindows(Window.reqDestroySubwindows989,26786
+  void makeBackgroundTile(Window.makeBackgroundTile1009,27223
+  private void free(Window.free1055,28544
+  private void deleteEvent(Window.deleteEvent1097,29437
+  private void deleteProperties(Window.deleteProperties1145,30657
+  private void crushTree(Window.crushTree1162,31081
+  void delete(Window.delete1212,32292
+  static final void reqDestroyWindow(Window.reqDestroyWindow1252,33119
+  static final void reqSendEvent(Window.reqSendEvent1269,33479
+  static final void reqGetPointerMapping(Window.reqGetPointerMapping1318,34522
+  static final void reqSetPointerMapping(Window.reqSetPointerMapping1328,34742
+  static final void reqGetPointerControl(Window.reqGetPointerControl1345,35085
+  static final void reqQueryPointer(Window.reqQueryPointer1358,35370
+  static final void reqGetGeometry(Window.reqGetGeometry1409,36498
+  static final void reqChangeWindowAttributes(Window.reqChangeWindowAttributes1446,37377
+  static final void reqUngrabPointer(Window.reqUngrabPointer1474,37926
+  static final void reqUngrabButton(Window.reqUngrabButton1483,38163
+  static final void reqGrabButton(Window.reqGrabButton1508,38699
+  static final void reqGrabPointer(Window.reqGrabPointer1564,39749
+  static final void reqCreateWindow(Window.reqCreateWindow1652,41668
+  int sendEvent(Window.sendEvent1701,42616
+  int sendEvent(Window.sendEvent1796,44939
+  int sendEvent(Window.sendEvent1834,45878
+  private Window findOptional(Window.findOptional1856,46478
+  private void setDefault(Window.setDefault1862,46593
+  static final void reqUnmapSubWindows(Window.reqUnmapSubWindows1879,46925
+  private void unmapSubwindows(Window.unmapSubwindows1897,47263
+  static final void reqMapSubWindows(Window.reqMapSubWindows1925,47902
+  static final void reqUnmapWindow(Window.reqUnmapWindow1979,49122
+  private void unrealizeTree(Window.unrealizeTree1997,49426
+  private void realizeTree(Window.realizeTree2034,50414
+  private void unmapWindow(Window.unmapWindow2073,51628
+  static final void reqMapWindow(Window.reqMapWindow2101,52286
+  void mapWindow(Window.mapWindow2121,52614
+  static void restructured Window.restructured2148,53375
+  static boolean checkMotion Window.checkMotion2154,53494
+  static void enter_leaveEvent(Window.enter_leaveEvent2169,53935
+  private static void enterNotifies(Window.enterNotifies2223,55437
+  private static void leaveNotifies(Window.leaveNotifies2231,55749
+  static void enter_leaveEvent(Window.enter_leaveEvent2240,56064
+  boolean contains(Window.contains2302,57534
+  static Window xy2Window(Window.xy2Window2306,57642
+  Cursor getCursor(Window.getCursor2338,58450
+  private boolean redirectSend(Window.redirectSend2344,58583
+  private boolean subSend(Window.subSend2347,58703
+  private boolean strSend(Window.strSend2350,58816
+  private boolean substrSend(Window.substrSend2353,58926
+  void makeOptional(Window.makeOptional2357,59005
+  private void sendVisibilityNotify(Window.sendVisibilityNotify2377,59589
+  static final void reqQueryTree(Window.reqQueryTree2383,59783
+  static final void reqSetInputFocus(Window.reqSetInputFocus2429,60697
+  static final void setInputFocus(Window.setInputFocus2452,61141
+  static final void reqGetInputFocus(Window.reqGetInputFocus2509,62547
+  static final void reqGetWindowAttributes(Window.reqGetWindowAttributes2521,62844
+  static final void reqCopyPlane(Window.reqCopyPlane2565,64171
+  static final void reqCopyArea(Window.reqCopyArea2664,66724
+  static final void reqClearArea(Window.reqClearArea2783,69414
+  void draw(Window.draw2824,70336
+  void draw(Window.draw2828,70378
+  private Window trackParent(Window.trackParent2832,70474
+  private Client getClient(Window.getClient2841,70618
+  private int getBackingBitPlanes(Window.getBackingBitPlanes2845,70733
+  private int getBackingPixel(Window.getBackingPixel2850,70851
+  OtherClients getOtherClients(Window.getOtherClients2855,70960
+  void setFrame(Window.setFrame2860,71068
+  Frame getFrame(Window.getFrame2865,71149
+  void setProperty(Window.setProperty2870,71236
+  Property getProperty(Window.getProperty2875,71319
+  static final void reqConfigureWindow(Window.reqConfigureWindow2880,71416
+  private int getDontPropagateMask(Window.getDontPropagateMask3143,77340
+  Grab getPassiveGrabs(Window.getPassiveGrabs3149,77522
+  int getOtherEventMask(Window.getOtherEventMask3154,77623
+  void setColormap(Window.setColormap3159,77725
+  Colormap getColormap(Window.getColormap3163,77812
+  private int getColormapId(Window.getColormapId3166,77886
+  void setVisual(Window.setVisual3171,77985
+  private int getVisual(Window.getVisual3175,78059
+  boolean isMapped(Window.isMapped3179,78133
+  boolean isRealized(Window.isRealized3180,78182
+  boolean isViewable(Window.isViewable3181,78235
+  boolean isBorderPixel(Window.isBorderPixel3182,78288
+  void setBorderIsPixel(Window.setBorderIsPixel3183,78349
+  void setBackgroundIsPixel(Window.setBackgroundIsPixel3184,78399
+  boolean hasParentRelativeBorder(Window.hasParentRelativeBorder3189,78491
+  boolean hasBorder(Window.hasBorder3195,78680
+  private void reflectStackChange(Window.reflectStackChange3197,78729
+  private int isSiblingAboveMe(Window.isSiblingAboveMe3207,78971
+  private Window getPlaceInTheStack(Window.getPlaceInTheStack3217,79199
+  private Window moveInStack(Window.moveInStack3271,80456
+  static final void reqReparentWindow(Window.reqReparentWindow3341,82534
+  void reparent(Window.reparent3369,83115
+  void recalculateDeliverableEvents(Window.recalculateDeliverableEvents3465,86749
+  final Graphics getGraphics(Window.getGraphics3497,87550
+  final Graphics getGraphics(Window.getGraphics3502,87685
+  final Image getImage(Window.getImage3507,87845
+  final Image getImage(Window.getImage3509,87903
+  final Image getImage(Window.getImage3513,88027
+  private void setEventMask(Window.setEventMask3517,88156
+  private static void gravityTranslate Window.gravityTranslate3568,89401
+  private void resizeChildrenWinSize(Window.resizeChildrenWinSize3616,90370
+   static boolean checkDeviceGrabs(Window.checkDeviceGrabs3665,92026
+  boolean checkPassiveGrabsOnWindow(Window.checkPassiveGrabsOnWindow3680,92351
+  static void sendGrabbedEvent(Window.sendGrabbedEvent3711,93354
+  static int sendDeviceEvent(Window.sendDeviceEvent3738,94176
+  boolean isParent(Window.isParent3793,95741
+  Window commonAncestor(Window.commonAncestor3799,95872
+  private static void doFocusEvents(Window.doFocusEvents3806,96014
+  private static void focusOutEvents(Window.focusOutEvents3914,99507
+  private static boolean focusInEvents(Window.focusInEvents3926,99890
+  void sendFocusEvent(Window.sendFocusEvent3949,100504
+  void initAttr(Window.initAttr3958,100865
+  void restoreClip(Window.restoreClip3966,101026
+  private static int lowbit(Window.lowbit3968,101076
+  static void printWindow(Window.printWindow3977,101262
+  static void printChildren(Window.printChildren3989,101779
+  static void printWindowTree(Window.printWindowTree3998,101989
+class InputClients InputClients4009,102199
+  InputClients(InputClients.InputClients4011,102249
+class OtherInputMasks OtherInputMasks4017,102329
+  OtherInputMasks(OtherInputMasks.OtherInputMasks4022,102457
+class WindowOpt{WindowOpt4029,102620
+class Sprite Sprite4044,102908
+  Sprite(Sprite.Sprite4047,102952
+final class HotSpot HotSpot4052,102994
+class DontPropagate{DontPropagate4056,103047
+  static int store(DontPropagate.store4065,103206
+class Focus{Focus4081,103459
+
+XRexec.java,172
+class XRexec XRexec32,1002
+  XRexec(XRexec.XRexec41,1357
+  public static void main(XRexec.main104,3219
+  public void actionPerformed(XRexec.actionPerformed108,3301
+
+../util/JRexec.java,455
+public class JRexec JRexec7,84
+  public JRexec(JRexec.JRexec21,403
+  public JRexec(JRexec.JRexec40,914
+  public JRexec(JRexec.JRexec46,1099
+  public synchronized InputStream getResult(JRexec.getResult53,1317
+  public synchronized void doit(JRexec.doit59,1449
+  public void run(JRexec.run66,1570
+  private synchronized void stop(JRexec.stop125,2756
+  public void close(JRexec.close131,2844
+  public static void main(JRexec.main142,3007
+
+../util/JRexecException.java,178
+public class JRexecException JRexecException3,26
+  public JRexecException JRexecException.JRexecException4,75
+  public JRexecException JRexecException.JRexecException7,122

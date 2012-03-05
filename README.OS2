@@ -1,0 +1,57 @@
+README for OS/2
+====================================================================
+Last modified: Wed Jan 24 16:17:44 UTC 2001
+
+Some OS/2 users have sent us feedbacks about WeirdX on their OS. 
+On some OS/2 environments, WeirdX does not work.
+For example, 'xclock' will not work on WeirdX.
+
+Unfortunately, we don't have OS/2 so we can not hack for the OS/2 any further.
+If you have friends, who use OS/2,
+please ask them to if WeirdX runs on their environments.
+If we get more informations, some hints may be stumbled on.
+
+Here are feedbacks from OS/2 users.
+
+WeirdX will not work on
+
+  |OS/2 Warp4 with fixpack10
+  |JDK 1.1.7A IBM build o117-19990218 + Swing 1.1
+  |Matrox Millennium I at 1152x864x65k resolution
+  |with Matrox driver 2.22.078
+
+  |OS/2 Warp 4 Fispack 10
+  |Java JDK 1.1.7A IBM build o117-19990303
+  |Matrox Millenium Graphics Card + Driver 2.22.078 (1280x1024)
+
+  |Hitachi Notebook
+  |Pentium 166MMX
+  |96MB memory
+  |OS/2 Warp 4 with fixpack 7
+  |JDK 1.1.7
+  |Chips and Technolog chipset
+  |1024x768x64K
+
+  |OS/2 Warp 4 FP10 de
+  |JDK 1.1.8 IBM build o118-19991026 
+  |(JIT enabled: javax V3.5-IBMJDK1.1-19991026)
+
+  |OS/2 Warp 4 with Fixpak 10 at 1024x768x64k.
+  |JDK 1.1.7A IBM build o117-20000302 (JIT enabled: javax)
+
+  |OS/2 Warp 4 w/ FP12 and SciTech DisplayDoctor beta 36 on IBM thinkpad 600E
+  |JDK 1.1.8
+
+and will work on
+
+  |OS/2 Warp4 with fixpack9
+  |JDK 1.1.7A IBM
+  |video card and driver are unknown.
+
+  |OS/2 Warp 4 with FixPack 9
+  |OS/2 Java 1.1.6
+  |Swing 1.1 from Javasoft
+  |IBM TCP/IP 4.1
+
+  |OS/2 Warp 4 w/ FP12 and SciTech DisplayDoctor beta 36 on IBM thinkpad 600E
+  |J2SE 1.3

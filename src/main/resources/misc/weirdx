@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ -z "${JAVA_HOME}" ] ; then
+  echo "JAVA_HOME environment variable not set." 1>&2 
+  exit 1
+fi
+
+#if [ -z "${SWING_HOME}" ] ; then
+#  echo "SWING_HOME environment variable not set." 1>&2 
+#  exit 1
+#fi
+
+if [ -z "$WEIRDX_HOME" ] ; then
+    WEIRDX_HOME=`pwd`
+fi
+
+cd $WEIRDX_HOME
+
+SWING_JARS=${SWING_HOME}/swingall.jar
+
+SWING_CLASSES=.:${SWING_JARS}
+if [ -z "$CLASSPATH" ] ; then
+    CLASSPATH="${SWING_CLASSES}":${JAVA_HOME}/lib/classes.zip
+else
+    CLASSPATH="${SWING_CLASSES}:$CLASSPATH"
+fi
+
+CLASSPATH="${WEIRDX_HOME}":"${WEIRDX_HOME}"/weirdx.jar:${SWING_CLASSES}:$CLASSPATH
+
+CMD="${JAVA_HOME}/bin/java -classpath ${CLASSPATH} com.jcraft.weirdx.WeirdX"
+
+${CMD}

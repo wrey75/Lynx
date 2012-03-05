@@ -1,0 +1,405 @@
+
+How to use WeirdX
+====================================================================
+Last modified: Thu Apr 15 07:13:21 UTC 2004
+
+  * SUPPORTED PLATFORMS
+  * REQUIREMENTS
+  * OPTIONAL
+  * USAGE
+  * USAGE AS AN APPLET
+  * WeirdX runs without Swing!
+  * XDMCP
+  * Copy/Paste
+  * Multibyte Characters
+  * Keyboard
+  * SSH2 X11 Forwarding in Java
+  * Hacks for the Alpha Transparency
+  * EsounD Support
+  * DXPC Support
+  * XJS Extension for WeirdX
+  * PROPERTIES
+
+SUPPORTED PLATFORMS
+===================
+WeirdX is implemented with JDK 1.1.*.
+So, WeirdX will be available on any platform, which support JDK 1.1.
+Here, we list supported platforms, which we have confirmed already.
+If you succeed to run WeirdX on other platform, please add it to
+this list. 
+
+- Windows 95
+- Windows 98
+- Windows NT
+- Windows 2000 Professional using JDK 1.3.0rc1 (feedback from Schult, John)
+- OS/2, J2SE 1.3 (feeback from Dan Nimick)
+- Sparc Solaris, Netscape4.72&Java2 Plug-in
+  (feedback from Chris Debenham)
+- Intel Solaris 2.6.0
+- Intel GNU/Linux, J2SE v.1.2.2 
+  (feedback from David Golden)
+- FreeBSD
+  (feedback from Brian Gilman)
+- Alpha OSF1, J2SDK.v.1.2.1 
+  (feedback from Keith Schincke)
+- MacOS X Beta, Java HotSpot Client 1.3 
+  (feedback from Ryan Calder)
+- MacOS 9 with MRJ 2.1.4, MacOS 8.6 with MRJ 2.1.x 
+  (feedback from Tarun Reddy, Eric Albert)
+
+REQUIREMENTS
+============
+
+The following softwares are required to use WeirdX.
+
+- JDK 1.1.*(in some case, Swing 1.1.*) or Java2
+
+WeirdX runs without the Swing API and, in a optional mode, 
+it runs with the Swing API. 
+For the difference between them, please refer to the section
+'WeirdX runs without Swing!'.
+
+
+OPTIONAL
+========
+
+WeirdX is also usable as an Java applet;
+WeirdX will run in a web browser, Internet Explorer, Netscape Navigator.
+If you try WeirdX on Windows 95/98, we recommend to run WeirdX in a
+web browser. If you run WeirdX as an application on DOS prompt,
+it will run very slowly.
+
+- web browser.
+	Internet Explorer or Netscape Navigator.
+        Don't use Java2 plug-in on Opera. Opera will crash.
+
+USAGE
+=====
+Before using WeirdX, check CLASSPATH includes swingall.jar in Swing 1.1.*
+and current directory. Then type,
+     
+       javac -O com/jcraft/weirdx/*.java com/jcraft/util/*.java
+# In this distribution, *.class files has been included, 
+# so you can skip this step. 
+
+       java com.jcraft.weirdx.WeirdX
+or
+       cd misc
+       java -jar weirdx.jar
+
+If 'config/props' exists, property settings in that file will be
+loaded. If you want to over write those propety settings, just edit 
+that file or give options to java command. For example,
+
+       java -Dweirdx.displaynum=3 -Dweirdx.jesd=yes -jar weirdx.jar
+
+If everything goes well automagically, one window will be opened 
+on your desktop. This is an X Window System server. 
+In default setting, WeirdX will use display-name '<your hostname>:2.0' .
+
+To run x clients on WeirdX, just specify '-display' option.
+Suppose that WeirdX are running on some machine, named "foo",
+and you have Un*x machine, named "bar". Try next command on machine "bar"
+
+       xlogo -display foo:2.0
+
+"misc" directory has some scripts for executing WeirdX easily.
+At present, scripts for Unix, Windows and OS/2 are located.
+
+
+USAGE AS AN APPLET
+==================
+Copy "misc/weirdx.jar" and "misc/weirdx.html" to some directory,
+which is accessible through a http server, then open weirdx.html with 
+a web browser via a http server. If everything goes well, 
+WeirdX will start in your web browser.
+In default setting, WeirdX use display-name 
+'<your hostname>:2.0' .
+If you have Java Plug-in, try 'weirdx-JRE12.html'.
+
+In some situations, JVM may throw the Security Exception.
+WeirdX must gain access to TCP port(6002) and JVM may reject to do so.
+
+
+WeirdX runs without Swing!
+==========================
+Since 1.0.16, WeirdX runs without the Swing API.
+# This improvement has been done by Marcus Schiesser.
+This new version has advantages over previous versions, 
+which had used Swing API, in that, needless to say, 
+it can run on web browser without Java Plug-in
+and it is free from the snail Swing's painting system.
+The disadvantage is that you will observe unnecessary re-paintings on the
+Swing free version. In other words, WeirdX had used the Swing API to
+prevent those re-paintings. If you want to use Swing version, set a
+property 'weirdx.ddxwindow' as 'com.jcraft.weirdx.DDXWindowImpSwing' .
+
+
+XDMCP
+=====
+WeirdX supports XDMCP. If you want to use this functionality,
+specify properties, 'weirdx.xdmcp.mode' and 'weirdx.xdmcp.address'
+appropriately. In current implementation, 'indirect query' has not
+been supported.
+And this functionality can be used as a stand alone program,
+so it will be useful for X Window System users, whose X server 
+does not support XDMCP. Try,
+
+  java com.jcraft.weirdx.XDMCP -query somewhere -display display-name
+or
+  java com.jcraft.weirdx.XDMCP -broadcast somewhere -display display-name
+
+If everything goes well, xdm will open a login-window on your
+X server. After you get a login-window, please kill the above java process
+as soon as possible.
+Caution: At present, any authorization mechanism has not been implemented.
+So please use this functionality with your own risk.
+
+
+Copy/Paste
+==========
+Copy/paste operations between the native window system
+and WeirdX(CUT_BUFFER0) has been supported. 
+For example, you can copy/paste strings on 'xterm', 
+which runs on WeirdX, to 'notepad' on Windows98.
+At present, 'selection' has not been supported. So you can't copy strings
+on TextField widgets of GTK,Motif to apps on Windows98.
+However, 'xcutsel' will help you.
+
+
+Multibyte Characters
+====================
+WeirdX supports to display multibyte characters on the internationalized JRE.
+If you need to display Japanese, Korean and Chinese characters on Weirdx, try
+weirdx.display.charset=JISX,KSC5601,GB2312
+At present, WeirdX supports Japanese, Korean and Chinese characters,
+but only Japanese characters have been confirmed to be
+handled correctly.
+If you succeeded or failed to display others, please write us.
+
+
+Keyboard
+========
+In default settings, WeirdX supposes that key events are from
+US layout keyboard. If your keyboard is other layout one, 
+you can change internal keymap definitions by setting 
+a property 'weirdx.display.keymap'.
+If your keyboard is for U.K., try
+weirdx.display.keymap=gb
+At present, WeirdX supports gb(U.K. layout keyboard), de.
+If you are using other keyborad, for example, jp106. Please try
+'misc/keymap/genkeymap.pl'. It is a perl script and generates
+java files for supporting your keyboard. 
+Please refer to 'misc/keymap/HOWTO'for its usage.
+
+
+SSH2 X11 Forwarding in Java
+===========================
+WeirdX allows you to get secure X accesses by X11 forwarding of SSH2
+in pure Java.  This functionality is based on JSch, which is a pure
+Java implementation of SSH2 and developed by JCraft under revised BSD
+license. It is available at http://www.jcraft.com/jsch/ . 
+
+To enjoy this functionality, try following steps,
+1. Download JSch from http://www.jcraft.com/jsch/ .
+   You can get the source code of JSch and also jar file from there.
+2. Specify property 'weirdx.sshrexec' as 'yes'.
+3. Run WeirdX  For example, if you have two jar files, jsch-0.1.14.jar
+   and weirdx-1.0.32.jar, 
+
+   java -Dweirdx.sshrexec=yes \
+        -cp jsch-0.1.14.jar\;weirdx-1.0.32.jar \
+        com.jcraft.weirdx.WeirdX
+
+4. A dialog window for rexec on ssh will be appeared.
+
+Please note that your JVM must be J2SE v1.4 or higher to use this 
+functionality to enable this functionality. And also the souce code for 
+this functionaly is named as 'com/jcraft/weirdx/SSHRexec.jav', so you have to
+rename it as 'com/jcraft/weirdx/SSHRexec.java' to compile it.
+
+
+Hacks for the Alpha Transparency
+================================
+Two hacks for the alpha transparency have been added.
+* First hack renders backgrounds of every windows,
+  which have pixel background value, with alpha compositions. 
+  For example, if you set a property 'weirdx.ddxwindow' as
+  'com.jcraft.weirdx.DDXWindowImpSwingAlphaBackground',
+  a property 'weirdx.display.background.alpha' as '0xff0000:0x20' 
+  and run 'xterm -bg red', 
+  the background of xterm will be rendered as '0x20ff0000'.
+* Second hack renders contents of windows with alpha compositions. 
+  This hack is based on Java2D, so J2SE 1.2.* or higher are required.
+  To enable this hack, set a property 
+  'weirdx.ddxwindow' as 
+  'com.jcraft.weirdx.DDXWindowImpSwingAlphaBackground2D' .
+
+Please note those hacks are just for the fun, not for the practical use
+and they will be useful for surprising your friends.
+
+
+EsounD Support
+==============
+You can run EsounD compatible applications on WeirdX with JEsd.
+JEsd is a re-implementation of EsounD in pure Java and
+has been developed by JCraft. Please note that your JVM must be 
+J2SE v1.3 or higher to use this functionality. To enable this
+functionality, try following steps,
+1. Download a jesd archive from http://www.jcraft.com/jesd/ ,
+   extract class files from it and then
+   make these class files to be accessible through the CLASSPATH by WeirdX.
+2. Specify property 'weirdx.jesd' as 'yes'.
+3. Run WeirdX.
+4. On the remote host, try next command,
+   $ esdcat -s 'hostname where WeirdX is running' 'filename of WAV file'
+   Try other EsounD compatible apps, mpg123, gqmpeg and xmms.
+
+
+DXPC Support
+============
+The dxpc(Differential X Protocol Compressor) is an X protocol compressor 
+designed to improve the speed of X applications run over low-bandwidth links 
+(such as dialup PPP connections).
+WeirdX can accept connections via dxpc from X clients with the assistance 
+of JDxpc. JDxpc is a re-implementation of dxpc in pure Java and it has been
+developed by JCraft under LGPL. It is available at http://www.jcraft.com/weirdx/ . To enable this functionality, try following steps,
+1. Download a JDxpc archive from http://www.jcraft.com/jdxpc/ ,
+   extract class files from it and then make these class files to 
+   be accessible through the CLASSPATH by WeirdX.
+2. Specify property 'weirdx.jdxpc' as 'yes'.
+3. Run WeirdX.
+4. On the remote host, try next command,
+   $ dxpc -w 'hostname where WeirdX is running'
+   $ export DISPLAY=localhost:8.0
+   $ xlogo
+   Please note that dxpc must be version 3.7.0 and it is downloadable from
+   http://www.vigor.nu/dxpc/dxpc-3.7.0.html . Of course, you can use JDxpc
+   instead of using dxpc on remote host.
+
+If you need to change the communication port number(by default, 4000) between
+dxpc client and server proxies, specify the  appropriate number to the property
+'weirdx.jdxpcport'. (To use this property, JDxpc 0.0.6 or higher is required).
+
+
+XJS Extension for WeirdX 
+========================
+Now, XJS Extension for WeirdX has been included.
+It is contributed by Christian Werner<Christian.Werner@t-online.de>
+and enable you to use the JavaScriptTM engine from X clients.
+For further descriptions, please check 'misc/xjs/README'.
+
+
+PROPERTIES
+==========
+WeirdX has some properties as below,
+
+* weirdx.display.width: numeral
+  Width of root window. If you don't specify 
+  this property, the property "WIDTH" will be used.
+
+* weirdx.display.height: numeral
+  Height of root window. If you don't specify this property,
+  the property "HEIGHT" will be used.
+
+* weirdx.displaynum: numeral
+  default: 2
+  If you specify "3", display-name, "hostname:3.0" will be used.
+
+* weirdx.ddxwindow: class name
+  default: com.jcraft.weirdx.DDXWindowImp
+  Give a class name, which implements com.jcraft.weirdx.DDXWindow interface.
+  If you have the Swing, specify 'com.jcraft.weirdx.DDXWindowImpSwing' .
+  At present, 'com.jcraft.weirdx.DDXWindowImp', 
+  'com.jcraft.weirdx.DDXWindowImpSwing', 
+  'com.jcraft.weirdx.DDXWindowImpSwingAlphaBackground' and
+  'com.jcraft.weirdx.DDXWindowImpSwingAlphaBackground2D' are acceptable.
+
+* weirdx.windowmode: InBrowser | Rootless | RootlessWM
+  default: InBrowser
+  If you specify 'Rootless' or 'RootlessWM', each toplevel window, 
+  whose parent is root window, will have its own window frame.
+  In the 'RootlessWM' mode, you don't have to run X window manager and
+  title bars will be attached to X apps by the native window system. 
+
+* weirdx.display.visual: TrueColor16 | PseudoColor8 | StaticGray8
+  default: PseudoColor8
+  If 'PseudoColor8' is specified, 256 colors are used.
+  On the other hand, in specifying 'StaticGray8', 256 gray scaled 
+  colors will be used.
+
+* weirdx.display.acl: [+hostname[,+hostname[,...]]]
+  default: -
+  WeirdX only supports ACL based on hostnames.
+
+* weirdx.display.threebutton: yes | no
+  default: no
+  Three button mouse emulation is enabled.
+
+* weirdx.display.charset: [charset[,charset[,...]]]
+  Specified charsets will be handled.
+  For Japanese characters, specify 'JISX'. For Korean characters,
+  specify 'KSC5601', and for Chinese characters, specify 'GB2312'.
+
+* weirdx.display.keymap: a name of keymap. 
+  default: 101
+  Specified keymap definitions is used.
+  At present, '101', 'gb' and 'de' are acceptable.
+
+* weirdx.xdmcp.mode: query | broadcast | no
+  default: no
+  If you require the XDMCP service, specify 'query' or 'broadcast'.
+
+* weirdx.xdmcp.address: ip-address
+  Specify a query address or a broadcast address.
+
+* weirdx.xrexec: yes | no
+  default: no
+  If you require the rexec service, specify 'yes'.
+
+* weirdx.extension: names of extensions.
+  default: DummySHAPE
+  In current implementation, dummy of SHAPE extension is
+  included. If you hate such a hack, leave this property in blank.
+
+* weirdx.display.background.alpha: pixel value:alpha value[,pixel:alpha[,...]]
+  default: blank
+  Specify pairs of a background pixel value and an alpha channel value.
+  If you specify '0xff0000:0x20, 0x00ff00:0x80',
+  The background color 'red' will be '0x20ff0000'
+  and the background color 'green' will be '0x8000ff00'.
+
+* weirdx.sshrexec:  yes | no
+  default: no
+  Specify 'yes' for getting secure X accesses by X11 forwarding of SSH2.
+  For using this functionality, your JVM must be J2SE v1.4 or higher. 
+
+* weirdx.jesd: yes | no
+  default: no
+  If you need to run EsounD compatible applications, specify 'yes'.
+  For using this functionality, your JVM must be J2SE v1.3 or higher. 
+
+* weirdx.jdxpc: yes | no
+  default: no
+  If you need to use dxpc, specify 'yes'.
+
+* weirdx.jdxpcport: numeral
+  default: 4000
+  a number of TCP port for communication between dxpc server and client
+  proxies.
+
+* weirdx.jdxpc.socket: class-name
+  default: null
+
+* weirdx.jdxpc.serverproxy: class-name
+  default: com.jcraft.jdxpc.ServerProxy
+
+* weirdx.displaysocket: class name
+  default com.jcraft.weirdx.DisplaySocket6k
+
+* weirdx.display.autosize: boolean
+  default: false
+  The size of root window will be assigned according to the size of desktop. 
+  This functionality will be useful in Rootless/RootlessWM mode.
+
+In running as an application, "config/props" will be referred.

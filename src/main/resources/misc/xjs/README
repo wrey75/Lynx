@@ -1,0 +1,52 @@
+                       XJS Extension for WeirdX
+
+                          by  Christian Werner
+                              <Christian.Werner@t-online.de>
+                      http://home.t-online.de/home/Christian.Werner/xjs.htm
+
+Last modified: Wed Aug  2 23:44:42 JST 2000
+
+# This document is written by ymnk<ymnk@jcraft.com>, but
+# contents of this documents is just a quote from Christian Werner's web page
+#  http://home.t-online.de/home/Christian.Werner/xjs.htm
+# Problems(typo, ambiguous descriptions,etc.) in this document belong with me.
+# Please don't make complaints to him.
+                   
+What about giving X client programs access to the JavaScript(tm) engine 
+if they are executing in a Java(tm) applet in your Navigator or MSIE ???
+
+Netscape invented the LiveConnect API for that purpose. By adding 
+the XJS extension to WeirdX specialized X clients can evaluate JavaScript 
+expressions or call JavaScript functions, eg to open another browser window
+or to popup a browser alert box.
+                                   
+
+How to set it up
+================
+1. Add the XJS extension to the applet parameters, eg
+   <PARAM NAME="weirdx.extension" VALUE="DummySHAPE,XJS">
+
+2. Give the applet the right to execute JavaScript code by adding 
+   MAYSCRIPT="true" to the applet/embed/object tags, eg
+   <APPLET ... MAYSCRIPT="true"> ... </APPLET>
+#An example is available at 'misc/xjs/weirdx-JRE12.html'
+
+3. Get the sources for the X extension and sample clients, compile it and 
+   try out the jeval sample program, eg
+
+    you@yourbox $ jeval 'window.open("http://java.sun.com", "sun")'
+
+Notes: So far, I tested it on Windows with Navigator 4.7 and MSIE 5.0 and 
+the X extension and clients on Linux 2.2.x (GLIBC). Unfortunately, the JDK 1.2
+plugin executed in MSIE 5.0 does not support the LiveConnect. 
+
+
+Sources for the X extension
+===========================
+They are included at misc/xjs/xjs.tar.gz
+                                   
+
+Licensing
+=========
+GPL for the WeirdX parts, X Consortium license for the extension library
+and client parts.

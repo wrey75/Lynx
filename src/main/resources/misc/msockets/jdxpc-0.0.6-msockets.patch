@@ -1,0 +1,177 @@
+diff -Naur jdxpc-0.0.6/com/jcraft/jdxpc/ClientChannel.java jdxpc-0.0.6-msockets/com/jcraft/jdxpc/ClientChannel.java
+--- jdxpc-0.0.6/com/jcraft/jdxpc/ClientChannel.java	Tue Nov 14 09:01:39 2000
++++ jdxpc-0.0.6-msockets/com/jcraft/jdxpc/ClientChannel.java	Sun Dec 24 14:35:46 2000
+@@ -1307,7 +1307,10 @@
+   }
+ 
+   void putByte(byte[] array, int begin, int length) {
+-    try { clientOutput.write(array, begin, length); }
++    try { 
++      clientOutput.write(array, begin, length); 
++      clientOutput.flush(); 
++    }
+     catch (IOException e) {
+     }
+   }
+diff -Naur jdxpc-0.0.6/com/jcraft/jdxpc/MemorySocketServerProxy.java jdxpc-0.0.6-msockets/com/jcraft/jdxpc/MemorySocketServerProxy.java
+--- jdxpc-0.0.6/com/jcraft/jdxpc/MemorySocketServerProxy.java	Thu Jan  1 00:00:00 1970
++++ jdxpc-0.0.6-msockets/com/jcraft/jdxpc/MemorySocketServerProxy.java	Wed Dec  6 08:56:10 2000
+@@ -0,0 +1,85 @@
++/* JDxpc -- DXPC in pure Java
++ *
++ *  Copyright (C) 2000 ymnk, JCraft, Inc.
++ *
++ *  Many thanks to 
++ *    Brian Pane<brianp@cnet.com> and
++ *    Zachary Vonler<lightborn@mail.utexas.edu>.
++ *  JDxpc has been based on their awesome works, dxpc.
++ *
++ *  This library is free software; you can redistribute it and/or
++ *  modify it under the terms of the GNU Library General Public
++ *  License as published by the Free Software Foundation; either
++ *   version 2 of the License, or (at your option) any later version.
++ *
++ *  This library is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ *  Library General Public License for more details.
++ *
++ *  You should have received a copy of the GNU Library General Public
++ *  License along with this library; if not, write to the Free
++ *  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++package com.jcraft.jdxpc;
++
++import java.io.*;
++import java.net.*;
++import java.lang.*;
++
++public class MemorySocketServerProxy extends Proxy{
++  int serverPort=6000;
++  String serverHost="127.0.0.1";
++  public MemorySocketServerProxy()throws IOException{
++    super();
++  }
++  public MemorySocketServerProxy(String host)throws IOException{
++    super(host);
++  }
++  public MemorySocketServerProxy(int dxpcport)throws IOException{
++    super(dxpcport);
++  }
++  public MemorySocketServerProxy (int xport, int dxpcport) throws IOException{
++    super (dxpcport);
++    setServerPort (xport);
++    setServerHost ("localhost");
++  }
++  MemorySocketServerProxy (Socket socket) throws IOException{
++    super(socket);
++  }
++  Channel createChannel(){
++    Class c=java.net.Socket.class;
++    try{
++      c=Class.forName("de.linuxtest.memorysocket.Socket");
++    }      
++    catch(Exception e){};
++    Channel foo=new ServerChannel(serverHost, serverPort, c);
++    foo.setProxy(this); 
++    return foo;
++  }
++  public void setServerPort(int port){serverPort=port;}
++  public void setServerHost(String host){serverHost=host;}
++  public static void main(String[] arg){
++    MemorySocketServerProxy sp;
++    try{
++      if (arg.length == 2){
++        //format: xport dxpcport
++        int xport = Integer.parseInt (arg[0]);
++        int dxpcport = Integer.parseInt (arg[1]);
++        sp = new MemorySocketServerProxy (xport, dxpcport);
++      }
++      else if (arg.length > 0){
++        sp = new MemorySocketServerProxy (arg[0]);
++      }
++      else{
++        sp = new MemorySocketServerProxy ();
++      }
++    }
++    catch (IOException e){
++      System.err.println ("cannot connect");
++      return;
++    }
++    sp.start ();
++  }
++}
+diff -Naur jdxpc-0.0.6/com/jcraft/jdxpc/Proxy.java jdxpc-0.0.6-msockets/com/jcraft/jdxpc/Proxy.java
+--- jdxpc-0.0.6/com/jcraft/jdxpc/Proxy.java	Tue Apr  4 10:09:36 2000
++++ jdxpc-0.0.6-msockets/com/jcraft/jdxpc/Proxy.java	Sun Dec 24 14:37:08 2000
+@@ -87,6 +87,7 @@
+       proxyIn=socket.getInputStream();
+       proxyOut=socket.getOutputStream();
+       proxyOut.write(incantation, 0, incantation.length);
++      proxyOut.flush();
+     }
+     catch(Exception e){
+     }
+@@ -206,6 +207,7 @@
+ 
+       try {
+ 	proxyOut.write(data, messageStart, messageLength);
++        proxyOut.flush();
+       } catch (IOException e) {
+ 	//System.out.println("proxyputByte: "+e);
+       }
+@@ -229,6 +231,7 @@
+ 
+     try {
+       proxyOut.write(data, messageStart, messageLength);
++      proxyOut.flush();
+     } catch (IOException e) {
+       //System.out.println("proxyputByte: "+e);
+     }
+@@ -253,6 +256,7 @@
+ 
+     try {
+       proxyOut.write(data, messageStart, messageLength);
++      proxyOut.flush();
+     } catch (IOException e) {
+       //System.out.println("proxyputByte: "+e);
+     }
+diff -Naur jdxpc-0.0.6/com/jcraft/jdxpc/ServerChannel.java jdxpc-0.0.6-msockets/com/jcraft/jdxpc/ServerChannel.java
+--- jdxpc-0.0.6/com/jcraft/jdxpc/ServerChannel.java	Fri Jul 21 07:56:43 2000
++++ jdxpc-0.0.6-msockets/com/jcraft/jdxpc/ServerChannel.java	Wed Dec  6 10:33:48 2000
+@@ -85,6 +85,34 @@
+     requestData[2]=new int[1];
+   }
+ 
++  ServerChannel(String host, int port, Class c){
++    try{
++      java.lang.reflect.Constructor constructor;
++      Class[] params=new Class[2];
++      params[0]=String.class;
++      params[1]=int.class;
++      constructor = c.getConstructor(params);
++      Object[] args=new Object[2];
++      args[0]=host;
++      args[1]=new Integer(port);
++      Socket s=(Socket)(constructor.newInstance(args));
++      setSocket(s);
++    }
++    catch(Exception e) {
++      System.out.println("Error : " +  e );
++      try{
++        Socket s=new Socket(host, port);
++        setSocket(s);
++      }
++      catch(IOException ee) {
++        System.out.println("IOError : " +  e );
++      }
++    }
++    requestData[0]=new int[1];
++    requestData[1]=new int[1];
++    requestData[2]=new int[1];
++  }
++
+   void setSocket(Socket s) {
+     serverSocket=s;
+     try	{

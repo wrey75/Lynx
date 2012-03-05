@@ -1,0 +1,312 @@
+
+ChangeLog of WeirdX
+====================================================================
+Last modified: Thu Apr 15 08:27:09 UTC 2004
+
+Changes since version 1.0.31:
+............................
+- added the secure X access support by using JSch.
+- fixed a crash bug in setting the title of window frame in RootlessWM mode.
+- fixed crash bugs in handling window properties.
+- fixed bugs in displaying Japanese characters on recent J2SE's VM.
+	
+	
+Changes since version 1.0.30:
+............................
+- modified to be free from 'misc/msocket/weirdx-*.*.*-msockets.patch' and
+  deleted 'misc/msocket/weirdx-1.0.26-msockets.patch'.
+- fixed a problem in using CapsLock key pointed out by Hans Wolff.
+- fixed a crash bug in RootlessWM window mode pointed out by 
+  Roland Mainz(Roland.Mainz at informatik dot med dot uni-giessen dot de).
+
+	
+Changes since version 1.0.29:
+............................
+- modified to merge patches from Steve Holland, who has developed WeirdMind.
+- added the interface com.jcraft.weirdx.DisplaySocket.
+Many thanks to Steve Holland. Above changes have not been done without him.
+- added ad-hock hacks for displaying box characters, which are assigned code
+  from 0x0b to 0x19 in iso8859-1 character sets.
+- fixed a bug in changing window properties.
+- fixed incompleteness in copying GC(graphics context).
+- fixed bugs in getting/adding Selection.
+- fixed a bug in switching the input focus for key events, which were
+  pointed out by Matt Ittigson.
+
+	
+Changes since version 1.0.28:
+............................
+- improved to support the resize operations in 'RootlessWM' mode.
+- improved to support the close button on the title bar in 'RootlessWM' mode.
+  In the previous version, the close button did not work for some X
+  clients, which did not support 'WM_DELETE_WINDOW' protocol.
+- fixed a bug in typing '_' on MacOSX.
+  This fixing was not done in the previous version crelessly.
+
+	
+Changes since version 1.0.27:
+............................
+- renamed the window mode 'MultiWindow' as 'Rootless'.
+  In this mode, you have to run an X window manager.	 
+- added the window mode 'RootlessWM'.
+  In this mode, WeirdX will work as in the 'MultiWindow' mode of
+  WeirdX 1.0.26; title bars will be attached to window frames.
+- improved to support the 'RootlessWM' mode.
+  * The close button on the title bar will work correctly.
+  * The name of window will be displayed on the title bar.	 
+  * The tile bar will not be attached to pop-up menu and pop-up window.
+  * The input focus will be handled.
+- modified the root window to be invisible in the 'Rootless' and
+  'RootlessWM' mode.
+- fixed a bug in typing '_' on MacOSX.
+
+	
+Changes since version 1.0.26:
+............................
+- fixed a bug in processing the 'ImageText8' request,
+  which was reported by Shin-ichi MORITA(s-morita at beingcorp dot co dot jp).
+- added README.XDMCP written by Valentin Pavlov(v_valchev at prosyst dot bg).
+- improved the multi-window mode support. 
+  If a window manager is running in multi-window mode,
+  title bars will not be attached to window frames by the native window system.
+  By this improvement, some weird behaviors of previous versions in
+  multi-window mode will be worked around. Anyway, for enjoying this hack,
+  exec WeirdX in multi-window mode and run a x window manager;twm, wmaker,
+  sawfish, etc. then x clients.
+	
+	
+Changes since version 1.0.25:
+............................
+- fixed bugs in processing the 'CopyArea' request.
+  For example, this fixing will fix weird behaviors on
+  'gnome-help-browser', 'kdehelp'.
+- added the support for the 'jp106' keyborad.
+- added a WindowAdapter to shutdown WeirdX by pressing a close button,
+  which is attached to WeirdX's root-window by the native window system.
+- added the experimental close button support in the multi-window mode.
+
+	
+Changes since version 1.0.24:
+............................
+- fixed bugs in searching scalable fonts.
+  Now, by this fixing, 'kpanel' will work on WeirdX. Try 'startkde'!
+- modified some code related to the XDMCP support for running WeirdX 
+  on the built-in JVM of IE
+
+	
+Changes since version 1.0.23:
+............................
+- fixed bugs in communications between WeirdX and X clients.
+  WeirdX is a multi-threaded X server and, in the current implementation,
+  each one of X clients accepts events and replies from several threads.
+  Until this fixing, any exclusive lock had not been cared in the communications.
+  By this bug fix, the frequency of random freezes has been decreased.	 
+- fixed a bug in precessing the ListProperties request.
+  The error recovery code had been missing.
+
+	
+Changes since version 1.0.22:
+............................
+- fixed a bug, which was sneaked into GetImage request handling code
+  since version 1.0.15. For example, 'gimp' has not been able to handle
+  font glyph correctly.
+- added some XLFDs for proportional fonts, which make you happy in
+  using 'gimp'.
+- added 'MemorySocket' hack, which solves the problem in using WeirdX and
+  JDxpc applets. This hack is contributed from Marcus Schiesser.
+  Check 'misc/msockets' directory
+
+	
+Changes since version 1.0.21:
+............................
+- reviced the drawing operations, drawing of thick lines (linewidth > 1) and
+  thick rectangles. This hack was done by Christian Werner
+- added the friendly interface for invoking JDxpc.
+  JDxpc 0.0.6 or higher is requried. This hack was done by Marcus Schiesser.
+- fixed bugs in invoking EnterNotifcation/LeaveNotication events.
+  They had caused weird behaviors on Tk widgets.
+
+	
+Changes since version 1.0.20:
+............................
+- added the support for the dxpc(Differential X Protocol Compressor),
+  which is an X protocol compressor designed to improve the speed of X 
+  applications run over low-bandwidth links. This functionality depends on
+  JDxpc, which is a re-implementation of dxpc in pure Java.
+- fixed a bug in replying to the GetAtomName request.
+  This bug had prevented WeirdX working with dxpc. 
+  Many thanks to Marcus Schiesser, who reported this glitch.
+- fixed bugs in processing the 'ClearArea' request. Some X apps depend on
+  this request in rendering pixmaps. For example, WindowMaker uses this
+  request in rendering backgrounds of title-bars and menus.
+
+	
+Changes since version 1.0.19:
+............................
+- added the support for 'fontspecific' fonts. Try,
+    xfd -fn -adobe-symbol-medium-r-normal--16-0-0-0-p-0-adobe-fontspecific
+  Some X apps(for example, Lyx) rely on those fonts.
+- fixed a bug in putting the bitmap(depth-1 pixmap) on the depth-16 pixmap.
+
+	
+Changes since version 1.0.18:
+............................
+- modified to use the 'java.awt.FontMetric.charsWidth' method instead of
+  the 'java.awt.FontMetric.bytesWidth' method for running WeirdX on MacOS X.
+- added the property 'weirdx.display.copypaste' for enabling/disabling
+  the copy/paste functionality. At present, Java2 on MacOS X does not support
+  the clipboard mechanism and the copy/paste functionality does not work.
+Many thanks to Kevin Hendricks(khendricks at ivey dot uwo dot ca). Above hacks have been based on his reports.
+- added the 'indirect' mode in XDMCP.
+  By this hack, the 'chooser' will be available on WeirdX.
+	
+
+Changes since version 1.0.17:
+............................
+- fixed a glitch, 'top most part of the window is covered by the titlebar'.
+- fixed a bug in displaying Korean and Chinese characters.
+- fixed a critical bug in the multi-window mode.
+  This bug had crashed X clients in processing the 'ReparentWindow' request.
+
+	
+Changes since version 1.0.16:
+............................
+- added an authorization support defined in XDMCP.
+  By this hack, 'gdm' will run on WeirdX.
+- fixed a bug in keymap setting reported by <Jerrad.Pierce at networkengines dot com>.
+- added 'misc/twmrc' from Valentin Pavlov<v_valchev at prosyst dot bg>. He says,
+  'I created this rc for use with weirdx xserver which is a little buggy..
+   so i put f.refresh in "move-to-raise" function which is save to remove
+   when twm is used with another xserver.'
+- changed starting up procedures according to Valentin Pavlov's advice.
+  You can start up weirdx very simply; 'java -jar weirdx.jar'
+- added a perl script 'misc/keymap/genkeymap.pl', which generates
+  java files for supporting unsupported keyboards. This script is based on
+  Marcus Schiesser's script.
+
+	
+Changes since version 1.0.15:
+............................
+- improved to be free from the Swing API.
+- fixed a bug in displaying Latin characters. Try 'xfd -fn fixed'.
+- improved to detect the ALT_GRAPH key typing.
+- added classes for German keyboard keymaping. 
+  Try to set a property 'weirdx.display.keymap' as 'de'.
+The above works were mostly done by 
+  Marcus Schiesser<marcus.schiesser at student dot uni-tuebingen dot de>
+and the rest were not done without his cooperations.
+
+	
+Changes since version 1.0.14:
+............................
+- added the XJS extension for WeirdX.
+  This extension is written by Christian Werner<Christian.Werner at t-online dot de>
+  and enable you to use the JavaScriptTM engine from X clients.
+- fixed a bug in handling a GetImage request.
+- fixed a glitch in copy&paste operations from native window system to WeirdX.
+  The buffer size had been too small.
+
+	
+Changes since version 1.0.13:
+............................
+- added the EsounD support.
+- fixed memory leaks in handling AWT Font objects.
+- fixed some minor bugs.
+
+	
+Changes since version 1.0.12:
+............................
+- added a macintosh executable for WeirdX.
+  Many thanks to Ben Mesander(bam at dimensional dot com).
+- fixed a slight hack for the alpha transparency,
+  in which alpha channel values are variable according to
+  the background pixel value.	 
+
+	
+Changes since version 1.0.11:
+............................
+- added a script for NetWare users.
+  Many thanks to Patrick Medhurst(patrickm at digitalme dot com).
+- fixed a memory leak in the previous hack for the alpha transparency.
+- added yet another hack for the alpha transparency.
+
+	
+Changes since version 1.0.10:
+............................
+- fixed a bug, which had caused NPE.
+  Many thanks to Jeremy Manson.
+- fixed bugs in the 16bpp visual support.
+- added a hack for the alpha transparency.
+
+	
+Changes since version 1.0.9:
+............................
+- fixed bugs which sneaked into the previous release 
+  in adding the 16bpp support.
+
+	
+Changes since version 1.0.8:
+............................
+- added a support for 16bpp mode.
+	
+Changes since version 1.0.7:
+............................
+- fixed a glitch in a keymap table for the U.K. keyboard(the IBM 166 layout).
+- added a support for displaying multibyte characters; 
+  Japanese(JISX0208), Korean(KSC5601) and Chinese(GB2312) characters.
+
+	
+Changes since version 1.0.6:
+............................
+- fixed a glitch in handling ModifierKeys(Ctrl,Alt, etc.) for 
+  x clients on big endian machines(for example, Solaris/Sparc).
+- added a support for the U.K. keyboard(the IBM 166 layout).
+Many thanks to Darren Howe(dhowe at armature dot com).
+Above improvements depend on his valuable feedbacks.
+	
+Changes since version 1.0.5:
+............................
+- added copy/paste functionality between the native window system
+  and WeirdX(CUT_BUFFER0).
+  For example, you can copy/paste strings on 'xterm' to
+  'notepad' on Windows98.
+
+	
+Changes since version 1.0.4:
+............................
+- added the XDMCP support.
+  This functionality can be used as a stand alone program.
+- fixed an inconsistency between source codes and docs about 
+  property settings(weirdx.xrexec).
+
+	
+Changes since version 1.0.3:
+............................
+- added the three button mouse emulation.
+  Try 'xev' or copy&paste on xterms.
+- changed configuration files to enable the three button mouse emulation
+  in default setting.	 
+
+	
+Changes since version 1.0.2:
+............................
+- added the proportional/scalable font support.
+  TrueType fonts will be used if your JVM supports them.
+  For example, try 'xfontsel' or
+  'xclock -digital -fn -adobe-times-medium-i-normal--123-*-*-*-p-*-iso8859-1'
+
+
+Changes since version 1.0.1:
+............................
+- fixed a glitch in switching keyboard input focus.
+  For example, xterm had not received any keyboard event 
+  if a window manager had not been running.
+- 'misc/weirdx.jar' has not been updated in previous release.
+
+
+Changes since version 1.0.0:
+............................
+- fixed a glitch in handling the 'CopyArea' request.
+  For example, this glitch had arisen in using full screen
+  editors on xterm.
+- *.class files are included.

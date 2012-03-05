@@ -1,0 +1,41 @@
+
+NEWS for WeirdX
+-----------------------------------
+--- 1.0.18
+  The 'indirect' mode in XDMCP has been supported.
+
+--- 1.0.13
+  A macintosh executable for WeirdX has been added.
+
+--- 1.0.12
+  Yet another hack for the alpha transparency has been added.
+
+--- 1.0.11
+  A hack for the alpha transparency has been added.
+
+--- 1.0.9
+  The 16bpp mode has been supported. 
+
+--- 1.0.8
+  Multibyte characters have been supported.
+
+--- 1.0.7
+  U.K. keyboard has been supported.
+
+--- 1.0.6
+  Copy/paste operations between the native window system and
+  WeirdX(CUT_BUFFER0) are enabled.
+
+--- 1.0.5
+  XDMCP is supported.
+
+--- 1.0.4
+  Three mouse button emulation is added.
+
+--- 1.0.3
+  From this release, we can use propotinal and scalable fonts on WeirdX.
+  Try 
+  xclock -digital -fn -adobe-times-medium-i-normal--123-*-*-*-p-*-iso8859-1
+
+--- 1.0.1
+  From this release, *.class files are included.

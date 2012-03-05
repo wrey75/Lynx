@@ -1,0 +1,237 @@
+###############################################################################
+# Author: Valentin Pavlov<v_valchev@prosyst.bg>
+#   Date: Thu, 14 Sep 2000 19:19:01 +0300
+#
+#
+# This file controls behavior of twm window manager. Although twm is pretty old
+# it is stull usefull on slow remote display. Basicaly it is verry stupid one 
+# but it has a powerful configuration options and can look pretty well
+#
+# Note: I created this rc for use with weirdx xserver which is a little buggy..
+#       so i put f.refresh in "move-to-raise" function which is save to remove
+#       when twm is used with another xserver
+###############################################################################
+# These parameters defines twm look
+
+# These control various workspace colors.
+Color {
+	BorderColor		"black"
+#	BorderTileBackground	"bisque"
+#	BorderTileForeground	"bisque"
+	DefaultBackground	"rgb:2/a/9"
+	DefaultForeground	"gray85"
+	IconBackground		"rgb:2/a/9"
+	IconForeground		"black"
+	IconBorderColor		"black"
+	IconManagerBackground	"rgb:2/a/9"
+	IconManagerForeground	"black"
+	IconManagerHighlight	"black"
+	MenuBackground		"rgb:2/a/9"
+	MenuForeground		"black"
+	MenuShadowColor		"black"
+	MenuTitleBackground	"black"
+	MenuTitleForeground	"white"
+	TitleBackground		"gray75"
+	TitleForeground		"black"
+}
+
+# Controls shape of cursor under various conditions.
+Cursors {
+	Frame			"top_left_arrow"
+	Title			"top_left_arrow"
+	Icon			"top_left_arrow"
+	IconMgr			"top_left_arrow"
+	Move			"fleur"
+	Resize			"sizing"
+	Menu			"sb_right_arrow"
+	Button			"hand1"
+	Wait			"watch"
+	Select			"dot"
+	Destroy			"pirate"
+}
+
+# Various font definitions
+#ResizeFont "-adobe-helvetica-bold-r-normal--*-120-*-*-*-*-*-*"
+IconFont			"variable"
+IconManagerFont			"variable"
+MenuFont			"variable"
+TitleFont			"variable"
+
+# Pixel width of border around windows.
+BorderWidth			1
+
+# Sets space between title bar and application window.
+#FramePadding			2
+
+# Size of border around desktop icons.
+#IconBorderWidth		0
+
+# Desktop-style icons will be put in the following screen region. (we use IconManger instead)
+#IconRegion			"72x600-0+0" NORTH EAST 72 72
+
+# Initial location of Icon Manager, colums of icons.
+IconManagerGeometry		"70-0+25" 1
+
+# This makes sure child windows have a border and title bar.
+##DecorateTransients
+
+# This makes title bars as wide as the window. (is this working?)
+##DontSqueezeTitle
+
+# Don't create Icon Manager (stupid!)
+##NoIconManagers
+
+# Keeps menus from having shadows behind them. (stupid!;)
+##NoMenuShadows
+
+# This makes title bars short, like a tab on a file folder. (ugly!)
+##SqueezeTitle
+
+
+
+###############################################################################
+# These parameters controls twm and windows behaviour
+
+# Length of time to achieve a "double-click" for constained move.
+ConstrainedMoveTime		400
+
+# Windows resize without having to drag pointer over their borders.
+AutoRelativeResize
+
+# This disallows moving windows off the visible screen.
+DontMoveOff
+
+# Set Named Windows Titles
+# Named Windows will have no title bar.
+NoTitle				{ "TWM Icon Manager" "xclock" }
+
+# Force named windows to have title bars.
+#MakeTitle			{}
+
+# Windows are automatically placed; no need to drag out outline.
+RandomPlacement
+
+# Windows are not automatically brought to top when deinconified.
+##NoRaiseonDeiconify
+
+# Windows are not automatically brought to top when moved.
+##NoRaiseOnMove
+
+# Windows are not automatically brought to top when resized.
+##NoRaiseOnResize
+
+# Windows are not automatically brought to top when cursor warps to them.
+##NoRaiseOnWarp
+
+# Show windows contents while draggin'
+#OpaqueMove
+
+# Move cursor into windows when they're deiconified.
+WarpCursor
+
+
+##############################################################################
+# Set IconManager behaviour
+
+# Display Icon Manager on startup.
+ShowIconManager
+
+# Sort icons in Icon Manager in alphabetical order.
+SortIconManager
+
+# Named windows will not be shown in Icon Manager
+IconManagerDontShow		{ "xclock" "Virtual Desktop" }
+
+# Named windows will _not_ go to icon manager, but will have desktop icons.
+#DontIconifyByUnmapping		{ "xclock" "Virtual Desktop" }
+
+# Makes applications use icons in Icons directive, instead of their own.
+#ForceIcons
+
+# Iconifying a window sends it to the Icon Manager
+IconifyByUnmapping
+
+# Named windows will be shown in Icon Manager
+#IconManagerShow
+
+# You can specify that certain apps have icons other than the default.
+#Icons				{}
+
+# Named windows will start iconized.
+#StartIconified			{}
+
+# Disable default titles and buttons .. so we should provide bindings - too pitty
+NoDefaults
+
+# Dont loose focus when mouse moves away from it (this is annoying)
+#NoTitleFocus
+
+# Makes an extra button on each title bar, that calls up menu below.
+LeftTitleButton  "menu12"	= f.menu "WindowOpsMenu"
+
+RightTitleButton "gray"		= f.iconify
+RightTitleButton "dropbar8"	= f.fullzoom
+RightTitleButton "dot"		= f.delete
+
+# Clicking on the desktop brings up the system-wide menu.
+Function "move-or-raise" { f.move f.deltastop f.raise f.refresh }
+Button1 =  : root : f.menu "DesktopMenuApps"
+Button2 =  : root : f.exec "xrefresh"
+Button3 =  : root : f.menu "DesktopMenuTools"
+
+Button1 =  : title : f.function "move-or-raise"
+Button3 =  : title : f.menu "WindowOpsMenu"
+
+Button1 =  : iconmgr : f.iconify
+Button3 =  : iconmgr : f.menu "WindowOpsMenu"
+
+##############################################################################
+# Declare some usefull menus
+
+Menu "WindowOpsMenu" {
+	"Iconify"		f.iconify
+	"Move .."		f.move
+	"Resize..."		f.resize
+	"Zoom"			f.fullzoom
+	"Refresh"		f.winrefresh
+	""			f.nop
+	"Close"			f.delete
+	"Kill"			f.destroy
+}
+
+Menu "DesktopMenuApps" {
+	"Applications"		f.title
+	"SetBg"			f.exec "xsetroot -solid 'rgb:2/a/9'"
+	"Clock"			f.exec "xclock -bg 'rgb:2/a/9' -fg black -digital -geometry '-0-0' -padding 0 &"
+	""			f.nop
+	"Xterm"			f.exec "xterm -ls -bg black -fg gray85 &"
+	"vi"			f.exec "xterm -ls -bg black -fg gray85 -e vi &"
+	""			f.nop
+	"Restart"		f.restart
+	"Exit"			f.quit
+}
+
+Menu "DesktopMenuTools" {
+	"Tools"			f.title
+	"Iconify"		f.iconify
+	"Maximize"		f.fullzoom
+	"Move ..."		f.move
+	"Resize ..."		f.resize
+	"Refresh"		f.winrefresh
+	""			f.nop
+	"Kill"			f.destroy
+	"Close"			f.delete
+}
+
+
+# Sisnce twm cannot autostart applications I created this script. 
+# It will set desktop foreground to default twm menu background color and
+# will start xcloc on bottom down corner of the screen.
+# --- cut here ---
+# !/bin/sh
+# echo Starting twm window manager ...
+# twm &
+# xsetroot -solid 'rgb:2/a/9'
+# xclock -bg 'rgb:2/a/9' -fg black -digital -geometry '-0-0' -padding 0 &
+# exec xterm
+# --- cut here ---

@@ -1,0 +1,65 @@
+weirdx.display.width=800
+weirdx.display.height=600
+weirdx.displaynum=2
+
+weirdx.ddxwindow=com.jcraft.weirdx.DDXWindowImp
+#weirdx.ddxwindow=com.jcraft.weirdx.DDXWindowImpSwing
+
+weirdx.windowmode=InBrowser
+#weirdx.windowmode=Rootless
+#weirdx.windowmode=RootlessWM
+
+# 16bpp, 8bpp colors
+#weirdx.display.visual=StaticGray8
+#weirdx.display.visual=PseudoColor8
+weirdx.display.visual=TrueColor16
+
+# xhost +
+weirdx.display.acl=+
+
+# three button mouse emulation
+weirdx.display.threebutton=yes
+
+# the copy/paste functionality between WeirdX and the native window system
+weirdx.display.copypaste=no
+
+#weirdx.display.keymap=gb
+#weirdx.display.keymap=de
+
+#weirdx.display.charset=JISX
+
+# xdmcp
+#weirdx.xdmcp.mode=query
+#weirdx.xdmcp.mode=boradcast
+#weirdx.xdmcp.mode=indirect
+#weirdx.xdmcp.address=XXX.XXX.XXX.XXX
+
+# rexec
+weirdx.xrexec=no
+#weirdx.xrexec=yes
+
+weirdx.extension=DummySHAPE
+
+# Gtk default theme: 0xc0c0c0, 0xd0d4d0
+# Qt default theme: 0xe8e8e8
+# WINGs: 0xa8a8a8
+# fvwm: 0xc8b498, 0x686868, 0x908090
+#weirdx.ddxwindow=com.jcraft.weirdx.DDXWindowImpSwingAlphaBackground
+#weirdx.display.background.alpha=0x00ff00:0x30, \
+#                                0x0000ff:0x20, \
+#                                0xc0c0c0:0x80, \
+#                                0xd0d4d0:0x80, \
+#                                0xe8e8e8:0x80, \
+#                                0xa8a8a8:0x80, \
+#                                0xc8b498:0x40, \
+#                                0x686868:0x40, \
+#                                0x908090:0x40, \
+#                                0:0
+
+#weirdx.ddxwindow=com.jcraft.weirdx.DDXWindowImpSwingAlphaBackground2D
+#weirdx.display.background.alpha=32
+
+#weirdx.sshrexec=yes
+#weirdx.jesd=yes
+#weirdx.jdxpc=yes
+#weirdx.jdxpcport=4000

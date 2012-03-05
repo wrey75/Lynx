@@ -1,0 +1,84 @@
+
+                                  WeirdX
+
+                   a pure JavaTM X Window System server
+                                by JCraft Inc.
+
+                      http://www.jcraft.com/weirdx/
+
+Last modified: Thu Apr 15 08:28:56 UTC 2004
+
+
+Description
+===========
+WeirdX is a pure Java X Window System server under GNU GPL. It is 
+implemented with JDK 1.1 & Swing 1.1 APIs, so it will run on several 
+platforms. WeirdX handles X window protocol directly,
+so any proxy programs are not needed on X client side.
+
+WeirdX is derived from WiredX/JXPie, which are also pure Java X Window
+System server. WiredX is a pure Java X server for Java2 and
+JXPie is for PersonalJavaTM.
+
+
+Features
+========
+  - WeirdX handles x protocols directly.
+  - WeirdX supports core protocols of X11R6.3 partially.
+  - WeirdX is implemented with JDK 1.1.
+  - WeirdX runs as an application/applet.
+  - WeirdX supports multi-window mode.
+  - WeirdX supports secure X accesses by using JSch.
+  - WeirdX runs as a TrueType font X Server if your JVM supports TrueType
+  - WeirdX supports the three mouse button emulation.
+  - WeirdX supports copy/paste operations between the native window syste
+  - WeirdX supports 1bpp, 8bpp and 16bpp mode.
+  - WeirdX supports multibyte characters; Japanese, Korean and Chinese ch
+  - JRexec(http:/www.jcraft.com/jrexec/) is included.
+  - XDMCP is supported.
+  - WeirdX supports the dxpc(http://www.vigor.nu/dxpc/index.html).
+  - WeirdX includes hacks for the alpha transparency.
+  - WeirdX supports EsounD(http://www.tux.org/~ricdude/EsounD.html)
+  - WeirdX includes the XJS Extension, written by 
+    Christian Werne(http://home.t-online.de/home/Christian.Werner/)
+  - WeirdX is distributed under GNU GPL.
+
+
+Documentation
+=============
+Read before asking.
+
+* README files all over the source tree have info related to the stuff
+in the directories. 
+
+* INSTALL has instructions for using.
+
+* FAQ: Frequently Asked Questions. 
+
+* NEWS lists user visible changes from the previous version. Read it if
+you are upgrading.
+
+* MIRRORS: some alternative places where you can get WeirdX.
+
+* ChangeLog: what changed from the previous version?
+
+
+Directories & Files in the Source Tree
+======================================
+* misc/ has various utility programs.
+* misc/xjs has the XJS Extension for WeirdX by Christian Werner.
+
+* config/ has a file 'props', in which properties for 
+  WeirdX are described.
+
+* com/ has source trees of WeirdX and JRexec.
+
+
+Copyrights & Disclaimers
+========================
+WeirdX is copyrighted by JCraft Inc. and is licensed through the
+GNU General Public License. Read the COPYING file for the complete license.
+
+
+If you have any comments, suggestions and questions, write us 
+at weirdx@jcraft.com
