@@ -171,7 +171,8 @@ final class Property{
     }
   }
 
-  static void reqRotateProperties(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqRotateProperties(Client c) throws IOException{
     int foo, propty;
     IO io=c.client;
 
@@ -260,7 +261,8 @@ final class Property{
     }
   }
 
-  static void reqGetProperty(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqGetProperty(Client c) throws IOException{
     int foo;
     int dlt;
     int prprty;
@@ -369,7 +371,8 @@ final class Property{
     }
   }
 
-  static void reqListProperties(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqListProperties(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
 
@@ -402,7 +405,8 @@ final class Property{
     }
   }
 
-  static void reqChangeProperty(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqChangeProperty(Client c) throws IOException{
     int foo;
     byte mode;
     int prpty;

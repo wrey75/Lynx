@@ -21,7 +21,6 @@
 package com.jcraft.weirdx;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.datatransfer.*;
 
 final class CopyPaste implements ClipboardOwner{

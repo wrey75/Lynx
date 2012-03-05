@@ -20,22 +20,9 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
+
 import java.awt.*;
 import java.applet.*;
-
-//import com.sun.java.swing.*;
-//import javax.swing.*;                                    
-
-//import java.awt.event.MouseListener;
-//import java.awt.event.MouseMotionListener;
-//import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-
-import java.net.*;
-import java.awt.image.*;
 
 class RootWindow extends Window{
   private static final int InputOutput=1;

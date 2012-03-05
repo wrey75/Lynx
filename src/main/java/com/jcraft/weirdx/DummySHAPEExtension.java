@@ -19,10 +19,10 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Rectangle;
+import java.io.IOException;
+
 
 final class DummySHAPEExtension extends Extension{
   static final int ShapeSet=0;
@@ -48,7 +48,8 @@ final class DummySHAPEExtension extends Extension{
     name="SHAPE";
   }
 
-  void dispatch(Client c) throws IOException{
+  @SuppressWarnings("unused")
+void dispatch(Client c) throws IOException {
     Window window;
     int kind, x, y, w, h, shaped, op;
     Rectangle[] rect;

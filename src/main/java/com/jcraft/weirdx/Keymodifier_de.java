@@ -19,7 +19,7 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
+
 
 final class Keymodifier_de extends Keymodifier{
   private byte[] _keys={

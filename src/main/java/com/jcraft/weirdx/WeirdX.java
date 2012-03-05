@@ -20,10 +20,13 @@
 
 package com.jcraft.weirdx;
 
-import java.net.*;
 import java.io.*;
+import java.net.ConnectException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
 import java.util.*;
-import java.text.*;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.*;
 import java.applet.*;
@@ -87,7 +90,7 @@ public final class WeirdX extends Applet {
 
   //static ServerSocket displaysocket=null;
   static DisplaySocket displaysocket=null;
-  static Class displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
+  static Class<?> displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
 
   static XDMCP xdmcp=null;
   static String xdmcpmode=null;                           
@@ -116,7 +119,7 @@ public final class WeirdX extends Applet {
       return;
     }
 
-    Class c=null;
+    Class<?> c=null;
     try{ c=Class.forName("com.jcraft.weirdx.Keymap_"+keymap);}
     catch(Exception e){
       try{ c=Class.forName("com.jcraft.weirdx.Keymap_101"); }
@@ -161,12 +164,12 @@ public final class WeirdX extends Applet {
     Visual defaultv=null;
 
     {
-      Vector depthv=new Vector();
+      List<Depth> depthv=new ArrayList<Depth>();
 
       if(visuals.indexOf("TrueColor16")!=-1){
         visual=Visual.getTrueColor16(serverClient);
         defaultv=visual[0];
-        depthv.addElement(new Depth(16, visual));
+        depthv.add(new Depth(16, visual));
 
         imageByteOrder=0;
         bitmapBitOrder=0;
@@ -175,26 +178,26 @@ public final class WeirdX extends Applet {
       if(defaultv==null && visuals.indexOf("PseudoColor8")!=-1){               
 	visual=Visual.getPseudoColor8(serverClient);         
 	defaultv=visual[0];                                 
-	depthv.addElement(new Depth(8, visual));            
+	depthv.add(new Depth(8, visual));            
       }                                                     
       
       if(defaultv==null && visuals.indexOf("StaticGray8")!=-1){                
 	visual=Visual.getStaticGray8(serverClient);          
 	defaultv=visual[0];                                  
-	depthv.addElement(new Depth(8, visual));             
+	depthv.add(new Depth(8, visual));             
       }                                                      
 
       if(defaultv==null){
         visual=Visual.getStaticGray1(serverClient);
         defaultv=visual[0];
-        depthv.addElement(new Depth(1, visual));
+        depthv.add(new Depth(1, visual));
       }
 
       depth=new Depth[depthv.size()];
       for(int i=0; i<depthv.size(); i++){
-	depth[i]=(Depth)depthv.elementAt(i);
+	depth[i]=(Depth)depthv.get(i);
       }
-      depthv.removeAllElements();
+      depthv.clear();
     }
 
     int rootid=Resource.fakeClientId(serverClient);
@@ -699,8 +702,8 @@ public final class WeirdX extends Applet {
       System.err.println("Unable to read system properties: "+e);
       sprops=new Properties();
     }
-    for(Enumeration e=props.keys() ; e.hasMoreElements() ;) {
-      String key=(String)(e.nextElement());
+    for( Object e: props.keySet() ){
+      String key=(String)e;
       //if(key.startsWith("weirdx.") && sprops.get(key)==null){
       //  System.setProperty(key, (String)(props.get(key)));
       //}
@@ -922,7 +925,7 @@ public final class WeirdX extends Applet {
       try{                                                        
 	s=(String)props.get("weirdx.extension");
 	if(s!=null){                                      
-	  weirdx.extension=s;
+	  WeirdX.extension=s;
 	}                                                         
       }                                                           
       catch(Exception ee){                                        
@@ -1000,7 +1003,7 @@ public final class WeirdX extends Applet {
     }
     catch(Exception e){System.err.println(e);}
 
-    weirdx.weirdx=weirdx;
+    WeirdX.weirdx=weirdx;
     Container container=new Frame("WeirdX");
 
     ((Frame)container).addWindowListener(
@@ -1065,22 +1068,22 @@ public final class WeirdX extends Applet {
     public void run(){            
 
       try{ 
-        Class[] params=new Class[1];
+        Class<?>[] params=new Class[1];
         Object[] args=new Object[1];
 	Object foo=null;
 
-        java.lang.reflect.Constructor constructor;
+        java.lang.reflect.Constructor<?> constructor;
 
-        Class c=Class.forName(jdxpcserverproxy);
+        Class<?> c = Class.forName(jdxpcserverproxy);
 
         params[0]=int.class;
 	// get the constructor (int)
 	constructor = c.getConstructor(params);
 
-	args[0]=new Integer(weirdx.jdxpcport);
+	args[0]=new Integer(WeirdX.jdxpcport);
 	try{ foo = constructor.newInstance(args); }
 	catch(java.lang.reflect.InvocationTargetException eee){
-          System.err.println("fail to set jdxpcport="+weirdx.jdxpcport);
+          System.err.println("fail to set jdxpcport="+WeirdX.jdxpcport);
           foo=c.newInstance();
         }
 
@@ -1116,17 +1119,20 @@ public final class WeirdX extends Applet {
     SpawnSSHRexec(WeirdX weirdx){      
       super();                    
       this.weirdx=weirdx;           
-    }                             
-    public void run(){            
+    }
+    
+    
+    @SuppressWarnings("unused")
+	public void run(){            
 
       try{ 
-        Class[] params=new Class[1];
+        Class<?>[] params=new Class[1];
         Object[] args=new Object[1];
 	Object foo=null;
 
-        java.lang.reflect.Constructor constructor;
+        java.lang.reflect.Constructor<?> constructor;
 
-        Class c=Class.forName("com.jcraft.weirdx.SSHRexec");
+        Class<?> c=Class.forName("com.jcraft.weirdx.SSHRexec");
         params[0]=int.class;
 	constructor=c.getConstructor(params);
 

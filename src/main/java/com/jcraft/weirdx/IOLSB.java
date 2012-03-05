@@ -20,8 +20,6 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
-import java.util.*;
 
 final class IOLSB extends IO{
   int readShort() throws java.io.IOException{

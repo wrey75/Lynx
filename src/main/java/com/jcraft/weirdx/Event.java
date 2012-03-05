@@ -20,8 +20,7 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
-import java.util.*;
+
 
 final class Event {
   static final int KeyPress=2;

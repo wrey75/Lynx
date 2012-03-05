@@ -19,8 +19,11 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 final class Visual {
   Depth depth;
@@ -90,25 +93,26 @@ final class Visual {
   }
 
   static Visual[] getPseudoColor8(Client c){
-    Vector vec=new Vector();
-    vec.addElement(new Visual(Resource.fakeClientId(c), 3, 6, 256, 0, 0, 0));
-    Visual[] v=new Visual[vec.size()];
+    List<Visual> vec=new ArrayList<Visual>();
+    vec.add( new Visual(Resource.fakeClientId(c), 3, 6, 256, 0, 0, 0) );
+    Visual[] v = new Visual[vec.size()];
     for(int i=0; i<vec.size(); i++){
-      v[i]=(Visual)vec.elementAt(i);
+      v[i]=(Visual)vec.get(i);
     }
-    vec.removeAllElements();
+    vec.clear();
     return v;
   }
+  
   static Visual[] getTrueColor16(Client c){
-    Vector vec=new Vector();
-    vec.addElement(
+	  List<Visual> vec=new ArrayList<Visual>();
+    vec.add(
       new Visual(Resource.fakeClientId(c), 4, 6, 64,
 		 0xf800, 0x7e0, 0x1f));
     Visual[] v=new Visual[vec.size()];
     for(int i=0; i<vec.size(); i++){
-      v[i]=(Visual)vec.elementAt(i);
+      v[i]=(Visual)vec.get(i);
     }
-    vec.removeAllElements();
+    vec.clear();
     return v;
   }
 }

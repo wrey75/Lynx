@@ -19,18 +19,19 @@
  */
 
 package com.jcraft.weirdx;
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.io.IOException;
+
 
 final class Draw{
-  static void reqPolyPoint(Client c, Drawable d, GC gc) throws IOException{
-    int foo;
+  static void reqPolyPoint(Client c, Drawable d, GC gc) throws IOException {
+    // int foo;
     int n=c.length;
     IO io=c.client;
-    Graphics graphics=d.getGraphics(gc, GC.GCFunction|GC.GCSubwindowMode);
+    Graphics graphics = d.getGraphics(gc, GC.GCFunction|GC.GCSubwindowMode);
     if(graphics==null){
       io.readPad(n*4); 
       return;
@@ -98,7 +99,7 @@ final class Draw{
 
   static void reqFillPolyArc(Client c, Drawable d, GC gc) 
     throws IOException{
-    int foo;
+    //int foo;
     int n=c.length;
     IO io=c.client;
 
@@ -154,7 +155,7 @@ final class Draw{
   }
 
   static void reqPolyArc(Client c, Drawable d, GC gc) throws IOException{
-    int foo;
+    //int foo;
     int n=c.length;
     IO io=c.client;
 
@@ -216,7 +217,7 @@ final class Draw{
   static void reqPolyText16(Client c, Drawable d, GC gc, int x, int y) 
     throws IOException{
     int n=c.length;
-    int len;
+    //int len;
     int foo;
 
     Graphics graphics=d.getGraphics(gc, 
@@ -319,7 +320,7 @@ final class Draw{
     throws IOException{
     int len=c.data;
     int n=c.length;
-    int foo;
+    //int foo;
     Graphics graphics=d.getGraphics(gc, GC.GCFunction|GC.GCFont);
     if(graphics==null){
       c.client.readPad(n*4); 
@@ -392,7 +393,7 @@ final class Draw{
   static void reqPolyText8(Client c, Drawable d, GC gc, int x, int y) 
     throws IOException{
     int n=c.length;
-    int len;
+    //int len;
     int foo;
     IO io=c.client;
 
@@ -501,7 +502,7 @@ final class Draw{
     throws IOException{
     int len=c.data;
     int n=c.length;
-    int foo;
+    //int foo;
     IO io=c.client;
 
     Graphics graphics=d.getGraphics(gc, GC.GCFunction|GC.GCFont);
@@ -744,7 +745,7 @@ final class Draw{
       }
     }
 
-    short x, y;
+    //short x, y;
     if(c.xarray.length<n){
       c.xarray=new int[n];
       c.yarray=new int[n];
@@ -799,7 +800,8 @@ final class Draw{
     }
   }
 
-  static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
+  @SuppressWarnings("unused")
+static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
     int n=c.length;
     int foo;
 
@@ -884,7 +886,7 @@ final class Draw{
     throws IOException{
 
     int n=c.length;
-    int foo;
+    //int foo;
 
     Graphics graphics=d.getGraphics(gc, 
 				    GC.GCFunction|GC.GCSubwindowMode
@@ -953,10 +955,11 @@ final class Draw{
     }
   }
 
-  static void reqPolyFillRectangle(Client c, Drawable d, GC gc) 
+  @SuppressWarnings("unused")
+static void reqPolyFillRectangle(Client c, Drawable d, GC gc) 
     throws IOException{
     int n=c.length;
-    int foo;
+    //int foo;
 
     Graphics graphics=d.getGraphics(gc, 
 				    GC.GCFunction|GC.GCSubwindowMode

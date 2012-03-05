@@ -20,9 +20,9 @@
 
 package com.jcraft.weirdx;
 
-import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.awt.*;
 
 final class Client extends Thread {
@@ -49,12 +49,12 @@ final class Client extends Thread {
   private static final int RetainTemporary=2;
 
   private static final int ClientStateInitial=0;
-  private static final int ClientStateAuthenticating=1;
-  private static final int ClientStateRunning=2;
-  private static final int ClientStateRetained=3;
-  private static final int ClientStateGone=4;
-  private static final int ClientStateCheckingSecurity=5;
-  private static final int ClientStateCheckedSecurity=6;
+//  private static final int ClientStateAuthenticating=1;
+//  private static final int ClientStateRunning=2;
+//  private static final int ClientStateRetained=3;
+//  private static final int ClientStateGone=4;
+//  private static final int ClientStateCheckingSecurity=5;
+//  private static final int ClientStateCheckedSecurity=6;
 
   static final Client[] clients=new Client[MAXCLIENTS];
   static int nextClient=1;
@@ -95,7 +95,7 @@ final class Client extends Thread {
   int errorValue;
   int errorReason;
 
-  static Vector listeners=new Vector();
+  static List<ClientListener> listeners=new ArrayList<ClientListener>();
 
   Client(){this(null);}
 
@@ -152,21 +152,27 @@ final class Client extends Thread {
   }
 
   public static void addListener(ClientListener cl){ 
-    listeners.addElement(cl);
+    listeners.add( cl );
   }
   public static void removeListener(ClientListener cl){
-    listeners.removeElement(cl);
+    listeners.remove( cl );
   }
-  static void connected(int index){
-    for (Enumeration e = listeners.elements() ; e.hasMoreElements();){    
-      ((ClientListener)(e.nextElement())).connected(index);
-    }
-  }
-  static void disconnected(int index){
-    for (Enumeration e = listeners.elements() ; e.hasMoreElements();){    
-      ((ClientListener)(e.nextElement())).disconnected(index);
-    }
-  }
+
+	static void connected(int index) {
+		synchronized (listeners) {
+			for (ClientListener cl : listeners) {
+				cl.connected(index);
+			}
+		}
+	}
+
+	static void disconnected(int index) {
+		synchronized (listeners) {
+			for (ClientListener cl : listeners) {
+				cl.disconnected(index);
+			}
+		}
+	}
 
   public void run(){
     int foo;
@@ -744,7 +750,8 @@ final class Client extends Thread {
     }
   }
 
-  private final void prolog() throws java.io.IOException{
+  @SuppressWarnings("unused")
+private final void prolog() throws java.io.IOException{
     int foo;
     foo=client.readByte(); 
     foo=client.readShort(); 

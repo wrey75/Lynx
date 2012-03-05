@@ -20,7 +20,9 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
+import java.io.IOException;
+
+
 
 abstract class Extension {
   static int currentMaxType=127;
@@ -45,7 +47,7 @@ abstract class Extension {
 
   static void load(String name){
     try{
-      Class c=Class.forName("com.jcraft.weirdx."+name+"Extension");
+      Class<?> c = Class.forName("com.jcraft.weirdx."+name+"Extension");
       Extension e=(Extension)c.newInstance();
       currentMaxType++; e.type=currentMaxType; 
       currentMaxEventType++; e.eventbase=currentMaxEventType;
@@ -75,7 +77,7 @@ abstract class Extension {
   int errorcount;
   String name;
 
-  static final void dispatch(int reqType, Client c) throws IOException{
+  static final void dispatch(int reqType, Client c) throws IOException {
     for(int i=0; i<ext.length; i++){
       if(ext[i]==null)break;
       if(ext[i].type==reqType){
@@ -102,10 +104,10 @@ abstract class Extension {
   abstract void swap(Event e);
 
   static void reqListExtensions(Client c) throws IOException{
-    int foo;
+    // int foo;
     int n;
     IO io=c.client;
-    foo=c.length;
+    // foo = c.length;
 
     synchronized(io){
       io.writeByte(1);
@@ -146,10 +148,10 @@ abstract class Extension {
   }
 
   static void reqQueryExtension(Client c) throws IOException{
-    int foo;
+    // int foo;
     int n;
     IO io=c.client;
-    foo=c.length;
+    // foo = c.length;
     n=io.readShort();
     io.readPad(2);
 

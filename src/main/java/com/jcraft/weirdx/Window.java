@@ -19,14 +19,11 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
+
 import java.awt.*;
-
-//import com.sun.java.swing.*;
-//import com.sun.java.swing.border.*;
-import javax.swing.*;                                    
-import javax.swing.border.*;                             
-
+import java.io.IOException;
+                       
+@SuppressWarnings("unused")
 class Window extends Drawable {
 
   static Object LOCK=Window.class;
@@ -122,15 +119,15 @@ class Window extends Drawable {
   private static final int Resize=2;
   private static final int Reborder=3;
 
-  private static final int NOT_GRABBED=0;
-  private static final int THAWED=1;
-  private static final int THAWED_BOTH=2;
-  private static final int FREEZE_NEXT_EVENT=3;
-  private static final int FREEZE_BOTH_NEXT_EVENT=4;
-  private static final int FROZEN=5;
-  private static final int FROZEN_NO_EVENT=5;
-  private static final int FROZEN_WITH_EVENT=6;
-  private static final int THAW_OTHERS=7;
+//  private static final int NOT_GRABBED=0;
+//  private static final int THAWED=1;
+//  private static final int THAWED_BOTH=2;
+//  private static final int FREEZE_NEXT_EVENT=3;
+//  private static final int FREEZE_BOTH_NEXT_EVENT=4;
+//  private static final int FROZEN=5;
+//  private static final int FROZEN_NO_EVENT=5;
+//  private static final int FROZEN_WITH_EVENT=6;
+//  private static final int THAW_OTHERS=7;
 
   private static final int backgroundStateOffset=0;
   private static final int backgroundState=(3<<0);
@@ -203,13 +200,15 @@ class Window extends Drawable {
   static Point gpoint=new Point();
   static Grab grab=null;
 
-  static Class dDXWindow=null;
+  static Class<?> dDXWindow = null;
   static{
-    try{dDXWindow=Class.forName("com.jcraft.weirdx.DDXWindowImp");}
+    try{ 
+    	dDXWindow = Class.forName("com.jcraft.weirdx.DDXWindowImp");
+    }
     catch(Exception e){System.err.println(e);}
   }
   static void installDDXWindow(String name){
-    Class c=null;
+    Class<?> c=null;
     try{if(name.startsWith("com.jcraft.weirdx."))c=Class.forName(name);}
     catch(Exception e){System.err.println(e);}
     if(c!=null) dDXWindow=c;
@@ -1131,7 +1130,8 @@ class Window extends Drawable {
     }
   }
 
-  private void deleteEvent(boolean freeResources) throws IOException {
+  @SuppressWarnings("static-access")
+private void deleteEvent(boolean freeResources) throws IOException {
     Grab passive;
     if(Window.grab!=null && Window.grab.window==this){
       Window.grab.deactivatePointerGrab();
@@ -1529,7 +1529,8 @@ class Window extends Drawable {
     }
   }
 
-  static final void reqUngrabPointer(Client c) throws IOException{
+  @SuppressWarnings("static-access")
+static final void reqUngrabPointer(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=io.readInt();
@@ -2175,9 +2176,9 @@ class Window extends Drawable {
     }
   }
 
-  void mapWindow(Client c) throws IOException{
+  void mapWindow( Client c ) throws IOException{
     if((this.attr&mapped) !=0) return;
-    screen=this.screen;    
+    Screen screen = this.screen;    
     if(parent!=null){
       if(((this.attr&overrideRedirect)==0) && (parent.redirectSend())){
 	c.cevent.mkMapRequest(parent.id, id);
@@ -2223,7 +2224,8 @@ class Window extends Drawable {
     return true;
   }
 
-  static void enter_leaveEvent(int type, int mode, int detail,
+  @SuppressWarnings("static-access")
+static void enter_leaveEvent(int type, int mode, int detail,
 			       Window win, int child) throws IOException {
     int mask;
     Grab grab=Window.grab;

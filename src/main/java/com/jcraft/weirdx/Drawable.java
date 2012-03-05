@@ -19,8 +19,10 @@
  */
 
 package com.jcraft.weirdx;
-import java.awt.*;
-import java.io.*;
+
+import java.awt.Graphics;
+import java.awt.Image;
+
 
 public abstract class Drawable extends Resource{
   public static final byte DRAWABLE_WINDOW=0;

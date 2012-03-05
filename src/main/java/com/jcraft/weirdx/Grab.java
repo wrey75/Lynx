@@ -20,8 +20,10 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
-import java.awt.*;
+import java.io.IOException;
+
+
+
 
 final class Grab extends Resource{
   static final int ownerEvents=(1<<0);
@@ -167,8 +169,8 @@ final class Grab extends Resource{
                                                                   
     Grab[] deletes=new Grab[i];
     int ndels=0;
-    int nadds=0;
-    int nups=0;
+    //int nadds=0;
+    //int nups=0;
     boolean ok=true;
 
     for (grab=window.getPassiveGrabs(); grab!=null && ok; grab=grab.next){

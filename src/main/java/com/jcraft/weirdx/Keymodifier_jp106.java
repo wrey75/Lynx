@@ -19,7 +19,6 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
 
 final class Keymodifier_jp106 extends Keymodifier{
 

@@ -25,10 +25,10 @@ import java.util.*;
 final class SaveSet{
   private static final int SetModeInsert=0;
   private static final int SetModeDelete=1;
-  private Vector bag;
+  private List<Window> bag;
 
   private SaveSet(){
-    bag=new Vector();
+    bag=new ArrayList<Window>();
   }
 
   static void reqChangeSaveSet(Client c) throws IOException{
@@ -54,15 +54,15 @@ final class SaveSet{
 
   void proc(Window w, int mode){
     if(mode==SetModeInsert){
-      bag.addElement(w);
+      bag.add(w);
       return;
     }
-    bag.removeElement(w);
+    bag.remove(w);
   }
 
   void delete() throws IOException{
-    bag.removeAllElements();
-    bag=null;
+    bag.clear(); // wrey75: not sure this is necessary
+    bag = null;
   }
 
   static void delete(Window w){
@@ -77,8 +77,8 @@ final class SaveSet{
   static void handle(Client c) throws IOException{
     if(c.saveSet!=null){
       SaveSet ss=c.saveSet;
-      for (Enumeration e=ss.bag.elements() ; e.hasMoreElements();){    
-	Window w=(Window)e.nextElement();
+      for (Window w : ss.bag ){    
+
 	//System.out.println("saveset.handle: w="+Integer.toHexString(w.id));
 	Window parent=w.parent;
 	while(parent!=null &&

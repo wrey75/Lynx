@@ -24,7 +24,7 @@ import java.io.*;
 import java.util.*;
 
 class DDXFont {
-  static java.util.Hashtable table=new java.util.Hashtable();
+  static Map<String, RefCount> table = new HashMap<String, DDXFont.RefCount>();
 
   static class RefCount{
     int count=1;
@@ -47,15 +47,16 @@ class DDXFont {
   }
 
   private static synchronized void delFont(java.awt.Font f){
-    RefCount foo=null;
-    for(Enumeration e=table.elements(); e.hasMoreElements();){
-      foo=(RefCount)e.nextElement();
+
+    for( RefCount foo : table.values() ){
       if(foo.font==f){
         foo.count--; 
         if(foo.count==0){
           table.remove(foo.key);
           foo.font=null;
-	}
+        }
+        
+        // Stop the enumeration now!
         return;
       }
     }
@@ -108,7 +109,8 @@ class DDXFont {
     this.lfname=lfname;
   }
 
-  java.awt.Font getFont(){
+
+java.awt.Font getFont(){
     if(font!=null) return font;
     int size=12;
     try{
@@ -137,8 +139,9 @@ class DDXFont {
 
     String reg=getCharsetRegistry();
     String enc=getCharsetEncoding();
-    for (Enumeration e = Font.charSets.elements() ; e.hasMoreElements();){
-      Font_CharSet foo=(Font_CharSet)e.nextElement();
+
+    //@SuppressWarnings("rawtypes") Enumeration e = Font.charSets;
+    for( Font_CharSet foo : Font.charSets ){
       if(reg.equals(foo.getCharset()) ||
 	 enc.equals(foo.getCharset())){
         min_byte1=foo.getMinByte1();

@@ -19,11 +19,12 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
-import java.awt.event.KeyEvent;
-import java.net.*;
 
-class Keymap implements Serializable{
+import java.awt.event.KeyEvent;
+import java.io.Serializable;
+
+
+class Keymap implements Serializable {
   static Keymap km=null;
   int start;
   int width;

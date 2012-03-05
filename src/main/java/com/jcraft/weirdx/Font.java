@@ -19,12 +19,13 @@
  */
 
 package com.jcraft.weirdx;
+
 import java.io.*;
 import java.util.*;
 
-final class Font extends Resource{
+final class Font extends Resource{ 
   static Font dflt;
-  static Vector charSets=new Vector();
+  static List<Font_CharSet> charSets = new ArrayList<Font_CharSet>();
 
   byte[] name;
   byte[] lfname;
@@ -155,12 +156,12 @@ final class Font extends Resource{
   }
 
   static void addFont(String[] name){
-    Vector v=new Vector();
+    List<DDXFont> v = new ArrayList<DDXFont>();
     for(int i=0; i<name.length; i++){
       try{
-	DDXFont f=new DDXFont();
-	f.init(name[i].getBytes());
-	v.addElement(f);
+		DDXFont f=new DDXFont();
+		f.init(name[i].getBytes());
+		v.add(f);
       }
       catch(Exception e){}
     }
@@ -174,12 +175,12 @@ final class Font extends Resource{
       System.arraycopy(flist, 0, tmp, 0, flist.length);
       offset=flist.length;
     }
-    for(int i=0; i<v.size(); i++){ tmp[i+offset]=(DDXFont)v.elementAt(i); }
+    for(int i=0; i<v.size(); i++){ tmp[i+offset]=v.get(i); }
     flist=tmp;
   }
 
   static void addAlias(String[] name){
-    Vector v=new Vector();
+    List<Alias> v=new ArrayList<Alias>();
     for(int i=0; i<name.length; i+=2){
       byte[] b=name[i+1].getBytes();
       DDXFont fl=null;
@@ -190,7 +191,7 @@ final class Font extends Resource{
 	}
       }
       if(fl==null)continue;
-      v.addElement(new Alias(name[i].getBytes(), fl));
+      v.add(new Alias(name[i].getBytes(), fl));
     }
     if(v.size()==0)return;
 
@@ -203,7 +204,7 @@ final class Font extends Resource{
       offset=aliases.length;
     }
     for(int i=0; i<v.size(); i++){
-      tmp[i+offset]=(Alias)v.elementAt(i);
+      tmp[i+offset]=(Alias)v.get(i);
     }
     aliases=tmp;
   }
@@ -258,13 +259,14 @@ final class Font extends Resource{
     loadCharSet("FONTSPECIFIC");
   }
 
-  static void loadCharSet(String name){
+  @SuppressWarnings("unchecked")
+static void loadCharSet(String name){
     try{
-      Class c=Class.forName("com.jcraft.weirdx.Font_CharSet_"+name);
+      Class<Font_CharSet> c = (Class<Font_CharSet>) Class.forName("com.jcraft.weirdx.Font_CharSet_"+name);
 
-      Object o=c.newInstance();
-      charSets.addElement(o);
-      ((Font_CharSet)o).init();
+      Font_CharSet o=c.newInstance();
+      charSets.add(o);
+      o.init();
     }
     catch(Exception e){ }
   }
@@ -572,7 +574,10 @@ final class Font extends Resource{
       io.flush();
     }
   }
-  static void reqListFontsWithInfo(Client c) throws IOException{
+  
+  
+  @SuppressWarnings("unused")
+static void reqListFontsWithInfo(Client c) throws IOException{
     int foo, n;
     int maxname;
     IO io=c.client;
@@ -810,7 +815,8 @@ final class Font extends Resource{
     }
   }
 
-  static void reqSetFontPath(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqSetFontPath(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
 
@@ -832,7 +838,8 @@ final class Font extends Resource{
     }
   }
 
-  static void reqGetFontPath(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqGetFontPath(Client c) throws IOException{
     int foo,n;
     IO io=c.client;
     foo=c.length;
@@ -858,7 +865,8 @@ final class Font extends Resource{
     }
   }
 
-  static void reqListFonts(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqListFonts(Client c) throws IOException{
     int foo, n;
     int maxname;
     IO io=c.client;
@@ -966,7 +974,10 @@ final class Font extends Resource{
     if(font!=null)font.delete();
     font=null;
   }
-  static void reqOpenFont(Client c) throws IOException{
+  
+  
+  @SuppressWarnings("unused")
+static void reqOpenFont(Client c) throws IOException{
     int foo;
     int n;
     int fid;
@@ -997,7 +1008,8 @@ final class Font extends Resource{
     }
   }
 
-  static void reqQueryFont(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqQueryFont(Client c) throws IOException{
     int foo;
     int n;
     IO io=c.client;
@@ -1117,7 +1129,7 @@ final class Font extends Resource{
     if(font.max_char_or_byte2 <= 0xff){
       byte[] src=new byte[1];	
       char[] dst=new char[1];	
-      int width;
+      // int width;
       for(int i=font.min_char_or_byte2; i<=font.max_char_or_byte2; i++){
         src[0]=(byte)i;
         encode(src, 0, 1, dst);
@@ -1134,7 +1146,7 @@ final class Font extends Resource{
     else{
       byte[] src=new byte[2];	
       char[] dst=new char[1];	
-      int width;
+      // int width;
       for(int i=font.min_char_or_byte2; i<=font.max_char_or_byte2; i++){
         src[0]=(byte)(i>>8);
         src[1]=(byte)(i);

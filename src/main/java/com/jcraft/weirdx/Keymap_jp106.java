@@ -19,9 +19,9 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
+
 import java.awt.event.KeyEvent;
-import java.net.*;
+
 
 final class Keymap_jp106 extends Keymap{
   // There are 4 KeySyms per KeyCode; KeyCodes range from 8 to 134.

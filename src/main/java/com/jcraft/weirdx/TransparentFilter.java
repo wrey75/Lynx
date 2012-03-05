@@ -19,9 +19,15 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
-import java.awt.*;
-import java.awt.image.*;
+
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.awt.image.PixelGrabber;
+import java.awt.image.RGBImageFilter;
+
+
+
+
 
 final class TransparentFilter extends RGBImageFilter {
   int width;
@@ -63,7 +69,7 @@ final class TransparentFilter extends RGBImageFilter {
 	return;
       }
 
-      if ((pg.getStatus()&ImageObserver.ABORT)!=0) {
+      if ((pg.getStatus() & ImageObserver.ABORT)!=0) {
 	System.err.println("image fetch aborted or errored");
 	return;
       }

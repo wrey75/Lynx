@@ -22,8 +22,8 @@ package com.jcraft.weirdx;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
+@SuppressWarnings("unused")
 final class XDMCP extends Thread implements ClientListener{
 
   private final static int start=1;

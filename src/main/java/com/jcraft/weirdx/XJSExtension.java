@@ -26,11 +26,8 @@
  */ 
 
 package com.jcraft.weirdx;
-import java.lang.reflect.*;
-import java.io.*;
-import java.applet.*;
-import java.awt.*;
-import java.awt.image.*;
+
+import java.io.IOException;
 import java.lang.reflect.*;
 
 final class XJSExtension extends Extension{
@@ -44,7 +41,7 @@ final class XJSExtension extends Extension{
   XJSExtension(){
     try{
       Method getw=null;
-      Class c=Class.forName("netscape.javascript.JSObject");
+      Class<?> c = Class.forName("netscape.javascript.JSObject");
       Method ms[] = c.getMethods();
       for(int i=0; i<ms.length; i++){
 	if(ms[i].getName().compareTo("getWindow")==0){
@@ -73,7 +70,7 @@ final class XJSExtension extends Extension{
   void swap(Event e){
   }
 
-  void dispatch(Client c) throws IOException{
+  void dispatch(Client c) throws IOException {
     int len, i, k, m;
     IO io=c.client;
     String result=null;

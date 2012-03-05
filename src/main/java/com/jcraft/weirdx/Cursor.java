@@ -20,15 +20,14 @@
 
 package com.jcraft.weirdx;
 
-import java.awt.*;
 import java.io.*;
-import java.util.*;
 
 final class Cursor extends Resource{
   static Cursor rootCursor;
   java.awt.Cursor cursor;
 
-  private static int[] cursors={
+  @SuppressWarnings("unused")
+private static int[] cursors={
     java.awt.Cursor.DEFAULT_CURSOR,
     java.awt.Cursor.CROSSHAIR_CURSOR,
     java.awt.Cursor.TEXT_CURSOR,
@@ -186,7 +185,8 @@ final class Cursor extends Resource{
     cursor=java.awt.Cursor.getPredefinedCursor(getType(srcc));
   }
 
-  static void reqCreateGlyphCursor(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqCreateGlyphCursor(Client c) throws IOException{
     int n, foo, cid, fr, fg, fb, br, bg, bb;
     int x, y;
     Resource r;
@@ -241,7 +241,8 @@ final class Cursor extends Resource{
   void delete() throws IOException{
     cursor=null;
   }
-  static void reqRecolorCursor(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqRecolorCursor(Client c) throws IOException{
     int n, foo, cid, fr, fg, fb, br, bg, bb;
     int x, y;
     Resource r;
@@ -264,7 +265,8 @@ final class Cursor extends Resource{
 
     cur.recolor(fr, fg, fb, br, bg, bb);
   }
-  static void reqCreateCursor(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqCreateCursor(Client c) throws IOException{
     int n, foo, cid, fr, fg, fb, br, bg, bb;
     int x, y;
     Resource r;

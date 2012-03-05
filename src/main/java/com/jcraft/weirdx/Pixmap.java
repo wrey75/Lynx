@@ -19,13 +19,23 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
 
-import java.awt.*;
-import java.awt.image.*;
 
-//import com.sun.java.swing.*;
-//import javax.swing.*;                                    
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.image.ColorModel;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageObserver;
+import java.awt.image.MemoryImageSource;
+import java.awt.image.PixelGrabber;
+import java.awt.image.RGBImageFilter;
+//import java.awt.image.*;
+import java.io.IOException;
+
+                                
 
 class Pixmap extends Drawable{
 
@@ -189,7 +199,7 @@ class Pixmap extends Drawable{
       System.err.println("interrupted waiting for pixels!");
       return;
     }
-    if ((pg.getStatus()&ImageObserver.ABORT)!=0) {
+    if ((pg.getStatus() & ImageObserver.ABORT)!=0) {
       System.err.println("image fetch aborted or errored");
       return;
     }
@@ -219,7 +229,7 @@ class Pixmap extends Drawable{
     Resource.freeResource(foo, Resource.RT_NONE);
   }
 
-  static void reqGetImage(Client c) throws IOException{
+  static void reqGetImage(Client c) throws IOException {
     int n ,foo, format;
     IO io=c.client;
 
@@ -904,7 +914,8 @@ class Pixmap extends Drawable{
     copyArea(dst, gc, sx, sy, dx, dy, w, h);
   }
 
-  void copyArea(Pixmap dst, GC gc, 
+  @SuppressWarnings("unused")
+void copyArea(Pixmap dst, GC gc, 
 		int sx, int sy, int dx, int dy, int w, int h){
     if((width-sx)<w) w=width-sx;
     if((dst.width-dx)<w) w=dst.width-dx;
@@ -1399,7 +1410,8 @@ class Pixmap16 extends Pixmap {
     return i;
   }
 
-  void putImage(Client c, GC gc, 
+  @SuppressWarnings("unused")
+void putImage(Client c, GC gc, 
 		int dstx, int dsty, int dwidth, int dheight, 
 		int lpad, int format, int depth)
     throws IOException{
@@ -1834,7 +1846,7 @@ class ResizablePixmap1 extends Pixmap1  implements Resizable{
 	real_width/=2; real_height/=2;
 	data=new byte[real_width*real_height];
 	mis=new MemoryImageSource(real_width, real_height, 
-				  colormap.bwicm, 
+				  Colormap.bwicm, 
 				  data, 0, real_width);
 	mis.setAnimated(true);
       }
@@ -1844,7 +1856,7 @@ class ResizablePixmap1 extends Pixmap1  implements Resizable{
       if(real_height<h) real_height=h;
       data=new byte[real_width*real_height];
       mis=new MemoryImageSource(real_width, real_height, 
-				colormap.bwicm, 
+				Colormap.bwicm, 
 				data, 0, real_width);
       mis.setAnimated(true);
     }

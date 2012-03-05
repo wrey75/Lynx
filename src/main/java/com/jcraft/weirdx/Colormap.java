@@ -28,8 +28,8 @@ import java.awt.image.*;
 
 class Colormap extends Resource{
   static private final int REDMAP=0;
-  static private final int GREENMAP=1;
-  static private final int BLUEMAP=2;
+//  static private final int GREENMAP=1;
+//  static private final int BLUEMAP=2;
   static private final int PSEUDOMAP=3;
   static private final int AllocPrivate=-1;
   static private final int AllocTemporary=-2;
@@ -46,7 +46,7 @@ class Colormap extends Resource{
   static private final int GrayScale=1;
   static private final int StaticColor=2;
   static private final int PseudoColor=3;
-  static private final int TrueColor=4;
+//  static private final int TrueColor=4;
   static private final int DirectColor=5;
 
   static private final int DoRed=(1<<0);
@@ -142,15 +142,15 @@ class Colormap extends Resource{
     return i;
   }
 
-  private void alloc(String s){
-    int i=0;
-    for( ; i<colors.length;i++){
-      if(colors[i]==null) break;
-    }
-    if(i==colors.length)return; // ???
-    alloc(i, (Color)rgbTable.get(s));
-    mkIcm();
-  }
+//  private void alloc(String s){
+//    int i=0;
+//    for( ; i<colors.length;i++){
+//      if(colors[i]==null) break;
+//    }
+//    if(i==colors.length)return; // ???
+//    alloc(i, (Color)rgbTable.get(s));
+//    mkIcm();
+//  }
 
   private void alloc(int i, Color color){
     colors[i]=color;
@@ -203,7 +203,8 @@ class Colormap extends Resource{
     return j;
   }
 
-  static void reqCreateColormap(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqCreateColormap(Client c) throws IOException{
     int foo, n, mid, alloc;
     IO io=c.client;
     alloc=c.data;
@@ -271,7 +272,8 @@ class Colormap extends Resource{
     cmap.mkIcm();
   }
 
-  static void reqUninstallColormap(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqUninstallColormap(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=io.readInt();
@@ -303,7 +305,10 @@ class Colormap extends Resource{
       installed=tmp;
     }
   }
-  static void reqInstallColormap(Client c) throws IOException{
+  
+  
+  @SuppressWarnings("unused")
+static void reqInstallColormap(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=io.readInt();
@@ -326,7 +331,8 @@ class Colormap extends Resource{
     }
   }
 
-  static void reqListInstalledColormaps(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqListInstalledColormaps(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=io.readInt();
@@ -464,7 +470,10 @@ class Colormap extends Resource{
       io.flush();
     }
   }
-  static void reqLookupColor(Client c) throws IOException{
+  
+  
+  @SuppressWarnings("unused")
+static void reqLookupColor(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
 
@@ -540,7 +549,7 @@ class Colormap extends Resource{
     io.readPad(2);
 
     c.length-=2;
-    Color color;
+    //Color color;
     if(((red>>8)&0xff)!=0 || ((green>>8)&0xff)!=0 || ((blue>>8)&0xff)!=0){
       red=(red>>8)&0xff;
       green=(green>>8)&0xff;
@@ -587,7 +596,6 @@ class Colormap extends Resource{
   static void reqQueryColors(Client c) throws IOException{
     int n;
     int foo;
-    int len;
     IO io=c.client;
     n=c.length;
     foo=io.readInt();
@@ -770,11 +778,11 @@ class Colormap extends Resource{
     return 1;
   }
 
-  static Hashtable rgbTable=null;
+  static Map<String, Color> rgbTable = null;
 
   static void init(){
     if(rgbTable==null){
-      rgbTable=new Hashtable();
+      rgbTable = new HashMap<String, Color>();
       RGBTXT.init(rgbTable);
     }
     if(installed==null){
@@ -830,9 +838,9 @@ class Colormap extends Resource{
 
   int allocColor (Client client, int red, int green, int blue)
     throws IOException{
-    int pixR, pixG, pixB;
+    // int pixR, pixG, pixB;
     int clss;
-    int	npix;
+    // int	npix;
     int pixel=0;
 
     if(visual.depth.depth==16) return 0;
@@ -872,11 +880,13 @@ class Colormap extends Resource{
     return pixel;
   }
   
-  private int findBestPixel(Entry[] entry, int red, int green, int blue, int channel){
+  @SuppressWarnings("unused")
+private int findBestPixel(Entry[] entry, int red, int green, int blue, int channel){
     return 0;
   }
 
-  private int findColor(Client client, Entry[] entries, 
+  @SuppressWarnings("unused")
+private int findColor(Client client, Entry[] entries, 
 		 int red, int green, int blue, int channel){
     Entry ent;
     boolean foundFree=false;
@@ -941,36 +951,36 @@ class Colormap extends Resource{
     return pPixel;
   }
 
-  private void update(){
-    if (visual.clss==DirectColor)   {
-    }
-    else {
-      Entry ent;
-      int red, green, blue;
-      for (int i=0; i<entries.length; i++){
-	ent=entries[i];
-	if (ent.refcnt==0){
-	  free(i);
-	}
-	if(ent.shared) {
-	  red=((SharedEntry)ent).r.color;
-	  green=((SharedEntry)ent).g.color;
-	  blue=((SharedEntry)ent).b.color;
-	}
-	else {
-	  red=((LocalEntry)ent).r;
-	  green=((LocalEntry)ent).g;
-	  blue=((LocalEntry)ent).b;
-	}
-	alloc(i, new Color(red, green, blue));
-      }
-    }
-  }
+//  private void update(){
+//    if (visual.clss==DirectColor)   {
+//    }
+//    else {
+//      Entry ent;
+//      int red, green, blue;
+//      for (int i=0; i<entries.length; i++){
+//	ent=entries[i];
+//	if (ent.refcnt==0){
+//	  free(i);
+//	}
+//	if(ent.shared) {
+//	  red=((SharedEntry)ent).r.color;
+//	  green=((SharedEntry)ent).g.color;
+//	  blue=((SharedEntry)ent).b.color;
+//	}
+//	else {
+//	  red=((LocalEntry)ent).r;
+//	  green=((LocalEntry)ent).g;
+//	  blue=((LocalEntry)ent).b;
+//	}
+//	alloc(i, new Color(red, green, blue));
+//      }
+//    }
+//  }
 
   private void allocColorPlanes (Client c, int colors, boolean contig, 
 				 int r, int g, int b) throws IOException{
     boolean ok;
-    int	mask;
+    //int	mask;
     int shift;
     IO io=c.client;
 
@@ -1053,7 +1063,8 @@ class Colormap extends Resource{
     }
   }
 
-  private boolean allocShared (Client client, int[] ppix, 
+  @SuppressWarnings("unused")
+private boolean allocShared (Client client, int[] ppix, 
 		       int c, int r, int g, int b, 
 		       int rmask, int gmask, int bmask, int start){
 
@@ -1178,7 +1189,8 @@ class Colormap extends Resource{
     }
   }
   
-  private void allocColorCells (Client client, int colors, int planes, boolean contig, 
+  @SuppressWarnings("unused")
+private void allocColorCells (Client client, int colors, int planes, boolean contig, 
 			int[] ppix, int[] masks){
     int rmask, gmask, bmask, ppixFirst, r, g, b;
     int		n, clss;
@@ -1419,7 +1431,8 @@ class Colormap extends Resource{
     return;
   }
 
-  private void freeCo (Client client, int channel, int[] pixIn, int mask){
+  @SuppressWarnings("unused")
+private void freeCo (Client client, int channel, int[] pixIn, int mask){
     int[] pixClient;
     int pixTest, npixClient, npix;
     int	bits, base, cmask, rgbbad;
@@ -1520,11 +1533,11 @@ class Colormap extends Resource{
       return;
     }
 
-    int idef=0;
+    //int idef=0;
 
     int pixel;
     int red, green, blue, doc;
-    boolean ok;
+    //boolean ok;
     while(rest!=0){
       pixel=io.readInt(); rest--;
       red=(short)io.readShort();
@@ -2436,7 +2449,7 @@ class RGBTXT{
 "144 238 144	LightGreen\n"
 };
 
-  static void init(Hashtable table){
+  static void init(Map<String, Color> table){
     if(_rgbtxt==null) return;
     StringBuffer foo=new StringBuffer();
     for(int i=0; i< _rgbtxt.length; i++){
@@ -2455,18 +2468,18 @@ class RGBTXT{
       st.ordinaryChar('!');
       //    st.ordinaryChar('\n');
       //    st.ordinaryChar('\t');
-      String token=null;
+      //String token=null;
       char c;
       int r,g,b;
       byte[] buf=new byte[1024];
-      while(st.nextToken()!=st.TT_EOF){
+      while(st.nextToken()!=StreamTokenizer.TT_EOF){
 	//System.out.println("type="+st.ttype+", "+st.sval);
 	if(st.ttype=='!'){
 //	  while((c=(char)is.read())!='\n');
 	  while((c=(char)br.read())!='\n');
 	  continue;
 	}
-	if(st.ttype==st.TT_NUMBER){
+	if(st.ttype==StreamTokenizer.TT_NUMBER){
 	  r=(int)st.nval;
 	  st.nextToken(); g=(int)st.nval;
 	  st.nextToken(); b=(int)st.nval;

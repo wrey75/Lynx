@@ -22,9 +22,10 @@
  */ 
 
 package com.jcraft.weirdx;
-import java.io.*;
+
+
 import java.awt.event.KeyEvent;
-import java.net.*;
+
 
 final class Keymap_de extends Keymap{
   private static final int VK_ALT_GRAPH = 0x15;

@@ -97,7 +97,7 @@ final class Atom {
     "WM_TRANSIENT_FOR"
   };
 
-  private static final int lastPredefined=idTable.length-1;
+  // private static final int lastPredefined=idTable.length-1;
   static{
     String[] foo=new String[100];
     System.arraycopy(idTable, 0, foo, 0, idTable.length);
@@ -105,18 +105,15 @@ final class Atom {
     idTable=foo;
   }
 
-  private static final Hashtable nameTable=nameTablePredefined();
+  private static final Map<String, Integer> nameTable = nameTablePredefined();
 
-  private static Hashtable nameTablePredefined(){
-    Hashtable hash=new Hashtable();
-    for (int i=1;; i++){
-      if(idTable[i]!=null)
-	hash.put(idTable[i], new Integer(i));
-      else
-	break;
-    }
-    return hash;
-  }
+	private static Map<String, Integer> nameTablePredefined() {
+		Map<String, Integer> hash = new HashMap<String, Integer>();
+		for(int i = 1; i < idTable.length; i++) {
+			hash.put(idTable[i], new Integer(i));
+		}
+		return hash;
+	}
 
   static int make(byte[] name, int start, int length, boolean makeit){
     return make(new String(name, start, length), makeit);
@@ -173,8 +170,8 @@ final class Atom {
   }
 
   static void reqInternAtom(Client c) throws IOException{
-    int foo;
-    int atom;
+    // int foo;
+    // int atom;
     int exp;
     int n=0;
     IO io=c.client;
@@ -206,9 +203,9 @@ final class Atom {
   }
 
   static void reqGetAtomName(Client c) throws IOException{
-    int foo;
+    // int foo;
     int atom;
-    int n;
+    // int n;
     IO io=c.client;
     atom=io.readInt();
     if(atom<0){ atom&=0x7fffffff;}

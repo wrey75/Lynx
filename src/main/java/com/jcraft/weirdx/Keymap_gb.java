@@ -19,9 +19,9 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
+
 import java.awt.event.KeyEvent;
-import java.net.*;
+
 
 final class Keymap_gb extends Keymap{
   private int[] _map={

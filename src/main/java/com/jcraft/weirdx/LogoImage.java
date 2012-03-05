@@ -20,11 +20,11 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
-import java.awt.*;
 
-import java.net.*;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.*;
+import java.net.URL;
 
 final class LogoImage{
   static Screen screen;

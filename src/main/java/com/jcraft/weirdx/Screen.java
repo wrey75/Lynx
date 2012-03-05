@@ -19,7 +19,8 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
+
+
 
 final class Screen {
   static Screen[] screen;
@@ -48,12 +49,12 @@ final class Screen {
 
   Pixmap[] pixmaps;
 
-  private static final int visibilityOffset=17;
-  private static final int visibility=(3<<visibilityOffset);
-  private static final int VisibilityUnobscured=0;
-  private static final int VisibilityPartiallyObscured=1;
-  private static final int VisibilityFullyObscured=2;
-  private static final int VisibilityNotViewable=3;
+//  private static final int visibilityOffset=17;
+//  private static final int visibility=(3<<visibilityOffset);
+//  private static final int VisibilityUnobscured=0;
+//  private static final int VisibilityPartiallyObscured=1;
+//  private static final int VisibilityFullyObscured=2;
+//  private static final int VisibilityNotViewable=3;
 
   static Screen[] init(){
     screen=new Screen[1];

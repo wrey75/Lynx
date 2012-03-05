@@ -21,10 +21,10 @@
 package com.jcraft.weirdx;
 
 final class ClipRectangles implements Clip{
-  private static final int Unsorted=0;
-  private static final int YSorted=1;
-  private static final int YXSorted=2;
-  private static final int YXBanded=3;
+//  private static final int Unsorted=0;
+//  private static final int YSorted=1;
+//  private static final int YXSorted=2;
+//  private static final int YXBanded=3;
                                          
   int ordering;
   java.awt.Rectangle[] masks=null;

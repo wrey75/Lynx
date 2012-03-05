@@ -21,28 +21,18 @@
 package com.jcraft.weirdx;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.awt.*;
 import java.awt.image.*;
-import java.awt.event.KeyEvent;
 
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 //import com.sun.java.swing.*;
-import javax.swing.*;                                    
 
 class DDXWindowImpSwingAlphaBackground extends DDXWindowImpSwing {
 
   static int dalpha=0x00;
   AlphaBackground alpha=null;
-  static Hashtable ctable=new Hashtable();
+  static Map<Integer, Object> ctable = new HashMap<Integer, Object>();
 
   private static boolean init=true;
 
@@ -69,13 +59,13 @@ class DDXWindowImpSwingAlphaBackground extends DDXWindowImpSwing {
     byte[] array=alphas.getBytes();
     int end=array.length;
     int start=0, current=0;
-    Vector tmp=new Vector();
+    List<Integer> tmp=new ArrayList<Integer>();
     try{
       while(current<end){
         if(array[current]==' ' ||
            array[current]==',' ||
            array[current]==':'){
-          tmp.addElement(getVal(array, start, current-start));
+          tmp.add(getVal(array, start, current-start));
           current++;
           while(current<end){
             if(array[current]==' ' ||
@@ -92,20 +82,20 @@ class DDXWindowImpSwingAlphaBackground extends DDXWindowImpSwing {
         current++;
       }
       if(current!=start){
-        tmp.addElement(getVal(array, start, current-start));
+        tmp.add(getVal(array, start, current-start));
       }
     }
     catch(Exception e){
       //System.out.println(e);
     }
     if(tmp.size()==1){
-      dalpha=((Integer)(tmp.firstElement())).intValue();
+      dalpha=((Integer)(tmp.get(0))).intValue();
     }
     else{
       dalpha=255;
       int i=0;
       while(i<tmp.size()){
-        ctable.put(tmp.elementAt(i), tmp.elementAt(i+1));
+        ctable.put(tmp.get(i), tmp.get(i+1));
         i+=2;
       }
     }
@@ -300,10 +290,11 @@ class AlphaBackground{
     finalize();
   }
   synchronized void drawImage(Graphics g, int xx, int yy, ImageObserver io){
-    Rectangle r=g.getClipBounds();
-    Image i=getImage();
+    //Rectangle r = g.getClipBounds();
+    Image i = getImage();
     g.drawImage(i, xx, yy, io);
   }
+  
   public void finalize(){
     offi=null;
     freeImage();

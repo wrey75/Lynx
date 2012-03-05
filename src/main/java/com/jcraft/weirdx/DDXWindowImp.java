@@ -30,13 +30,10 @@ import java.awt.event.KeyEvent;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 
 class DDXWindowImp extends Panel 
                    implements DDXWindow, 
@@ -229,7 +226,7 @@ class DDXWindowImp extends Panel
       }
     }
 
-    int orgw=this.width, orgh=this.height;
+    //int originalWidth=this.width, originalHeight = this.height;
     this.width=w;
     this.height=h;
     super.setSize(w+2*bw, h+2*bw);
@@ -641,13 +638,14 @@ if(window==null)return;
 
   // these are for storing the old windows position, as Panel 
   // delivers in the mouseDraggedEvent coordinates relative to the old window position
-  private int oldwindowx, oldwindowy; 
+  @SuppressWarnings("unused")
+private int oldWindowx, oldWindowy; 
 
   private void procPressed(MouseEvent e){
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
-	oldwindowx = window.x;
-	oldwindowy = window.y;
+	oldWindowx = window.x;
+	oldWindowy = window.y;
     Window.sprite.hot.x=x;
     Window.sprite.hot.y=y;
     int mod=e.getModifiers();
@@ -749,7 +747,8 @@ catch(Exception ee){}
     Window.grab=null;
   }
 
-  public void mouseDragged(MouseEvent e){
+  @SuppressWarnings("unused")
+public void mouseDragged(MouseEvent e){
 
     if(threeButton){
       if(threeBstate!=s){

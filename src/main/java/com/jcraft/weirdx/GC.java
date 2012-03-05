@@ -169,7 +169,8 @@ final class GC extends Resource {
     bgPixel=1;
   }
 
-  static void reqSetDashes(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqSetDashes(Client c) throws IOException{
     int foo, ordering;
     int n;
     IO io=c.client;
@@ -319,7 +320,8 @@ final class GC extends Resource {
     msk&=0x7fffff;
     dstgc.copyAttr(c, msk, srcgc);
   }
-  static void reqChangeGC(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqChangeGC(Client c) throws IOException{
     int foo;
     int n;
     IO io=c.client;
@@ -364,7 +366,7 @@ final class GC extends Resource {
 
   private void copyAttr(Client c, int vmask, GC srcgc) throws IOException{
     int index=0;
-    int foo;
+    //int foo;
     int mask=vmask;
 
     while(mask!=0){

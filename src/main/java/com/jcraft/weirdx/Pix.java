@@ -19,8 +19,10 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
-import java.awt.*;
+
+import java.awt.Image;
+
+
 
 final class Pix{
   int pixel;

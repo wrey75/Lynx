@@ -56,8 +56,9 @@ final class Keyboard {
     out.writeByte(maxKeyCode);
   }
 
-  public void getMap() { 
-    int length=maxKeyCode - minKeyCode + 1;
+  @SuppressWarnings("unused")
+public void getMap() { 
+    int length = maxKeyCode - minKeyCode + 1;
   }
 
 //  void print(PrintStream out) {
@@ -71,7 +72,8 @@ final class Keyboard {
   void bell(int volume) {
   }
 
-  static void reqGrabKeyboard(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqGrabKeyboard(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=c.data;
@@ -91,7 +93,8 @@ final class Keyboard {
       io.flush();
     }
   }
-  static void reqGetKeyboardControl(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqGetKeyboardControl(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=c.length;
@@ -114,7 +117,8 @@ final class Keyboard {
     }
   }
 
-  static void reqQueryKeymap(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqQueryKeymap(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=c.length;
@@ -175,7 +179,8 @@ final class Keyboard {
     }
   }
 
-  static void reqSetModifierMapping(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqSetModifierMapping(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     int kpm=c.data;
@@ -199,7 +204,8 @@ final class Keyboard {
     }
   }
 
-  static void reqGetModifierMapping(Client c) throws IOException{
+  @SuppressWarnings("unused")
+static void reqGetModifierMapping(Client c) throws IOException{
     int n;
     int foo;
     IO io=c.client;

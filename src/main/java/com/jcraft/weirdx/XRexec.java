@@ -104,8 +104,9 @@ class XRexec implements ActionListener{
     jframe.setVisible(true);
   }
 
-  public static void main(String[] arg){
-    XRexec xsh=new XRexec(null, 2);
+  @SuppressWarnings("unused")
+public static void main(String[] arg){
+    XRexec xsh = new XRexec(null, 2);
   }
 
   public void actionPerformed(java.awt.event.ActionEvent e) {

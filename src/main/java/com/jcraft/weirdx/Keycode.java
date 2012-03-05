@@ -19,7 +19,8 @@
  */
 
 package com.jcraft.weirdx;
-import java.io.*;
+
+
 import java.awt.event.KeyEvent;
 
 final class Keycode {

@@ -29,13 +29,9 @@ import java.awt.event.KeyEvent;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 //import com.sun.java.swing.*;
 import javax.swing.*;                                    
@@ -231,7 +227,7 @@ class DDXWindowImpSwing extends JPanel
       }
     }
 
-    int orgw=this.width, orgh=this.height;
+    //int originalWidth = this.width, originalHeight = this.height;
     this.width=w;
     this.height=h;
     super.setSize(w+2*bw, h+2*bw);
@@ -735,7 +731,8 @@ return;
     Window.grab=null;
   }
 
-  public void mouseDragged(MouseEvent e){
+  @SuppressWarnings("unused")
+public void mouseDragged(MouseEvent e){
 
     if(threeButton){
       if(threeBstate!=s){

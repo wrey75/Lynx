@@ -66,7 +66,7 @@ final class Selection{
   }
 
   static void reqConvertSelection(Client c) throws IOException{
-    int foo;
+    // int foo;
     int selection, requestor, target, property, time;
     boolean paramsOkay=true;
     IO io=c.client;
@@ -151,7 +151,7 @@ final class Selection{
     time=foo; // ??
 
     if (Atom.valid(selection)){
-      int i=0;
+      //int i=0;
       Selection s=getSelection(selection);
       if (s!=null){
 	if (s.client!=null && (w==null || (s.client!=c))){
@@ -184,7 +184,7 @@ final class Selection{
   }
 
   static void reqGetSelectionOwner(Client c) throws IOException{
-    int foo;
+    //int foo;
     int selection;
     IO io=c.client;
     selection=io.readInt();

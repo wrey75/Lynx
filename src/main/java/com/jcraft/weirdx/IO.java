@@ -20,8 +20,10 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
-import java.util.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+
 
 abstract class IO{
   InputStream in=null;
