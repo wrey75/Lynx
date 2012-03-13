@@ -20,7 +20,11 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,42 +35,46 @@ import java.awt.*;
 import java.awt.event.*;
 import java.applet.*;
 
-//import com.sun.java.swing.*;
-//import javax.swing.*;                                    
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+                                 
 
+@SuppressWarnings("serial")
 public final class WeirdX extends Applet {
-  static final Object LOCK=WeirdX.class;
 
-  static final int major=11;
-  static final int minor=0;
-  static final int releaseNumber=1032;        // 1.0.32
-  static final int motionBufferSize=0;
-  static final int maxRequestLength=65535;
-  static final byte[] vendor="JCraft,Inc.".getBytes();
+	private static Log LOG = LogFactory.getLog(WeirdX.class);
 
-  static Screen[] screen=null;
-  static Format[] format=null;
+	static final Object LOCK = WeirdX.class;
+
+	static final int major = 11;
+	static final int minor = 0;
+	static final int releaseNumber = 1032; // 1.0.32
+	static final int motionBufferSize = 0;
+	static final int maxRequestLength = 65535;
+	static final byte[] vendor = "JCraft,Inc.".getBytes();
+
+	static Screen[] screen = null;
+	static Format[] format = null;
 
   static int imageByteOrder=1;        // 0=LSB, 1=MSB
   static int bitmapBitOrder=1;        // 0=LSB, 1=MSB
   static final int bitmapScanUnit=32; //32
   static final int bitmapScanPad=32;  //32
 
-  static short width=768;
-  static short height=576;
+  private static short width = 768;
+  private static short height = 576;
 
-  static String visuals="PseudoColor8";
-  static String keymap="101";
-  private int displaynum=2;
+  private static String visuals = "PseudoColor8";
+  private static String keymap = "101";
+  private int displayNumber = 2;
   static String myAddress=null;
 
   static boolean threeButton=false;
   static boolean copypaste=false;
 
   static Client serverClient=null;
-  String mode="InBrowser";
-//  String logo="weirdx.jpg";
-  String logo=null;
+  String mode = "InBrowser";
+  String logo = null;
 
   //static String extension=null;
   static String extension="DummySHAPE";
@@ -102,7 +110,7 @@ public final class WeirdX extends Applet {
   static final int Rootless=1;
   static final int RootlessWM=2;
 
-  void weirdx_init(Container container){
+  void weirdx_init( Container container ){
 //    try{ displaysocket=new ServerSocket(6000+weirdx.displaynum); }
 //    catch(Exception ee){
 //      System.out.println(ee+" bye");
@@ -111,7 +119,7 @@ public final class WeirdX extends Applet {
 
     try{
       displaysocket=(DisplaySocket)displaySocketClass.newInstance();
-      displaysocket.init(weirdx.displaynum);
+      displaysocket.init(weirdx.displayNumber);
     }
     catch(Exception ee){
       System.out.println(ee+" bye");
@@ -334,27 +342,25 @@ public final class WeirdX extends Applet {
     }
   }
 
-  void weirdx_start(Container container) throws ConnectException {
-    if(xdmcpmode!=null &&                                  
-       (xdmcpmode.equals("query") ||                       
-        xdmcpmode.equals("broadcast") ||                   
-        xdmcpmode.equals("indirect"))){                    
-      if(xdmcpmode.equals("query")){
-        xdmcp=new XDMCP(xdmcpaddr, myAddress, displaynum);
-      }
-      else if(xdmcpmode.equals("broadcast")){
-        xdmcp=new XDMCP(XDMCP.BroadcastQuery, xdmcpaddr, myAddress, displaynum);
-      }
-      else if(xdmcpmode.equals("indirect")){
-        xdmcp=new XDMCP(XDMCP.IndirectQuery, xdmcpaddr, myAddress, displaynum);
-      }
-    }
+  	void weirdx_start(Container container) throws ConnectException {
+		if( xdmcpmode != null ){
+			LOG.debug( "XDMC Mode = " + xdmcpmode );
+			if (xdmcpmode.equals("query")) {
+				xdmcp = new XDMCP(xdmcpaddr, myAddress, displayNumber);
+			} 
+			else if (xdmcpmode.equals("broadcast")) {
+				xdmcp = new XDMCP(XDMCP.BroadcastQuery, xdmcpaddr, myAddress,
+						displayNumber);
+			} 
+			else if (xdmcpmode.equals("indirect")) {
+				xdmcp = new XDMCP(XDMCP.IndirectQuery, xdmcpaddr, myAddress,
+						displayNumber);
+			}
+		}
 
-    if(sxrexec!=null){                                            
-      if(sxrexec.equals("yes")){                                  
-        xrexec=new XRexec(myAddress, displaynum);
-      }                                                          
-    }                                                            
+		if (sxrexec != null && sxrexec.equals("yes")) {
+			xrexec = new XRexec(myAddress, displayNumber);
+		}                                                            
 
     weirdx_init(container);
 
@@ -422,18 +428,18 @@ public final class WeirdX extends Applet {
         client.setInputStream(in);
         client.setOutputStream(out);
 
-	Client foo=new Client(client);
-	if(foo.index!=-1){ foo.start(); }
-	else{ 
-	  //System.err.println("running over clients table"); 
+				Client foo = new Client(client);
+				if (foo.index != -1) {
+					foo.start();
+				} else {
+					// System.err.println("running over clients table");
+				}
+			}
+		} catch (IOException e) {
+			LOG.error( "IO Error: " + e.getLocalizedMessage() );
+		}
+		// stop(); // ??
 	}
-      }
-    } 
-    catch (IOException e) {
-      //System.out.println("loop: "+e);
-    }
-    //stop(); // ??
-  }
 
   public void destroy() {
     try{
@@ -505,7 +511,7 @@ public final class WeirdX extends Applet {
 
     s=getParameter("weirdx.displaynum");
     if(s!=null){
-      try{ displaynum=Integer.parseInt(s); }
+      try{ displayNumber=Integer.parseInt(s); }
       catch(Exception ee){System.err.println(ee);}
     }
 
@@ -661,10 +667,13 @@ public final class WeirdX extends Applet {
     (new Spawn(this)).start();
   }
 
+
   public static void main(String args[]) {
     String s;
     WeirdX weirdx=new WeirdX();
 
+    LOG.info("Starting Lynx...");
+    
     Properties props=new Properties();
     try{
       InputStream rs = null;
@@ -805,7 +814,7 @@ public final class WeirdX extends Applet {
 
       try{
 	s=(String)props.get("weirdx.displaynum");
-	if(s!=null){ weirdx.displaynum=Integer.parseInt(s);}
+	if(s!=null){ weirdx.displayNumber=Integer.parseInt(s);}
       }
       catch(Exception ee){ 
         //System.err.println(ee);
@@ -856,13 +865,13 @@ public final class WeirdX extends Applet {
         if(s!=null){
 	  String ss=(String)props.get("weirdx.xdmcp.address");
           if(s.equals("query")){
-            xdmcp=new XDMCP(ss, myAddress, weirdx.displaynum);
+            xdmcp=new XDMCP(ss, myAddress, weirdx.displayNumber);
           }
           else if(s.equals("broadcast")){
-            xdmcp=new XDMCP(XDMCP.BroadcastQuery, ss, myAddress, weirdx.displaynum);
+            xdmcp=new XDMCP(XDMCP.BroadcastQuery, ss, myAddress, weirdx.displayNumber);
           }
           else if(s.equals("indirect")){
-            xdmcp=new XDMCP(XDMCP.IndirectQuery, ss, myAddress, weirdx.displaynum);
+            xdmcp=new XDMCP(XDMCP.IndirectQuery, ss, myAddress, weirdx.displayNumber);
           }
 	}
       }
@@ -873,7 +882,7 @@ public final class WeirdX extends Applet {
       try{                                                        
 	s=(String)props.get("weirdx.xrexec");                      
 	if(s.equals("yes")){ 
-	  xrexec=new XRexec(myAddress, weirdx.displaynum);         
+	  xrexec=new XRexec(myAddress, weirdx.displayNumber);         
 	}                                                         
       }                                                           
       catch(Exception ee){                                        
@@ -1016,11 +1025,13 @@ public final class WeirdX extends Applet {
       }
     );
 
-    try{ weirdx.weirdx_start(container); }
-    catch(Exception e){
-      System.out.println("main: "+e);
-    }
-  }	
+		try {
+			weirdx.weirdx_start(container);
+		} 
+		catch (Exception e) {
+			LOG.fatal( "I/O Error: " + e.getLocalizedMessage() );
+		}
+	}
 
   static void resetScreen(int scrn){
     Client.closeDownAll();
@@ -1091,7 +1102,7 @@ public final class WeirdX extends Applet {
         
         params[0]=int.class;
 	method=c.getMethod("setServerPort", params);
-	args[0]=new Integer(6000+weirdx.displaynum);
+	args[0]=new Integer(6000+weirdx.displayNumber);
 	method.invoke(foo, args);
 
         params[0]=String.class;
@@ -1114,53 +1125,69 @@ public final class WeirdX extends Applet {
     }
   } 
 
-  class SpawnSSHRexec extends Thread{
-    WeirdX weirdx;
-    SpawnSSHRexec(WeirdX weirdx){      
-      super();                    
-      this.weirdx=weirdx;           
-    }
-    
-    
-    @SuppressWarnings("unused")
-	public void run(){            
+  	/**
+  	 * Spanning SSH Rexec.
+  	 * 
+  	 * 
+  	 */
+	class SpawnSSHRexec extends Thread {
+		WeirdX weirdx;
 
-      try{ 
-        Class<?>[] params=new Class[1];
-        Object[] args=new Object[1];
-	Object foo=null;
+		SpawnSSHRexec( WeirdX weirdx ) {
+			super();
+			this.weirdx = weirdx;
+		}
 
-        java.lang.reflect.Constructor<?> constructor;
+		@SuppressWarnings("unused")
+		public void run() {
+			LOG.debug( "Running SpawnSSHRexec..." );
+			try {
+				Class<?>[] params = new Class[1];
+				Object[] args = new Object[1];
+				Object foo = null;
 
-        Class<?> c=Class.forName("com.jcraft.weirdx.SSHRexec");
-        params[0]=int.class;
-	constructor=c.getConstructor(params);
+				java.lang.reflect.Constructor<?> constructor;
 
-	args[0]=new Integer(weirdx.displaynum);
-	try{ foo = constructor.newInstance(args); }
-	catch(java.lang.reflect.InvocationTargetException eee){
-          System.err.println("fail to set displaynumber="+weirdx.displaynum);
-          foo=c.newInstance();
-        }
-      }
-      catch(Exception e){
-        System.err.println(e);
-      }
-    }
-  } 
+				Class<?> c = Class.forName("com.jcraft.weirdx.SSHRexec");
+				params[0] = int.class;
+				constructor = c.getConstructor(params);
+
+				args[0] = new Integer(weirdx.displayNumber);
+				try {
+					foo = constructor.newInstance(args);
+				} catch (java.lang.reflect.InvocationTargetException eee) {
+					LOG.fatal("Failed to set displaynumber "
+							+ weirdx.displayNumber);
+					foo = c.newInstance();
+				}
+			} catch (Exception e) {
+				LOG.fatal("Exception " + e.getClass().getName() + ": "
+						+ e.getLocalizedMessage());
+			}
+		}
+	}
 
 }
 
-class DisplaySocket6k implements DisplaySocket{
-  ServerSocket sock=null;
-  public void init(int displaynumber) throws java.io.IOException{
-    sock=new ServerSocket(6000+displaynumber);
-  }
-  public java.net.Socket accept() throws java.io.IOException{
-    return sock.accept();
-  }
-  public void close() throws java.io.IOException{
-    sock.close();
-    sock=null;
-  }
+class DisplaySocket6k implements DisplaySocket {
+	private static Log LOG = LogFactory.getLog(DisplaySocket6k.class);
+	private ServerSocket sock = null;
+	private int displayNumber;
+
+	public void init(int displayNumber) throws java.io.IOException {
+		this.displayNumber = displayNumber;
+		sock = new ServerSocket(6000 + displayNumber);
+		LOG.info( "Display number " + displayNumber + " initialized." );
+	}
+
+	public java.net.Socket accept() throws java.io.IOException {
+		LOG.debug( "Accepting new process on display " + this.displayNumber );
+		return sock.accept();
+	}
+
+	public void close() throws java.io.IOException {
+		sock.close();
+		LOG.info( "Display " + this.displayNumber + " closed." );
+		sock = null;
+	}
 }

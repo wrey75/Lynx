@@ -1,4 +1,3 @@
-/* -*-mode:java; c-basic-offset:2; -*- */
 /* WeirdX - Guess
  *
  * Copyright (C) 1999-2004 JCraft, Inc.
@@ -20,8 +19,32 @@
 
 package com.jcraft.weirdx;
 
-public interface DisplaySocket{
-  public void init(int displaynumber) throws java.io.IOException;
-  public java.net.Socket accept() throws java.io.IOException;
-  public void close() throws java.io.IOException;
+import java.io.IOException;
+import java.net.Socket;
+
+/**
+ * Socket for display.
+ * 
+ * @author JCraft.
+ *
+ */
+public interface DisplaySocket {
+
+	/**
+	 * Initialize a display.
+	 * 
+	 * @param display the display number.
+	 * @throws IOException if an I/O error occured at
+	 * 		during the initialization.
+	 */
+	public void init(int display) throws IOException;
+
+	public Socket accept() throws IOException;
+
+	/**
+	 * Close the display.
+	 * 
+	 * @throws IOException if an I/O error occured.
+	 */
+	public void close() throws IOException;
 }

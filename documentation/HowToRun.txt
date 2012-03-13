@@ -1,0 +1,23 @@
+The server should be run withe the following parameters:
+
+Main-Class: com.jcraft.weirdx.WeirdX
+JVM Parameters: 
+  -Dweirdx.displaynum=6
+  
+This will enable the server to run as the 6th display.
+
+Note the clients (xterm and so on) must be configured with
+an environment variable named DISPLAY set accordingly:
+
+export DISPLAY=:6
+
+or, if you don't run the client on the same machine than the server:
+
+export DISPLAY=<host>:6
+
+On a MacOS Snow Leopard or above, it is necessary to avoid the use
+of the default X11 application. You simply have to start the server
+and then the testing application.
+
+On MacOS, the simplest application is xterm. But you have in the
+directory /usr/X11/bin all the stuff to use X11. 
