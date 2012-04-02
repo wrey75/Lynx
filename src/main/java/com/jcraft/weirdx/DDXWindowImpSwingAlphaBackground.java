@@ -237,7 +237,7 @@ class DDXWindowImpSwingAlphaBackground extends DDXWindowImpSwing {
     return new Integer(i);
   }
 
-  public Window getWindow(){
+  public XWindow getWindow(){
     return window;
   }
 }

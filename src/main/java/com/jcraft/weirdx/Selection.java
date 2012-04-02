@@ -25,14 +25,14 @@ final class Selection{
   int  selection;
   int  lastTimeChanged;
   int  wid;
-  Window window;
+  XWindow window;
   Client client;
   static Selection[] currentSelection;
   static{
     currentSelection=new Selection[10];
   }
 
-  Selection(int selection, int time, Window w, Client c){
+  Selection(int selection, int time, XWindow w, Client c){
     this.selection=selection;
     lastTimeChanged=time;
     window=w;
@@ -53,7 +53,7 @@ final class Selection{
   }
 
   static synchronized void addSelection(int selection, int time, 
-					Window w, Client c){
+					XWindow w, Client c){
     Selection p=new Selection(selection, time, w, (w!=null ? c : null));
     if(currentSelection[currentSelection.length-1]!=null){
       Selection[] foo=new Selection[currentSelection.length*2];
@@ -71,18 +71,18 @@ final class Selection{
     boolean paramsOkay=true;
     IO io=c.client;
     requestor=io.readInt();
-    Window w=c.lookupWindow(requestor);
+    XWindow w=c.lookupWindow(requestor);
     if(w==null){
       c.errorValue=requestor;
       c.errorReason=3; // BadWindow;
     }
     selection=io.readInt();
-    paramsOkay=Atom.valid(selection);
+    paramsOkay=XAtom.valid(selection);
     target=io.readInt();
-    paramsOkay &=Atom.valid(target);
+    paramsOkay &=XAtom.valid(target);
     property=io.readInt();
     if (property !=0){
-      paramsOkay &=Atom.valid(property);
+      paramsOkay &=XAtom.valid(property);
     }
     time=io.readInt();
     c.length-=6;
@@ -133,7 +133,7 @@ final class Selection{
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Window w=null;
+    XWindow w=null;
     if(foo!=0){
       w=c.lookupWindow(foo);
       if(w==null){
@@ -150,7 +150,7 @@ final class Selection{
     time=(int)System.currentTimeMillis();
     time=foo; // ??
 
-    if (Atom.valid(selection)){
+    if (XAtom.valid(selection)){
       //int i=0;
       Selection s=getSelection(selection);
       if (s!=null){
@@ -191,7 +191,7 @@ final class Selection{
 
     c.length-=2;
 
-    if(!Atom.valid(selection)){
+    if(!XAtom.valid(selection)){
       c.errorValue=selection;
       c.errorReason=5; // BadAtom
       return;
@@ -230,7 +230,7 @@ final class Selection{
     }
   }
 
-  static synchronized void delete(Window w){ 
+  static synchronized void delete(XWindow w){ 
     Selection s;
     int len=currentSelection.length;
     for(int i=0; i<len && (s=currentSelection[i])!=null; i++){

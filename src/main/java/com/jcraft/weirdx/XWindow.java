@@ -27,10 +27,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
                        
 @SuppressWarnings("unused")
-class Window extends Drawable {
-	private static Log LOG = LogFactory.getLog(Window.class);
+class XWindow extends XDrawable {
+	private static Log LOG = LogFactory.getLog(XWindow.class);
 	
-  static Object LOCK=Window.class;
+  static Object LOCK=XWindow.class;
 
   private static final int CWBackPixmap=(1<<0);
   private static final int CWBackPixel=(1<<1);
@@ -200,7 +200,7 @@ class Window extends Drawable {
   static final Focus focus=new Focus();
   static Sprite sprite=new Sprite();
   static int spriteTraceGood=1;
-  static Window[] spriteTrace=new Window[10];
+  static XWindow[] spriteTrace=new XWindow[10];
   static Point gpoint=new Point();
   static Grab grab=null;
 
@@ -219,11 +219,11 @@ class Window extends Drawable {
   }
 
   Client client;
-  Window parent;
-  Window nextSib;
-  Window prevSib;
-  Window firstChild;
-  Window lastChild;
+  XWindow parent;
+  XWindow nextSib;
+  XWindow prevSib;
+  XWindow firstChild;
+  XWindow lastChild;
 
   Point origin=new Point();
   int borderWidth;
@@ -240,11 +240,11 @@ class Window extends Drawable {
   int frame_width=-1;
   int frame_height=-1;
 
-  Window(int id){
+  XWindow(int id){
     super(id, RT_WINDOW);
   }
 
-  Window(int wid, Window prnt,
+  XWindow(int wid, XWindow prnt,
 	 int x, int y, int width, int height, int bwidth,
 	 int clss, byte depth, Client client, int visual, int msk)
     throws IOException {
@@ -439,7 +439,7 @@ class Window extends Drawable {
 	prnt.ddxwindow.add((java.awt.Component)ddxwindow, 0);
       }                                                            
       if((attr&cursorIsNone)==0){
-	Cursor cur=getCursor();
+	XCursor cur=getCursor();
 	if(cur!=null){
 	  ddxwindow.setCursor(cur.cursor);
 	}
@@ -507,8 +507,8 @@ class Window extends Drawable {
 	  borderRelative=true;
 	}
 	else{
-	  Pixmap pixmap=(Pixmap)Resource.lookupIDByType(foo, 
-							Resource.RT_PIXMAP);
+	  XPixmap pixmap=(XPixmap)XResource.lookupIDByType(foo, 
+							XResource.RT_PIXMAP);
 	  if(pixmap!=null){
 	    if(pixmap.depth!=depth ||
 	       pixmap.screen!=screen){
@@ -583,7 +583,7 @@ class Window extends Drawable {
 	  }
 	}
 	else{
-	  Pixmap pixmap=(Pixmap)Resource.lookupIDByType(foo, Resource.RT_PIXMAP);
+	  XPixmap pixmap=(XPixmap)XResource.lookupIDByType(foo, XResource.RT_PIXMAP);
 	  if(pixmap!=null){
 	    if((pixmap.depth!=depth) || (pixmap.screen!=screen)){
 	      //System.err.println("error!!");
@@ -724,7 +724,7 @@ class Window extends Drawable {
 	  c.errorValue=foo;
 	  return;
 	}
-	Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+	XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
         if(cmap==null){
           c.errorReason=12; // BadColor
 	  c.errorValue=foo;
@@ -737,13 +737,13 @@ class Window extends Drawable {
 	break;
       case CWCursor:
 	foo=io.readInt();
-	Cursor cur=null, old=null;
+	XCursor cur=null, old=null;
 	if(foo==0){
-	  if(this==screen.root){ cur=Cursor.rootCursor; }
+	  if(this==screen.root){ cur=XCursor.rootCursor; }
 	  else{ cur=null; }
 	}
 	else{
-	  cur=(Cursor)Resource.lookupIDByType(foo, Resource.RT_CURSOR);
+	  cur=(XCursor)XResource.lookupIDByType(foo, XResource.RT_CURSOR);
 	  if(cur==null){
 	    c.errorReason=6; //BadCursor
 	    c.errorValue=foo;
@@ -824,7 +824,7 @@ class Window extends Drawable {
 
     c.length-=2;
 
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -837,8 +837,8 @@ class Window extends Drawable {
     }
 
     synchronized(LOCK){
-      Window win=null;
-      Window first=w.firstChild;
+      XWindow win=null;
+      XWindow first=w.firstChild;
       if(direction==RaiseLowest){
 	win=w.lastChild;
 	while((win !=null) && !(win.isMapped())){ win=win.prevSib; }
@@ -889,7 +889,7 @@ class Window extends Drawable {
       break;
     default:
     }
-    Window.sprite.hot.state=0;
+    XWindow.sprite.hot.state=0;
   }
 
   static final void reqGetMotionEvents(Client c) throws IOException{
@@ -897,7 +897,7 @@ class Window extends Drawable {
     IO io=c.client;
 
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     foo=io.readInt();
     foo=io.readInt();
     c.length-=4;
@@ -921,13 +921,13 @@ class Window extends Drawable {
     int foo;
     IO io=c.client;
     foo=io.readInt();
-    Window srcw=c.lookupWindow(foo);
+    XWindow srcw=c.lookupWindow(foo);
     if(srcw==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow
     }
     foo=io.readInt();
-    Window dstw=c.lookupWindow(foo);
+    XWindow dstw=c.lookupWindow(foo);
     if(dstw==null && c.errorReason==0){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow      
@@ -945,7 +945,7 @@ class Window extends Drawable {
     int child=0;
 
     synchronized(LOCK){
-      Window win=dstw.firstChild;
+      XWindow win=dstw.firstChild;
       while (win!=null){
 	if(((win.attr&mapped)!=0) && win.contains(gx, gy)){
 	  child=win.id;
@@ -997,7 +997,7 @@ class Window extends Drawable {
     clss=c.data;
     foo=io.readInt();
     c.length-=2;
-    Drawable d=c.lookupDrawable(foo);
+    XDrawable d=c.lookupDrawable(foo);
     if((clss !=0 /*CursorShape*/) && 
        (clss !=1 /*TileShape*/) && 
        (clss !=2 /*StippleShape*/)){
@@ -1030,7 +1030,7 @@ class Window extends Drawable {
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
 
     if(w==null){
       c.errorValue=foo;
@@ -1040,13 +1040,13 @@ class Window extends Drawable {
     synchronized(LOCK){
       w.unmapSubwindows(c);
       while(w.lastChild!=null){
-	Resource.freeResource(w.lastChild.id, Resource.RT_NONE);
+	XResource.freeResource(w.lastChild.id, XResource.RT_NONE);
       }
     }
   }
 
   void makeBackgroundTile(int xx, int yy, int w, int h){
-    Window win=this;
+    XWindow win=this;
     int i=(attr&backgroundState);
     if(i==ParentRelative){
       win=parent;
@@ -1084,7 +1084,7 @@ class Window extends Drawable {
       }
     }
     else if(i==BackgroundPixel){
-      Colormap cmap=win.getColormap();
+      XColormap cmap=win.getColormap();
       ddxwindow.setBackground(cmap.getColor(win.background.pixel),
                               xx, yy, w, h);
     }
@@ -1137,8 +1137,8 @@ class Window extends Drawable {
   @SuppressWarnings("static-access")
 private void deleteEvent(boolean freeResources) throws IOException {
     Grab passive;
-    if(Window.grab!=null && Window.grab.window==this){
-      Window.grab.deactivatePointerGrab();
+    if(XWindow.grab!=null && XWindow.grab.window==this){
+      XWindow.grab.deactivatePointerGrab();
     }
     if((id==focus.win) && (parent !=null)){
       int focusEventMode=NotifyNormal;
@@ -1150,7 +1150,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 	focus.traceGood=0;
 	break;
       case RevertToParent:
-	Window win=this;
+	XWindow win=this;
 	do{
 	  win=win.parent;
 	  focus.traceGood--;
@@ -1178,10 +1178,10 @@ private void deleteEvent(boolean freeResources) throws IOException {
       }
       OtherClients oc;
       while ((oc=getOtherClients())!=null ){
-	Resource.freeResource(oc.id, Resource.RT_NONE);
+	XResource.freeResource(oc.id, XResource.RT_NONE);
       }
       while ((passive=getPassiveGrabs())!=null){
-	Resource.freeResource(passive.id, Resource.RT_NONE);
+	XResource.freeResource(passive.id, XResource.RT_NONE);
       }
     }
   }
@@ -1204,7 +1204,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
   }
 
   private void crushTree() throws IOException {
-    Window child, sib, cparent;
+    XWindow child, sib, cparent;
     if((child=firstChild)==null) return;
     while (true){
       if(child.firstChild!=null){
@@ -1221,7 +1221,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 	    //System.out.println("crush: exception -> "+e);
 	  }
 	}
-	try{ Resource.freeResource(child.id, Resource.RT_WINDOW); }
+	try{ XResource.freeResource(child.id, XResource.RT_WINDOW); }
 	catch(Exception e){
 	  //System.out.println("crush: exception -> "+e);
 	}
@@ -1296,7 +1296,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -1304,13 +1304,13 @@ private void deleteEvent(boolean freeResources) throws IOException {
     }
 
     if(w.parent!=null){
-      Resource.freeResource(w.id, Resource.RT_NONE);
+      XResource.freeResource(w.id, XResource.RT_NONE);
     }
   }
 
   static final void reqSendEvent(Client c) throws IOException{
-    Window win;
-    Window effectiveFocus=null;   // only set if dest==InputFocus
+    XWindow win;
+    XWindow effectiveFocus=null;   // only set if dest==InputFocus
     int foo;
     IO io=c.client;
     int prop=c.data;
@@ -1413,19 +1413,19 @@ private void deleteEvent(boolean freeResources) throws IOException {
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
       return;
     }
 
-    int hx=Window.sprite.hot.x;
-    int hy=Window.sprite.hot.y;
+    int hx=XWindow.sprite.hot.x;
+    int hy=XWindow.sprite.hot.y;
 
-    Window child=null;
+    XWindow child=null;
     synchronized(LOCK){
-      for(Window ww=Window.sprite.win; ww!=null; ww=ww.parent){
+      for(XWindow ww=XWindow.sprite.win; ww!=null; ww=ww.parent){
         if(ww.parent==w){
           child=ww;
   	  break;
@@ -1436,7 +1436,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
         if(!child.contains(hx, hy)){
           sprite.win=xy2Window(hx, hy, null);
           child=null;
-   	  for(Window ww=sprite.win; ww!=null; ww=ww.parent){
+   	  for(XWindow ww=sprite.win; ww!=null; ww=ww.parent){
             if(ww.parent==w){
 	      child=ww;
 	      break;
@@ -1458,7 +1458,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
       io.writeShort(hy);
       io.writeShort(hx-w.x);
       io.writeShort(hy-w.y);
-      io.writeShort(Window.sprite.hot.state);
+      io.writeShort(XWindow.sprite.hot.state);
 //    io.writeShort(0);  // ?????????
       io.writePad(6);
       io.flush();
@@ -1469,7 +1469,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
     IO io=c.client;
     int foo=io.readInt();
 
-    Drawable d=c.lookupDrawable(foo);
+    XDrawable d=c.lookupDrawable(foo);
     c.length-=2;
     if(d==null){
       c.errorValue=foo;
@@ -1486,7 +1486,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 
       if((d.type==UNDRAWABLE_WINDOW)||
          ((d.type==DRAWABLE_WINDOW) && foo==d.id)){
-        Window w=(Window)d;
+        XWindow w=(XWindow)d;
         io.writeShort(w.origin.x-w.borderWidth);
         io.writeShort(w.origin.y-w.borderWidth);
         io.writeShort(w.width);
@@ -1514,7 +1514,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 
     c.length-=3;
 
-    Window w=c.lookupWindow(wid);
+    XWindow w=c.lookupWindow(wid);
     if(w==null){
       c.errorValue=wid;
       c.errorReason=3; // BadWindow;
@@ -1538,8 +1538,8 @@ static final void reqUngrabPointer(Client c) throws IOException{
     int foo, n;
     IO io=c.client;
     foo=io.readInt();
-    if((Window.grab!=null) && Window.grab.sameClient(c)){
-      Window.grab.deactivatePointerGrab();
+    if((XWindow.grab!=null) && XWindow.grab.sameClient(c)){
+      XWindow.grab.deactivatePointerGrab();
     }
   }
 
@@ -1552,7 +1552,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     foo=io.readInt();
 
     c.length-=2;
-    Window gw=c.lookupWindow(foo);
+    XWindow gw=c.lookupWindow(foo);
     if(gw==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -1578,7 +1578,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     foo=io.readInt();
-    Window gw=c.lookupWindow(foo);
+    XWindow gw=c.lookupWindow(foo);
     if(gw==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -1598,7 +1598,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     foo=io.readInt();
-    Window cto=null;
+    XWindow cto=null;
     if(foo!=0){
       cto=c.lookupWindow(foo);
     }
@@ -1636,7 +1636,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     foo=io.readInt();
-    Window gw=c.lookupWindow(foo);
+    XWindow gw=c.lookupWindow(foo);
     if(gw==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow
@@ -1661,7 +1661,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     foo=io.readInt();
-    Window cto=null;
+    XWindow cto=null;
     if(foo!=0){
       cto=c.lookupWindow(foo);
       if(cto==null){
@@ -1671,9 +1671,9 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     foo=io.readInt();
-    Cursor cur=null;
+    XCursor cur=null;
     if(foo!=0){
-      cur=(Cursor)Resource.lookupIDByType(foo, Resource.RT_CURSOR);
+      cur=(XCursor)XResource.lookupIDByType(foo, XResource.RT_CURSOR);
       if(cur==null){
 	c.errorValue=foo;
 	c.errorReason=6; //BadCursor
@@ -1689,7 +1689,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     int res=0;
-    if(Window.grab!=null && c!=Window.grab.getClient()){
+    if(XWindow.grab!=null && c!=XWindow.grab.getClient()){
       res=AlreadyGrabbed;
     }
     else if((gw.attr&realized)==0||
@@ -1698,7 +1698,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
       res=GrabNotViewable;
     }
     else {
-      Grab grab=new Grab(Resource.fakeClientId(c));
+      Grab grab=new Grab(XResource.fakeClientId(c));
       grab.set(c.clientAsMask, gw, oe,
 	       emask, kmode, pmode, cto);
       grab.activatePointerGrab((int)System.currentTimeMillis(), true);
@@ -1729,7 +1729,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     int wid=io.readInt();
 
     foo=io.readInt(); 
-    Window prnt=c.lookupWindow(foo);
+    XWindow prnt=c.lookupWindow(foo);
 
     x=io.readShort();
     y=io.readShort();
@@ -1752,16 +1752,16 @@ static final void reqUngrabPointer(Client c) throws IOException{
       c.errorReason=2; // BadValue;
     }
 
-    Window w=null;
+    XWindow w=null;
     if(c.errorReason==0){
-      w=new Window(wid, prnt, x, y, width, height, bwidth, clss, depth,
+      w=new XWindow(wid, prnt, x, y, width, height, bwidth, clss, depth,
 		     c, visual, mask);
     }
 
     if(c.errorReason!=0){
       return;
     }
-    Resource.add(w);
+    XResource.add(w);
   }
 
   int sendEvent(Event event, int count, int filter,
@@ -1848,7 +1848,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
 
     if((type==Event.ButtonPress) && (deliveries!=0) && (grab==null)){
-      grab=new Grab(Resource.fakeClientId(c));
+      grab=new Grab(XResource.fakeClientId(c));
       grab.set(c.clientAsMask, this,
 	       (deliveryMask & Event.OwnerGrabButtonMask),
 	       deliveryMask, GrabModeAsync, GrabModeAsync, null);
@@ -1859,7 +1859,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     return nondeliveries;
   }
 
-  int sendEvent(Event event, int count, Window otherParent)throws IOException{
+  int sendEvent(Event event, int count, XWindow otherParent)throws IOException{
     int filter;
     int deliveries;
 
@@ -1919,8 +1919,8 @@ static final void reqUngrabPointer(Client c) throws IOException{
     return 2;
   }
 
-  private Window findOptional(){
-    Window w=this;
+  private XWindow findOptional(){
+    XWindow w=this;
     do{w=w.parent;}while(w.optional==null);
     return w;
   }
@@ -1949,7 +1949,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
     c.length-=2;
 
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -1968,7 +1968,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     boolean parentNotify=subSend(); 
     boolean anyMarked=false;
 
-    for(Window child=lastChild; child !=null; child=child.prevSib){
+    for(XWindow child=lastChild; child !=null; child=child.prevSib){
       if((child.attr&mapped)!=0){
 	if(parentNotify || child.strSend()){
 	  c.cevent.mkUnmapNotify(child.id, 0);
@@ -1991,7 +1991,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
   static final void reqMapSubWindows(Client c) throws IOException{
     int foo;
     int mask;
-    Window firstMapped=null;
+    XWindow firstMapped=null;
     boolean anyMarked=false;
 
     IO io=c.client;
@@ -2000,7 +2000,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
     c.length-=2;
 
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -2011,7 +2011,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     boolean parentNotify=w.parent.subSend();
 
     synchronized(LOCK){
-      for(Window tmpw=w.firstChild; tmpw!=null; tmpw=tmpw.nextSib){
+      for(XWindow tmpw=w.firstChild; tmpw!=null; tmpw=tmpw.nextSib){
 	if(w.screen.root!=w && w.parent==null) return;
         if((tmpw.attr&mapped)==0){
 	  if(parentRedirect && ((tmpw.attr&overrideRedirect)==0)){
@@ -2050,7 +2050,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
     c.length-=2;
 
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -2062,7 +2062,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
   }
 
   private void unrealizeTree(boolean fromConfigure){
-    Window child=this;
+    XWindow child=this;
     while (true){
       if((child.attr&realized)!=0){
 	child.attr&=~realized;
@@ -2099,7 +2099,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
   }
 
   private void realizeTree() throws IOException {
-    Window child=this;
+    XWindow child=this;
     while (true){
       if((child.attr&mapped)!=0){
 	child.attr|=realized;
@@ -2139,7 +2139,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     Screen screen=this.screen;
     boolean wasRealized=((this.attr&realized)!=0);
     boolean wasViewable=((this.attr&viewable)!=0);
-    Window layerWin=this;
+    XWindow layerWin=this;
 
     if((this.attr&mapped)==0) return;
 
@@ -2169,7 +2169,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
     c.length-=2;
 
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -2213,8 +2213,8 @@ static final void reqUngrabPointer(Client c) throws IOException{
     }
   }
 
-  static boolean checkMotion (Event e, Window hint) throws IOException{
-    Window prevSpriteWin=sprite.win;
+  static boolean checkMotion (Event e, XWindow hint) throws IOException{
+    XWindow prevSpriteWin=sprite.win;
     sprite.win=xy2Window(sprite.hot.x, sprite.hot.y, hint);
     if(sprite.win !=prevSpriteWin){
       if(prevSpriteWin !=null){
@@ -2230,9 +2230,9 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
   @SuppressWarnings("static-access")
 static void enter_leaveEvent(int type, int mode, int detail,
-			       Window win, int child) throws IOException {
+			       XWindow win, int child) throws IOException {
     int mask;
-    Grab grab=Window.grab;
+    Grab grab=XWindow.grab;
     if(grab!=null){
       mask=(win==grab.window) ? grab.eventMask : 0;
       if((grab.attr&grab.ownerEvents)!=0){
@@ -2286,24 +2286,24 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return 0;
   }
 
-  private static void enterNotifies(Window ancestor, Window child, 
+  private static void enterNotifies(XWindow ancestor, XWindow child, 
 				    int mode, int detail) throws IOException{
-    Window parent=child.parent;
+    XWindow parent=child.parent;
     if(ancestor==parent) return;
     enterNotifies(ancestor, parent, mode, detail);
     enter_leaveEvent(Event.EnterNotify, mode, detail, parent, child.id);
   }
 
-  private static void leaveNotifies(Window child, Window ancestor, 
+  private static void leaveNotifies(XWindow child, XWindow ancestor, 
 			    int mode, int detail) throws IOException{
     if(ancestor==child) return;
-    for(Window win=child.parent; win !=ancestor; win=win.parent){
+    for(XWindow win=child.parent; win !=ancestor; win=win.parent){
       enter_leaveEvent(Event.LeaveNotify, mode, detail, win, child.id);
       child=win;
     }
   }
 
-  static void enter_leaveEvent(Window fromWin, Window toWin, int mode)
+  static void enter_leaveEvent(XWindow fromWin, XWindow toWin, int mode)
     throws IOException{
     if(fromWin==toWin) return;
     if(fromWin.isParent(toWin)){
@@ -2341,7 +2341,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
       }
     }
     else {
-      Window common=toWin.commonAncestor(fromWin);
+      XWindow common=toWin.commonAncestor(fromWin);
       try{
 	enter_leaveEvent(Event.LeaveNotify, mode, NotifyNonlinear, fromWin, 0);
       }
@@ -2369,13 +2369,13 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return ddxwindow.contains(xx-x-borderWidth, yy-y-borderWidth);
   }
 
-  static Window xy2Window(int x, int y, Window hint){
+  static XWindow xy2Window(int x, int y, XWindow hint){
     if(hint!=spriteTrace[spriteTraceGood-1]){
       spriteTraceGood=1;
     }
 //  else{ System.out.println("skip!!"); }
 
-    Window  win=spriteTrace[spriteTraceGood-1];
+    XWindow  win=spriteTrace[spriteTraceGood-1];
 
     if(((win.attr&mapped)==0) || !win.contains(x, y)){
       win=spriteTrace[0];
@@ -2386,7 +2386,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     while (win!=null){
       if(((win.attr&mapped)!=0) && win.contains(x, y)){
         if(spriteTraceGood >=spriteTrace.length){
-          Window[] foo=new Window[spriteTrace.length+10];
+          XWindow[] foo=new XWindow[spriteTrace.length+10];
           System.arraycopy(spriteTrace, 0, foo, 0, spriteTrace.length);
 	  spriteTrace=foo;
 	}
@@ -2401,9 +2401,9 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return spriteTrace[spriteTraceGood-1];
   }
 
-  Cursor getCursor(){
+  XCursor getCursor(){
     if(optional!=null) return optional.cursor;
-    Window p=findOptional();
+    XWindow p=findOptional();
     return p.optional.cursor;
   }
 
@@ -2448,8 +2448,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static final void reqQueryTree(Client c) throws IOException{
     int foo;
-    Window prnt;
-    Window w;
+    XWindow prnt;
+    XWindow w;
     int wid;
     int x, y, width, height, bwidth, clss;
     int visual;
@@ -2468,7 +2468,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     synchronized(LOCK){
       int numchild=0;
 
-      for(Window p=w.lastChild; p !=null; p=p.prevSib){
+      for(XWindow p=w.lastChild; p !=null; p=p.prevSib){
 	numchild++;    
       }
 
@@ -2486,7 +2486,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
         io.writePad(14);
 
         if(0<numchild){
-  	  for(Window p=w.lastChild; p !=null; p=p.prevSib){
+  	  for(XWindow p=w.lastChild; p !=null; p=p.prevSib){
 	    io.writeInt(p.id);
 	  }
         }
@@ -2502,7 +2502,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     reverto=c.data;
     foo=io.readInt();
     c.length-=2;
-    Window win=null;
+    XWindow win=null;
     if(foo!=0 && foo!=1){
       win=c.lookupWindow(foo);
       if(win==null){
@@ -2531,7 +2531,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
 
     int focusWin=0;
-    Window win=null;
+    XWindow win=null;
     if((focusId==0) || (focusId==1)){
       focusWin=focusId;
     }
@@ -2564,14 +2564,14 @@ static void enter_leaveEvent(int type, int mode, int detail,
       synchronized(LOCK){
         win.ddxwindow.requestFocus();
         int depth=0;
-        for(Window tmpw=win; tmpw!=null; tmpw=tmpw.parent) depth++;
+        for(XWindow tmpw=win; tmpw!=null; tmpw=tmpw.parent) depth++;
         if(depth > focus.traceSize){
   	  focus.traceSize=depth+1;
-	  focus.trace=new Window[focus.traceSize];
+	  focus.trace=new XWindow[focus.traceSize];
         }
         focus.traceGood=depth;
         depth--;
-        for(Window tmpw=win; tmpw!=null; tmpw=tmpw.parent, depth--){
+        for(XWindow tmpw=win; tmpw!=null; tmpw=tmpw.parent, depth--){
 	  focus.trace[depth]=tmpw;
         }
       }
@@ -2599,7 +2599,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
     foo=io.readInt();
     c.length-=2;
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow
@@ -2625,7 +2625,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
       io.writeByte((w.attr&saveUnder)>>saveUnderOffset);
  
       if(w.getColormapId()==0) io.writeByte(0);
-      else io.writeByte(Colormap.isMapInstalled(w.getColormapId(), w));
+      else io.writeByte(XColormap.isMapInstalled(w.getColormapId(), w));
 
       if((w.attr&mapped)==0) io.writeByte(0);  
       else if((w.attr&realized)!=0) io.writeByte(2);
@@ -2643,7 +2643,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static final void reqCopyPlane(Client c) throws IOException{
     int foo;
-    Drawable dsrc=null, ddst=null;
+    XDrawable dsrc=null, ddst=null;
     IO io=c.client;
     foo=io.readInt();
     dsrc=c.lookupDrawable(foo);
@@ -2688,7 +2688,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
 
     Graphics g=ddst.getGraphics();
-    if(((dsrc instanceof Window) && !((Window)dsrc).ddxwindow.isVisible())){
+    if(((dsrc instanceof XWindow) && !((XWindow)dsrc).ddxwindow.isVisible())){
       g=null;
     }
 
@@ -2699,21 +2699,21 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
 
     if(g!=null){
-      if(dsrc instanceof Window){
-        if(ddst instanceof Window){
-          ((Window)dsrc).ddxwindow.copyArea(((Window)ddst), gc,
+      if(dsrc instanceof XWindow){
+        if(ddst instanceof XWindow){
+          ((XWindow)dsrc).ddxwindow.copyArea(((XWindow)ddst), gc,
 	                                    sx, sy, width, height, destx, desty); 
 	}                                                          
       } 
       else {
 	Image img=null;
-	if(ddst instanceof Pixmap){
-	  ((Pixmap)dsrc).copyPlane((Pixmap)ddst, gc, 
+	if(ddst instanceof XPixmap){
+	  ((XPixmap)dsrc).copyPlane((XPixmap)ddst, gc, 
 				   sx, sy, destx, desty, width, height);
 	}
 	else{
-	  img=((Pixmap)dsrc).getImage((Window)ddst, gc, sx, sy, width, height);
-	  Window wdst=(Window)ddst;
+	  img=((XPixmap)dsrc).getImage((XWindow)ddst, gc, sx, sy, width, height);
+	  XWindow wdst=(XWindow)ddst;
 
  	  if(sx==0 && sy==0 && width==dsrc.width && height==dsrc.height){
 	    wdst.ddxwindow.drawImage(gc.clip_mask,
@@ -2732,7 +2732,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
             else{ g.setClip(tmp); }
 	  }
 	  wdst.draw(destx, desty, width, height);
-	  if(img!=((Pixmap)dsrc).getImage()){
+	  if(img!=((XPixmap)dsrc).getImage()){
 	    img.flush();
 	  }
 	}
@@ -2742,7 +2742,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static final void reqCopyArea(Client c) throws IOException{
     int foo;
-    Drawable dsrc=null, ddst=null;
+    XDrawable dsrc=null, ddst=null;
     IO io=c.client;
 
     foo=io.readInt();
@@ -2787,7 +2787,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
 
     Graphics g=ddst.getGraphics();
-    if(((dsrc instanceof Window) && !((Window)dsrc).ddxwindow.isVisible())){
+    if(((dsrc instanceof XWindow) && !((XWindow)dsrc).ddxwindow.isVisible())){
       g=null;
     }
 
@@ -2804,16 +2804,16 @@ static void enter_leaveEvent(int type, int mode, int detail,
     */
 
     if(g!=null){
-      if(dsrc instanceof Window){
+      if(dsrc instanceof XWindow){
 
         if(sx<0){sx=0;}
         if(sy<0){sy=0;}
         if(destx<0){destx=0;}
         if(desty<0){desty=0;}
 
-	if(ddst instanceof Window){
-          ((Window)dsrc).ddxwindow.
-	    copyArea(((Window)ddst), gc,
+	if(ddst instanceof XWindow){
+          ((XWindow)dsrc).ddxwindow.
+	    copyArea(((XWindow)ddst), gc,
 		     sx, sy, width, height, destx, desty); 
 	}
 //      else{
@@ -2824,20 +2824,20 @@ static void enter_leaveEvent(int type, int mode, int detail,
       }
       else {
 
-	if(ddst instanceof Pixmap){
+	if(ddst instanceof XPixmap){
           if(sx<0){sx=0;}
           if(sy<0){sy=0;}
           if(destx<0){destx=0;}
           if(desty<0){desty=0;}
 
-	  ((Pixmap)dsrc).copyArea((Pixmap)ddst, gc, 
+	  ((XPixmap)dsrc).copyArea((XPixmap)ddst, gc, 
 				  sx, sy, destx, desty, width, height);
 	}
 	else{
-	  Image img=((Pixmap)dsrc).getImage((Window)ddst, gc, 
+	  Image img=((XPixmap)dsrc).getImage((XWindow)ddst, gc, 
 					    sx, sy, width, height);
 
-	  Window wdst=(Window)ddst;
+	  XWindow wdst=(XWindow)ddst;
 
 	  if(sx==0 && sy==0 && width==dsrc.width && height==dsrc.height){
 	    wdst.ddxwindow.drawImage(gc.clip_mask,
@@ -2862,7 +2862,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
             else{ g.setClip(tmp); }
 	  }
 	  wdst.draw(destx, desty, width, height);
-	  if(img!=((Pixmap)dsrc).getImage()){
+	  if(img!=((XPixmap)dsrc).getImage()){
 	    img.flush();
 	  }
 	}
@@ -2885,7 +2885,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -2916,7 +2916,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
       c.cevent.mkExpose(w.id, x, y, width, height, 0);
       c.sendEvent(c.cevent, 1, 
 		  Event.filters[Event.Expose],
-		  Event.filters[Event.Expose], Window.grab);
+		  Event.filters[Event.Expose], XWindow.grab);
     }
   }
   
@@ -2928,8 +2928,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
     ddxwindow.draw(x, y, width, height);
   }
 
-  private Window trackParent(){
-    Window w=this;
+  private XWindow trackParent(){
+    XWindow w=this;
     while(true){
       if(w.optional!=null)break;
       w=w.parent;
@@ -2977,7 +2977,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
       return optional.frame;
     }
 
-    synchronized(Window.class){                           
+    synchronized(XWindow.class){                           
       java.awt.Window foo=null;                                
       for(int i=0; i<poolsize; i++){                           
         if(frames[i]!=null){                                   
@@ -3006,7 +3006,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
       return;
     }
 
-    synchronized(Window.class){                           
+    synchronized(XWindow.class){                           
       for(int i=0; i<poolsize; i++){                           
         if(frames[i]==null){                                   
           frames[i]=optional.frame;
@@ -3034,7 +3034,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     int n;
     IO io=c.client;
     foo=io.readInt();
-    Window win=c.lookupWindow(foo);
+    XWindow win=c.lookupWindow(foo);
     if(win==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow
@@ -3056,7 +3056,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     int w=win.width;
     int h=win.height;
     int bw=win.borderWidth;
-    Window sib=null;
+    XWindow sib=null;
 
     synchronized(LOCK){
       win=c.lookupWindow(win.id);
@@ -3268,7 +3268,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	  x=win.x=newx;
 	  y=win.y=newy;
 
-          Window wToValidate=win.moveInStack(sib);
+          XWindow wToValidate=win.moveInStack(sib);
 	  if(((mask&CWWidth)!=0) || ((mask&CWHeight)!=0)
 	     ||((mask&CWBorderWidth)!=0)){
             if(win.screen.windowmode!=WeirdX.InBrowser && win.hasFrame()){  
@@ -3314,11 +3314,11 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return optional.otherEventMasks;
   }
 
-  void setColormap(Colormap cmap){
+  void setColormap(XColormap cmap){
     makeOptional();
     optional.colormap=cmap;
   }
-  Colormap getColormap(){
+  XColormap getColormap(){
     return trackParent().optional.colormap;
   }
   private int getColormapId(){
@@ -3352,18 +3352,18 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   boolean hasBorder(){ return borderWidth!=0; }
 
-  private void reflectStackChange(Window sib) throws IOException{
+  private void reflectStackChange(XWindow sib) throws IOException{
     boolean wasViewable=(attr&viewable)!=0;
     if(parent==null) return;
 
-    Window firstChange=moveInStack(sib);
+    XWindow firstChange=moveInStack(sib);
     if((attr&realized)!=0){
       restructured();
     }
   }
 
-  private int isSiblingAboveMe(Window sib){
-    Window win=parent.firstChild;
+  private int isSiblingAboveMe(XWindow sib){
+    XWindow win=parent.firstChild;
     while (win!=null){
       if(win==sib) return(Above);
       else if(win==this) return(Below);
@@ -3372,11 +3372,11 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return(Below);
   }
 
-  private Window getPlaceInTheStack(Window sib, 
+  private XWindow getPlaceInTheStack(XWindow sib, 
 				    int x, int y, int w, int h, int smode){
     if((this==parent.firstChild) && (this==parent.lastChild)) return null;
 
-    Window first=parent.firstChild;
+    XWindow first=parent.firstChild;
     switch (smode){
     case Above:
       if(sib!=null) return(sib);
@@ -3426,8 +3426,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
   }
 
-  private Window moveInStack(Window next){
-    Window firstChange=this;
+  private XWindow moveInStack(XWindow next){
+    XWindow firstChange=this;
     synchronized(LOCK){
       if(nextSib !=next){
 	if(next==null){	                  // to bottom 
@@ -3459,7 +3459,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	  }                                                     
 	}
 	else{			                   // in middle
-	  Window pOldNext=nextSib;
+	  XWindow pOldNext=nextSib;
 	  firstChange=null;
 	  if(parent.firstChild==this)
 	    firstChange=parent.firstChild=nextSib;
@@ -3502,14 +3502,14 @@ static void enter_leaveEvent(int type, int mode, int detail,
     IO io=c.client;
 
     foo=io.readInt();
-    Window win=c.lookupWindow(foo);
+    XWindow win=c.lookupWindow(foo);
     if(win==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
     }
 
     foo=io.readInt();
-    Window parent=c.lookupWindow(foo);
+    XWindow parent=c.lookupWindow(foo);
     if(parent==null && c.errorReason==0){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -3524,7 +3524,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     win.reparent(parent, x, y, c);
   }
 
-  void reparent(Window newparent, int xx, int yy, Client c) 
+  void reparent(XWindow newparent, int xx, int yy, Client c) 
     throws IOException{
     boolean wasMapped;
 
@@ -3533,7 +3533,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
       int bw=borderWidth;
       wasMapped=((attr&mapped) !=0);
-      Window prev;
+      XWindow prev;
 
       makeOptional();
 
@@ -3620,7 +3620,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   void recalculateDeliverableEvents(){
     OtherClients others;
 
-    Window child=this;
+    XWindow child=this;
     while (true){
       if(child.optional!=null){
 	child.optional.otherEventMasks=0;
@@ -3695,7 +3695,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	if(others.sameClient(c)){
 	  check=others.mask;
 	  if(mask==0){
-	    Resource.freeResource(others.id, RT_NONE);
+	    XResource.freeResource(others.id, RT_NONE);
 	    return ;
 	  }
 	  else{
@@ -3708,13 +3708,13 @@ static void enter_leaveEvent(int type, int mode, int detail,
       check=0;
       makeOptional();
 
-      others=new OtherClients(Resource.fakeClientId(c));
+      others=new OtherClients(XResource.fakeClientId(c));
       others.mask=mask;
       others.resource=others.id;
       others.window=this;
       others.next=optional.otherClients;
       optional.otherClients=others;
-      Resource.add(others);
+      XResource.add(others);
     }
     recalculateDeliverableEvents();
     return ;
@@ -3771,7 +3771,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   private void resizeChildrenWinSize(int dx, int dy, int dw, int dh)
     throws IOException {
     boolean resized=(dw!=0 || dh!=0);
-    for(Window sib=firstChild; sib!=null; sib=sib.nextSib){
+    for(XWindow sib=firstChild; sib!=null; sib=sib.nextSib){
       if(resized && 
 	  (((sib.attr&winGravity)>>winGravityOffset) > NorthWestGravity)){
 	int newx=sib.origin.x;
@@ -3796,7 +3796,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
       if(sib.ddxwindow!=null) // ??
       sib.ddxwindow.setLocation(sib.origin.x-sib.borderWidth+sib.parent.borderWidth,
 				sib.origin.y-sib.borderWidth+sib.parent.borderWidth);
-      Window child=sib.firstChild;
+      XWindow child=sib.firstChild;
       if(child !=null){
 	while (true){
 	  child.x=child.parent.x + child.origin.x;
@@ -3820,7 +3820,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
    static boolean checkDeviceGrabs(Event e, int checkFirst, int count)
     throws IOException {
 
-    Window win;
+    XWindow win;
     int i=checkFirst;
     for(; i < spriteTraceGood; i++){
       win=spriteTrace[i];
@@ -3838,7 +3838,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     if(grab==null) return false;
 
     synchronized(LOCK){
-      Grab tempGrab=new Grab(Resource.fakeClientId(client));
+      Grab tempGrab=new Grab(XResource.fakeClientId(client));
       tempGrab.window=this;
       tempGrab.type=e.getType();
       tempGrab.detail.exact=e.getDetail();
@@ -3852,7 +3852,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	     (grab.confineTo.x!=0 || grab.confineTo.y!=0)))){
 	  grab.activatePointerGrab((int)System.currentTimeMillis(), true);
 	  e.fixUpEventFromWindow(grab.window, 0, 
-				 Window.sprite.hot.x, Window.sprite.hot.y,
+				 XWindow.sprite.hot.x, XWindow.sprite.hot.y,
 				 true);
 	  if(grab.getClient()!=null)
 	    grab.getClient().sendEvent(e, count,
@@ -3867,11 +3867,11 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static void sendGrabbedEvent(Event e, boolean deactivateGrab, int count)
     throws IOException{
-    Grab grab=Window.grab;
+    Grab grab=XWindow.grab;
     int deliveries=0;
 
     if((grab.attr&Grab.ownerEvents)!=0){
-      Window focus=null;
+      XWindow focus=null;
       if(focus==null)
 	deliveries=sendDeviceEvent(sprite.win, e, grab, null, count);
       else if(focus!=null && 
@@ -3892,8 +3892,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
   }
 
-  static int sendDeviceEvent(Window win, Event e, 
-			     Grab grab, Window stopAt, int count)
+  static int sendDeviceEvent(XWindow win, Event e, 
+			     Grab grab, XWindow stopAt, int count)
     throws IOException {
     int child=0;
     int type=e.getType();
@@ -3947,13 +3947,13 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return 0;
   }
 
-  boolean isParent(Window w){
+  boolean isParent(XWindow w){
     for(w=w.parent; w!=null; w=w.parent){
       if(w==this) return true;
     }
     return false;
   }
-  Window commonAncestor(Window w){
+  XWindow commonAncestor(XWindow w){
     for(w=w.parent; w!=null; w=w.parent){
       if(w.isParent(this)) return w;
     }
@@ -3977,8 +3977,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	}
       }
       else {
-	Window from=(c!=null) ? c.lookupWindow(fromWin) : 
-	            (Window)Resource.lookupIDByClass(fromWin, Resource.RC_DRAWABLE);
+	XWindow from=(c!=null) ? c.lookupWindow(fromWin) : 
+	            (XWindow)XResource.lookupIDByClass(fromWin, XResource.RC_DRAWABLE);
 	if(from==null) return;
 	if(from.isParent(sprite.win)){
 	  focusOutEvents(c, sprite.win, from, mode, NotifyPointer, false);
@@ -3999,8 +3999,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
 			 mode, NotifyPointer, true);
 	}
 
-	Window to=(c!=null) ? c.lookupWindow(toWin) : 
-	            (Window)Resource.lookupIDByClass(toWin, Resource.RC_DRAWABLE);
+	XWindow to=(c!=null) ? c.lookupWindow(toWin) : 
+	            (XWindow)XResource.lookupIDByClass(toWin, XResource.RC_DRAWABLE);
 	if(to==null) return;
 	if(to.parent !=null){
 	  focusInEvents(c, to.screen.root, to, to, mode,
@@ -4014,10 +4014,10 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	}
       }
       else {
-	Window to=(c!=null) ? c.lookupWindow(toWin) : 
-	          (Window)Resource.lookupIDByClass(toWin, Resource.RC_DRAWABLE);
-	Window from=(c!=null) ? c.lookupWindow(fromWin) : 
-	          (Window)Resource.lookupIDByClass(fromWin, Resource.RC_DRAWABLE);
+	XWindow to=(c!=null) ? c.lookupWindow(toWin) : 
+	          (XWindow)XResource.lookupIDByClass(toWin, XResource.RC_DRAWABLE);
+	XWindow from=(c!=null) ? c.lookupWindow(fromWin) : 
+	          (XWindow)XResource.lookupIDByClass(fromWin, XResource.RC_DRAWABLE);
 	if(from==null || to==null) return;
 	if(to.isParent(from)){
 	  from.sendFocusEvent(c, Event.FocusOut, mode, 
@@ -4046,7 +4046,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	    to.sendFocusEvent(c, Event.FocusIn, mode, NotifyAncestor);
 	  }
 	  else {
-	    Window common=to.commonAncestor(from);
+	    XWindow common=to.commonAncestor(from);
 
 	    if(from.isParent(sprite.win)){
 	      focusOutEvents(c, sprite.win, from, mode, NotifyPointer, false);
@@ -4069,10 +4069,10 @@ static void enter_leaveEvent(int type, int mode, int detail,
   }
 
   private static void focusOutEvents(Client c, 
-				     Window child, Window ancestor,
+				     XWindow child, XWindow ancestor,
 				     int mode, int detail, boolean doAncestor)
     throws IOException {
-    for(Window win=child; win !=ancestor; win=win.parent){
+    for(XWindow win=child; win !=ancestor; win=win.parent){
       win.sendFocusEvent(c, Event.FocusOut, mode, detail);
     }
     if(doAncestor){
@@ -4081,7 +4081,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   }
 
   private static boolean focusInEvents(Client c,
-				       Window ancestor, Window child, Window skipChild,
+				       XWindow ancestor, XWindow child, XWindow skipChild,
 				       int mode, int detail, boolean doAncestor)
     throws IOException {
     if(child==null){
@@ -4131,7 +4131,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     return result;
   }
 
-  static void printWindow(Window p1, int indent){
+  static void printWindow(XWindow p1, int indent){
 	  StringBuffer buf = new StringBuffer();
     for(int i=0; i<indent; i++) buf.append(" ");
     try{
@@ -4147,8 +4147,8 @@ static void enter_leaveEvent(int type, int mode, int detail,
     	LOG.error(ee);
     }
   }
-  static void printChildren(Window p1, int indent){
-    Window p2;
+  static void printChildren(XWindow p1, int indent){
+    XWindow p2;
     while (p1!=null){
       p2=p1.firstChild;
       printWindow(p1, indent);
@@ -4156,10 +4156,10 @@ static void enter_leaveEvent(int type, int mode, int detail,
       p1=p1.nextSib;
     }
   }
-  static void printWindowTree(Window win){
+  static void printWindowTree(XWindow win){
     LOG.error("printWindowTree");
     printWindow(win, 0);
-    Window p1;
+    XWindow p1;
     for(int i=0; i<1; i++){
 	p1=win.firstChild;
 	printChildren(p1, 4);
@@ -4173,10 +4173,10 @@ static void enter_leaveEvent(int type, int mode, int detail,
         public void windowClosed(java.awt.event.WindowEvent e){
         }
   	public void windowClosing(java.awt.event.WindowEvent e){
-          int message_type=Atom.find("WM_PROTOCOLS");
-          int del=Atom.find("WM_DELETE_WINDOW");
+          int message_type=XAtom.find("WM_PROTOCOLS");
+          int del=XAtom.find("WM_DELETE_WINDOW");
 
-          synchronized(Window.LOCK){
+          synchronized(XWindow.LOCK){
             Property p=getProperty();
             while(p!=null){
               if(p.propertyName==message_type)break;
@@ -4236,7 +4236,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 	  if(frame_width!=rectangle.width || 
              frame_height!=rectangle.height){
             Insets insets=frame.getInsets();
-	    synchronized(Window.LOCK){
+	    synchronized(XWindow.LOCK){
    	      try{
                 Point point=frame.getLocation();
                 int ww=rectangle.width-insets.left-insets.right-borderWidth*2;
@@ -4294,8 +4294,8 @@ class OtherInputMasks {
 
 class WindowOpt{
   int visual;
-  Cursor cursor;
-  Colormap colormap;
+  XCursor cursor;
+  XColormap colormap;
   int dontPropagateMask;
   int otherEventMasks;
   OtherClients otherClients;
@@ -4308,7 +4308,7 @@ class WindowOpt{
 }
 
 class Sprite {
-  Window win;
+  XWindow win;
   HotSpot hot;
   Sprite(){
     hot=new HotSpot();
@@ -4346,10 +4346,10 @@ class DontPropagate{
 
 class Focus{
   int win;
-  Window window;
+  XWindow window;
   int revert;
   long time;
-  Window[] trace;
+  XWindow[] trace;
   int traceSize;
   int traceGood;
 }

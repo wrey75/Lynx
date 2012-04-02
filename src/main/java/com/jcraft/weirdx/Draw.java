@@ -32,7 +32,7 @@ import org.apache.commons.logging.LogFactory;
 final class Draw{
 	private static Log LOG = LogFactory.getLog(Draw.class);  
 	
-  static void reqPolyPoint(Client c, Drawable d, GC gc) throws IOException {
+  static void reqPolyPoint(Client c, XDrawable d, GC gc) throws IOException {
     // int foo;
     int n=c.length;
     IO io=c.client;
@@ -90,8 +90,8 @@ final class Draw{
     }
     if(sx<0)sx=0;
     if(sy<0)sy=0;
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
     if(gc.function==GC.GXxor ||
        gc.function==GC.GXinvert){
@@ -102,7 +102,7 @@ final class Draw{
     }
   }
 
-  static void reqFillPolyArc(Client c, Drawable d, GC gc) 
+  static void reqFillPolyArc(Client c, XDrawable d, GC gc) 
     throws IOException{
     //int foo;
     int n=c.length;
@@ -144,10 +144,10 @@ final class Draw{
       graphics.fillArc(x, y, width, height, a1/64, a2/64);
     }
 
-    if(d instanceof Window){
+    if(d instanceof XWindow){
       if(sx<0) sx=0;
       if(sy<0) sy=0;
-      ((Window)d).draw(sx, sy, lx-sx+2, ly-sy+2);
+      ((XWindow)d).draw(sx, sy, lx-sx+2, ly-sy+2);
     }
 
     if(gc.function==GC.GXxor ||
@@ -159,7 +159,7 @@ final class Draw{
     }
   }
 
-  static void reqPolyArc(Client c, Drawable d, GC gc) throws IOException{
+  static void reqPolyArc(Client c, XDrawable d, GC gc) throws IOException{
     //int foo;
     int n=c.length;
     IO io=c.client;
@@ -205,10 +205,10 @@ final class Draw{
       graphics.drawArc(x, y, width, height, a1/64, a2/64);
     }
 
-    if(d instanceof Window){
+    if(d instanceof XWindow){
       if(sx<0) sx=0;
       if(sy<0) sy=0;
-      ((Window)d).draw(sx, sy, lx-sx+2, ly-sy+2);
+      ((XWindow)d).draw(sx, sy, lx-sx+2, ly-sy+2);
     }
     if(gc.function==GC.GXxor ||
        gc.function==GC.GXinvert){
@@ -219,7 +219,7 @@ final class Draw{
     }
   }
 
-  static void reqPolyText16(Client c, Drawable d, GC gc, int x, int y) 
+  static void reqPolyText16(Client c, XDrawable d, GC gc, int x, int y) 
     throws IOException{
     int n=c.length;
     //int len;
@@ -244,7 +244,7 @@ final class Draw{
       }
     }
 
-    Font font=gc.font;
+    XFont font=gc.font;
     int delta;
     n=n*4;
 
@@ -262,7 +262,7 @@ final class Draw{
 	foo=c.client.readByte(); n--; i=((i<<8)&0xffff)| foo&0xff;
 	foo=c.client.readByte(); n--; i=((i<<8)&0xffffff)| foo&0xff;
 	foo=c.client.readByte(); n--; i=(i<<8) | foo&0xff;
-	Font tmp=(Font)Resource.lookupIDByType(i, Resource.RT_FONT);
+	XFont tmp=(XFont)XResource.lookupIDByType(i, XResource.RT_FONT);
 	if(tmp!=null) { font=tmp; graphics.setFont(font.getFont()); }
 	else{ LOG.warn("font is null!!");  }
 	continue;
@@ -308,8 +308,8 @@ final class Draw{
 
     if(sx<0)sx=0;
     if(sy<0)sy=0;
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
 
     if(gc.function==GC.GXxor ||
@@ -321,7 +321,7 @@ final class Draw{
     }
   }
 
-  static void reqImageText16(Client c, Drawable d, GC gc, int x, int y) 
+  static void reqImageText16(Client c, XDrawable d, GC gc, int x, int y) 
     throws IOException{
     int len=c.data;
     int n=c.length;
@@ -343,7 +343,7 @@ final class Draw{
       }
     }
 
-    Font font=gc.font;
+    XFont font=gc.font;
 
     n*=4;
 
@@ -379,8 +379,8 @@ final class Draw{
       graphics.drawChars(c.cbuffer, 0, len, x, y);
     }
 
-    if(d instanceof Window){
-      ((Window)d).draw(x, y-(font.ascent), 
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(x, y-(font.ascent), 
 			font.charsWidth(c.cbuffer, 0, len),
 			font.ascent+font.descent);
     }
@@ -395,7 +395,7 @@ final class Draw{
     }
   }
 
-  static void reqPolyText8(Client c, Drawable d, GC gc, int x, int y) 
+  static void reqPolyText8(Client c, XDrawable d, GC gc, int x, int y) 
     throws IOException{
     int n=c.length;
     //int len;
@@ -418,7 +418,7 @@ final class Draw{
       }
     }
 
-    Font font=gc.font;
+    XFont font=gc.font;
 
     int delta;
     n=n*4;
@@ -437,7 +437,7 @@ final class Draw{
 	foo=io.readByte(); n--; i=((i<<8)&0xffff)| foo&0xff;
 	foo=io.readByte(); n--; i=((i<<8)&0xffffff)| foo&0xff;
 	foo=io.readByte(); n--; i=(i<<8) | foo&0xff;
-	Font tmp=(Font)Resource.lookupIDByType(i, Resource.RT_FONT);
+	XFont tmp=(XFont)XResource.lookupIDByType(i, XResource.RT_FONT);
 	if(tmp!=null) { font=tmp; graphics.setFont(font.getFont()); }
 	else {
 		LOG.warn("font is null!!");
@@ -493,8 +493,8 @@ final class Draw{
 
     if(sx<0)sx=0;
     if(sy<0)sy=0;
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
     if(gc.function==GC.GXxor ||
        gc.function==GC.GXinvert){
@@ -505,7 +505,7 @@ final class Draw{
     }
   }
 
-  static void reqImageText8(Client c, Drawable d, GC gc, int x, int y) 
+  static void reqImageText8(Client c, XDrawable d, GC gc, int x, int y) 
     throws IOException{
     int len=c.data;
     int n=c.length;
@@ -526,7 +526,7 @@ final class Draw{
       }
     }
 
-    Font font=gc.font;
+    XFont font=gc.font;
 
     {
       io.readByte(c.bbuffer, 0, len);
@@ -569,8 +569,8 @@ final class Draw{
       graphics.drawChars(c.cbuffer, 0, len, x, y);
     }
 
-    if(d instanceof Window){
-      ((Window)d).draw(x, y-(font.ascent), 
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(x, y-(font.ascent), 
 			font.charsWidth(c.cbuffer, 0, len),
 			font.ascent+font.descent);
     }
@@ -584,7 +584,7 @@ final class Draw{
     }
   }
 
-  static void reqPolySegment(Client c, Drawable d, GC gc) 
+  static void reqPolySegment(Client c, XDrawable d, GC gc) 
     throws IOException{
     int foo;
     int n=c.length;
@@ -651,13 +651,13 @@ final class Draw{
     if(sx<0)sx=0;
     if(sy<0)sy=0;
 
-    if(d instanceof Window){
+    if(d instanceof XWindow){
       if((gc.attr&GC.IncludeInferiors)==0){
-	((Window)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+	((XWindow)d).draw(sx, sy, lx-sx+1, ly-sy+1);
       }
     }
     else{
-      ((Pixmap)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+      ((XPixmap)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
 
     if(gc.function==GC.GXxor ||
@@ -726,7 +726,7 @@ final class Draw{
     }
   }
 
-  static void reqPolyLine(Client c, Drawable d, GC gc) throws IOException{
+  static void reqPolyLine(Client c, XDrawable d, GC gc) throws IOException{
     int n=c.length;
     int foo;
 
@@ -792,11 +792,11 @@ final class Draw{
     else
       graphics.drawPolyline(c.xarray, c.yarray, n);
 
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
     else{
-      ((Pixmap)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+      ((XPixmap)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
 
     if(gc.function==GC.GXxor || gc.function==GC.GXinvert){
@@ -808,7 +808,7 @@ final class Draw{
   }
 
   @SuppressWarnings("unused")
-static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
+static void reqFillPoly(Client c, XDrawable d, GC gc) throws IOException{
     int n=c.length;
     int foo;
 
@@ -877,8 +877,8 @@ static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
     graphics.fillPolygon(c.xarray, c.yarray, n);
     if(sx<0)sx=0;
     if(sy<0)sy=0;
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+1, ly-sy+1);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+1, ly-sy+1);
     }
     if(gc.function==GC.GXxor ||
        gc.function==GC.GXinvert){
@@ -889,7 +889,7 @@ static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
     }
   }
 
-  static void reqPolyRectangle(Client c, Drawable d, GC gc) 
+  static void reqPolyRectangle(Client c, XDrawable d, GC gc) 
     throws IOException{
 
     int n=c.length;
@@ -950,8 +950,8 @@ static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
 
     if(sx<0)sx=0;
     if(sy<0)sy=0;
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+2, ly-sy+2);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+2, ly-sy+2);
     }
     if(gc.function==GC.GXxor ||
        gc.function==GC.GXinvert){
@@ -963,7 +963,7 @@ static void reqFillPoly(Client c, Drawable d, GC gc) throws IOException{
   }
 
   @SuppressWarnings("unused")
-static void reqPolyFillRectangle(Client c, Drawable d, GC gc) 
+static void reqPolyFillRectangle(Client c, XDrawable d, GC gc) 
     throws IOException{
     int n=c.length;
     //int foo;
@@ -978,13 +978,13 @@ static void reqPolyFillRectangle(Client c, Drawable d, GC gc)
 
     if(gc.clip_mask!=null &&
        gc.clip_mask instanceof ClipPixmap &&
-       (d instanceof Pixmap) &&
-       ((Pixmap)d).data!=null
+       (d instanceof XPixmap) &&
+       ((XPixmap)d).data!=null
        ){
-      Pixmap p=(Pixmap)d;
+      XPixmap p=(XPixmap)d;
       byte[] data=p.data;
 
-      Pixmap cpixmap=(Pixmap)(gc.clip_mask.getMask());
+      XPixmap cpixmap=(XPixmap)(gc.clip_mask.getMask());
 
       short x, y;
       int ww, hh;
@@ -1069,7 +1069,7 @@ static void reqPolyFillRectangle(Client c, Drawable d, GC gc)
       }
     }
 
-    Pixmap p=null;
+    XPixmap p=null;
     if(((gc.attr&GC.fillStyle)==GC.FillOpaqueStippled) ||
        ((gc.attr&GC.fillStyle)==GC.FillStippled)){
       p=gc.stipple;
@@ -1136,8 +1136,8 @@ static void reqPolyFillRectangle(Client c, Drawable d, GC gc)
 
     if(sx<0)sx=0;
     if(sy<0)sy=0;
-    if(d instanceof Window){
-      ((Window)d).draw(sx, sy, lx-sx+2, ly-sy+2);
+    if(d instanceof XWindow){
+      ((XWindow)d).draw(sx, sy, lx-sx+2, ly-sy+2);
     }
 
     if(gc.function==GC.GXxor || gc.function==GC.GXinvert){

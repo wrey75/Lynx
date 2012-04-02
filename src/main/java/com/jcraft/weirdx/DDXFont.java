@@ -141,7 +141,7 @@ java.awt.Font getFont(){
     String enc=getCharsetEncoding();
 
     //@SuppressWarnings("rawtypes") Enumeration e = Font.charSets;
-    for( Font_CharSet foo : Font.charSets ){
+    for( Font_CharSet foo : XFont.charSets ){
       if(reg.equals(foo.getCharset()) ||
 	 enc.equals(foo.getCharset())){
         min_byte1=foo.getMinByte1();
@@ -196,8 +196,8 @@ java.awt.Font getFont(){
   }
   void initprop(){
     prop=new int[2];
-    prop[0]=Atom.make("FONT", true);
-    prop[1]=Atom.make(new String(lfname), true);
+    prop[0]=XAtom.make("FONT", true);
+    prop[1]=XAtom.make(new String(lfname), true);
   }
   int getAscent(){ return metric.getAscent(); }
   int getDescent(){ return metric.getDescent(); }
@@ -238,7 +238,7 @@ java.awt.Font getFont(){
 
   DDXFont getScalableFont(byte[] name){
     DDXFont f=null;
-    try{f=new DDXFont(); f.init(Font.genScaleName(lfname, name));}
+    try{f=new DDXFont(); f.init(XFont.genScaleName(lfname, name));}
     catch(Exception e){}
     return f;
   }

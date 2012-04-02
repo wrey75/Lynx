@@ -159,11 +159,11 @@ public final class WeirdX extends Applet {
     serverClient=new Client();
     serverClient.index=0;
     Client.clients[0]=serverClient;
-    Resource.initClientResource(serverClient);
+    XResource.initClientResource(serverClient);
 
     screen=Screen.init();
 
-    Colormap.init();
+    XColormap.init();
     Extension.init(extension);
 
     Depth[] depth=null;
@@ -208,13 +208,13 @@ public final class WeirdX extends Applet {
       depthv.clear();
     }
 
-    int rootid=Resource.fakeClientId(serverClient);
-    int colormapid=Resource.fakeClientId(serverClient);
+    int rootid=XResource.fakeClientId(serverClient);
+    int colormapid=XResource.fakeClientId(serverClient);
 
-    Font.init(Resource.fakeClientId(serverClient), charset); 
+    XFont.init(XResource.fakeClientId(serverClient), charset); 
 
-    Cursor.rootCursor=new Cursor(Resource.fakeClientId(serverClient));
-    Resource.add(Cursor.rootCursor);
+    XCursor.rootCursor=new XCursor(XResource.fakeClientId(serverClient));
+    XResource.add(XCursor.rootCursor);
 
     int fgPixel=1, bgPixel=0;
     if(visuals.indexOf("TrueColor16")!=-1){
@@ -293,10 +293,10 @@ public final class WeirdX extends Applet {
       Client.initialLength=len;
     }
     screen[0].defaultColormap=
-      Colormap.getColormap(colormapid, screen[0], 
+      XColormap.getColormap(colormapid, screen[0], 
 			   defaultv, 0, serverClient);
-    Colormap cmap=screen[0].defaultColormap;
-    Colormap.installed[0]=cmap;
+    XColormap cmap=screen[0].defaultColormap;
+    XColormap.installed[0]=cmap;
 
     if(defaultv.depth.depth!=16){                  
       cmap.flags|=4/*Colormap.BeingCreated*/;
@@ -324,7 +324,7 @@ public final class WeirdX extends Applet {
     try{ w.mapWindow(serverClient); }
     catch(Exception e){}
 
-    Pixmap.init(screen);
+    XPixmap.init(screen);
 
     if(copypaste)
       CopyPaste.init();
@@ -503,7 +503,7 @@ public final class WeirdX extends Applet {
 
     s=getParameter("weirdx.ddxwindow");
     if(s!=null){
-      Window.installDDXWindow(s);
+      XWindow.installDDXWindow(s);
     }
     
     s=getParameter("weirdx.windowmode");
@@ -738,7 +738,7 @@ public final class WeirdX extends Applet {
     try{
       try{
 	s=(String)props.get("weirdx.ddxwindow");
-	if(s!=null){ Window.installDDXWindow(s); }
+	if(s!=null){ XWindow.installDDXWindow(s); }
       }
       catch(Exception ee){ 
         LOG.error(ee);
@@ -1043,7 +1043,7 @@ public final class WeirdX extends Applet {
 
   static void resetScreen(int scrn){
     Client.closeDownAll();
-    Colormap cmap=screen[0].defaultColormap;
+    XColormap cmap=screen[0].defaultColormap;
 
     if((cmap.visual.clss & 1/*DynamicClass*/)!=0){
       cmap.flags|=4/*Colormap.BeingCreated*/;

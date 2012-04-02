@@ -29,8 +29,8 @@ import java.awt.image.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class Colormap extends Resource{
-	private static Log LOG = LogFactory.getLog(Resource.class);
+class XColormap extends XResource{
+	private static Log LOG = LogFactory.getLog(XResource.class);
 	
   static private final int REDMAP=0;
 //  static private final int GREENMAP=1;
@@ -78,10 +78,10 @@ class Colormap extends Resource{
 
   int flags;
 
-  static Colormap[] installed=null;
-  static Colormap defaultColormap=null;
+  static XColormap[] installed=null;
+  static XColormap defaultColormap=null;
 
-  Colormap(int id, Screen s, Visual v, int alloc, Client client) {
+  XColormap(int id, Screen s, Visual v, int alloc, Client client) {
     super(id, RT_COLORMAP);
 
     add(this);
@@ -128,11 +128,11 @@ class Colormap extends Resource{
     }
   }
 
-  static Colormap getColormap(int id, Screen s, Visual v, int alloc, Client client){
+  static XColormap getColormap(int id, Screen s, Visual v, int alloc, Client client){
     if(v.depth.depth==16){
       return new Colormap16(id, s, v, alloc, client);
     }
-    return new Colormap(id, s, v, alloc, client);
+    return new XColormap(id, s, v, alloc, client);
   }
 
   private int alloc(){
@@ -219,7 +219,7 @@ static void reqCreateColormap(Client c) throws IOException{
     }
     mid=io.readInt();
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(c.errorReason==0 && w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -258,7 +258,7 @@ static void reqCreateColormap(Client c) throws IOException{
     IO io=c.client;
     n=c.length;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -283,7 +283,7 @@ static void reqUninstallColormap(Client c) throws IOException{
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     if(cmap==null){
       c.errorValue=foo;
       c.errorReason=12; // Colormap
@@ -296,7 +296,7 @@ static void reqUninstallColormap(Client c) throws IOException{
     }
     if(notfound) return;
     synchronized(installed){
-      Colormap[] tmp=new Colormap[installed.length-1];
+      XColormap[] tmp=new XColormap[installed.length-1];
       tmp[0]=installed[0];
       for(int i=1; i<installed.length; i++){
 	if(installed[i]==cmap){
@@ -318,7 +318,7 @@ static void reqInstallColormap(Client c) throws IOException{
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     if(cmap==null){
       c.errorValue=foo;
       c.errorReason=12; // Colormap
@@ -329,7 +329,7 @@ static void reqInstallColormap(Client c) throws IOException{
       for(int i=0; i<installed.length; i++){
         if(installed[i]==cmap) return;
       }
-      Colormap[] tmp=new Colormap[installed.length+1];
+      XColormap[] tmp=new XColormap[installed.length+1];
       System.arraycopy(installed, 0, tmp, 0, installed.length);
       tmp[installed.length]=cmap;
       installed=tmp;
@@ -363,7 +363,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
     IO io=c.client;
     n=c.length;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -380,7 +380,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
     IO io=c.client;
     cont=c.data;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -424,7 +424,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
     IO io=c.client;
     cont=c.data;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -484,7 +484,7 @@ static void reqLookupColor(Client c) throws IOException{
 
     n=c.length;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -539,7 +539,7 @@ static void reqLookupColor(Client c) throws IOException{
     int foo;
     IO io=c.client;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -604,7 +604,7 @@ static void reqLookupColor(Client c) throws IOException{
     IO io=c.client;
     n=c.length;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -626,7 +626,7 @@ static void reqLookupColor(Client c) throws IOException{
     doc=c.data;
     n=c.length;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -677,7 +677,7 @@ static void reqLookupColor(Client c) throws IOException{
     IO io=c.client;
     n=c.length;
     foo=io.readInt();
-    Colormap cmap=(Colormap)Resource.lookupIDByType(foo, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
     c.length-=2;
     if(cmap==null){
       c.errorValue=foo;
@@ -779,7 +779,7 @@ static void reqLookupColor(Client c) throws IOException{
     return len;
   }
 
-  static int isMapInstalled(int map, Window w){
+  static int isMapInstalled(int map, XWindow w){
     return 1;
   }
 
@@ -791,7 +791,7 @@ static void reqLookupColor(Client c) throws IOException{
       RGBTXT.init(rgbTable);
     }
     if(installed==null){
-      installed=new Colormap[1];
+      installed=new XColormap[1];
     }
   }
 
@@ -878,7 +878,7 @@ static void reqLookupColor(Client c) throws IOException{
        (pixels[client.index].length==1) &&
        (((id & Client.CLIENTMASK) >> Client.CLIENTOFFSET)!=client.index) &&
        (flags & BeingCreated)==0){
-      ClientColormap cc=new ClientColormap(Resource.fakeClientId(client),
+      ClientColormap cc=new ClientColormap(XResource.fakeClientId(client),
 					   client.index, id);
       add(cc);
     }
@@ -1003,7 +1003,7 @@ private int findColor(Client client, Entry[] entries,
     }
     if (oldcount==0 && 
         (((id & Client.CLIENTMASK) >> Client.CLIENTOFFSET)!=c.index)){
-      cc=new ClientColormap(Resource.fakeClientId(c), c.index, id);
+      cc=new ClientColormap(XResource.fakeClientId(c), c.index, id);
     }
 
     if (visual.clss==DirectColor) {
@@ -1208,7 +1208,7 @@ private void allocColorCells (Client client, int colors, int planes, boolean con
     }
     if (pixels[client.index]==null && 
 	(((id & Client.CLIENTMASK) >> Client.CLIENTOFFSET)!=client.index)){
-      cc=new ClientColormap(Resource.fakeClientId(client),
+      cc=new ClientColormap(XResource.fakeClientId(client),
 			    client.index, id);
     }
 
@@ -1777,17 +1777,17 @@ class SharedColor {
   int color;
 }
 
-class ClientColormap extends Resource{
+class ClientColormap extends XResource{
   int mapid;
   int client;
 
   ClientColormap(int id, int client, int mapid){
-    super(id, Resource.RT_CMAPENTRY);
+    super(id, XResource.RT_CMAPENTRY);
     this.client=client;
     this.mapid=mapid;
   }
   void delete() throws IOException{
-    Colormap cmap=(Colormap)Resource.lookupIDByType(mapid, Resource.RT_COLORMAP);
+    XColormap cmap=(XColormap)XResource.lookupIDByType(mapid, XResource.RT_COLORMAP);
     if(cmap!=null){cmap.freePixels(client);}
   }
 }
@@ -2516,7 +2516,7 @@ class RGBTXT{
   }
 }
 
-class Colormap16 extends Colormap{
+class Colormap16 extends XColormap{
   Colormap16(int id, Screen s, Visual v, int alloc, Client client) {
     super(id, s, v, alloc, client);
   }

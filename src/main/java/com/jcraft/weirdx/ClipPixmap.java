@@ -21,8 +21,8 @@
 package com.jcraft.weirdx;
 
 final class ClipPixmap implements Clip{
-  Pixmap pixmap;
-  ClipPixmap(Pixmap p){
+  XPixmap pixmap;
+  ClipPixmap(XPixmap p){
     super();
     pixmap=p;
   }

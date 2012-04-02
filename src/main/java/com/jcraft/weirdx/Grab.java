@@ -25,7 +25,7 @@ import java.io.IOException;
 
 
 
-final class Grab extends Resource{
+final class Grab extends XResource{
   static final int ownerEvents=(1<<0);
   static final int keyboardMode=(1<<1);
   static final int pointerMode=(1<<2);
@@ -34,7 +34,7 @@ final class Grab extends Resource{
   private static final int NotifyGrab=1;
 
   Grab(int id){
-    super(id, Resource.RT_PASSIVEGRAB);
+    super(id, XResource.RT_PASSIVEGRAB);
     modifiersDetail=new Detail();
     detail=new Detail();
     enable();
@@ -52,9 +52,9 @@ final class Grab extends Resource{
   boolean sameClient(Client c){
     return ((resource & CLIENTMASK)==c.clientAsMask);
   }
-  void set(int resource, Window window,
+  void set(int resource, XWindow window,
 		  int oevents, int emask, int kmode, int pmode,
-		  Window confineto){
+		  XWindow confineto){
     this.resource=resource;
     this.window=window;
     this.attr=0;
@@ -67,23 +67,23 @@ final class Grab extends Resource{
 
   Grab	next;
   int resource;
-  Window window;
+  XWindow window;
   int attr;
   int type;
   Detail modifiersDetail;
   Detail detail;
-  Window confineTo;
+  XWindow confineTo;
   int eventMask;
 
   Client getClient(){
     return Client.clients[((resource & Client.CLIENTMASK) >> Client.CLIENTOFFSET)];
   }
 
-  static Grab createGrab(Client c, Window gw,
+  static Grab createGrab(Client c, XWindow gw,
 				int emask, int oe, int kmode, int pmode,
 				int mod, int type, int button, 
-				Window cto){
-    Grab grab=new Grab(Resource.fakeClientId(c));
+				XWindow cto){
+    Grab grab=new Grab(XResource.fakeClientId(c));
     grab.resource=grab.id;
     grab.window=gw;
     grab.eventMask=emask;
@@ -103,10 +103,10 @@ final class Grab extends Resource{
   }
   boolean grabSupersedesSecond(Grab pSecondGrab){
     if (!modifiersDetail.detailSupersedesSecond(pSecondGrab.modifiersDetail, 
-						Window.AnyModifier))
+						XWindow.AnyModifier))
       return false;
 
-    if (detail.detailSupersedesSecond(pSecondGrab.detail, Window.AnyKey))
+    if (detail.detailSupersedesSecond(pSecondGrab.detail, XWindow.AnyKey))
       return true;
     return false;
   }
@@ -116,13 +116,13 @@ final class Grab extends Resource{
     if (grabSupersedesSecond(pSecondGrab) ||
 	pSecondGrab.grabSupersedesSecond(this))
       return true;
-    if (pSecondGrab.detail.detailSupersedesSecond(detail, Window.AnyKey) && 
+    if (pSecondGrab.detail.detailSupersedesSecond(detail, XWindow.AnyKey) && 
 	modifiersDetail.detailSupersedesSecond(pSecondGrab.modifiersDetail,
-					       Window.AnyModifier))
+					       XWindow.AnyModifier))
       return true;
-    if (detail.detailSupersedesSecond(pSecondGrab.detail, Window.AnyKey) && 
+    if (detail.detailSupersedesSecond(pSecondGrab.detail, XWindow.AnyKey) && 
 	pSecondGrab.modifiersDetail.detailSupersedesSecond(modifiersDetail,
-							   Window.AnyModifier))
+							   XWindow.AnyModifier))
       return true;
     return false;
   }
@@ -141,20 +141,20 @@ final class Grab extends Resource{
     window.makeOptional();
     next=window.optional.passiveGrabs;
     window.optional.passiveGrabs=this;
-    Resource.add(this);
+    XResource.add(this);
     return 1;
   }
 
   static void deactivatePointerGrab() throws IOException {
-    Window.enter_leaveEvent(Window.grab.window, Window.sprite.win, NotifyGrab);
-    Window.grab=null;
+    XWindow.enter_leaveEvent(XWindow.grab.window, XWindow.sprite.win, NotifyGrab);
+    XWindow.grab=null;
   }
 
   void activatePointerGrab(int time, boolean autoGrab)
     throws IOException {
-    Window oldWin=(Window.grab!=null) ? Window.grab.window : Window.sprite.win;
-    Window.enter_leaveEvent(oldWin, window, NotifyGrab);
-    Window.grab=this;
+    XWindow oldWin=(XWindow.grab!=null) ? XWindow.grab.window : XWindow.sprite.win;
+    XWindow.enter_leaveEvent(oldWin, window, NotifyGrab);
+    XWindow.grab=this;
   }
 
   boolean deletePassiveGrabFromList(){
@@ -187,7 +187,7 @@ final class Grab extends Resource{
     }
     else  {
       for (i=0; i < ndels; i++){
-	Resource.freeResource(deletes[i].id, RT_NONE);
+	XResource.freeResource(deletes[i].id, RT_NONE);
       }
     }
     return ok;

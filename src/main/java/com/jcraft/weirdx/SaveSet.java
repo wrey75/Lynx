@@ -25,17 +25,17 @@ import java.util.*;
 final class SaveSet{
   private static final int SetModeInsert=0;
   private static final int SetModeDelete=1;
-  private List<Window> bag;
+  private List<XWindow> bag;
 
   private SaveSet(){
-    bag=new ArrayList<Window>();
+    bag=new ArrayList<XWindow>();
   }
 
   static void reqChangeSaveSet(Client c) throws IOException{
     int foo;
     foo=c.client.readInt();
     c.length-=2;
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -52,7 +52,7 @@ final class SaveSet{
     c.saveSet.proc(w, c.data);
   }
 
-  void proc(Window w, int mode){
+  void proc(XWindow w, int mode){
     if(mode==SetModeInsert){
       bag.add(w);
       return;
@@ -65,7 +65,7 @@ final class SaveSet{
     bag = null;
   }
 
-  static void delete(Window w){
+  static void delete(XWindow w){
     for (int i=0; i< Client.currentMaxClients; i++) {    
       Client c=Client.clients[i];
       if (c!=null && c.saveSet!=null){
@@ -77,10 +77,10 @@ final class SaveSet{
   static void handle(Client c) throws IOException{
     if(c.saveSet!=null){
       SaveSet ss=c.saveSet;
-      for (Window w : ss.bag ){    
+      for (XWindow w : ss.bag ){    
 
 	//System.out.println("saveset.handle: w="+Integer.toHexString(w.id));
-	Window parent=w.parent;
+	XWindow parent=w.parent;
 	while(parent!=null &&
 	      (Client.clients[((parent.id & Client.CLIENTMASK) >> Client.CLIENTOFFSET)]==c)){
 	  parent=parent.parent;

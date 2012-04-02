@@ -131,7 +131,7 @@ final class Client extends Thread {
 	if(index==currentMaxClients){
 	  currentMaxClients++;
 	}
-	Resource.initClientResource(this);
+	XResource.initClientResource(this);
       }
       else{
         index=-1;
@@ -213,55 +213,55 @@ final class Client extends Thread {
 	length=client.readShort();
  	switch(reqType){
 	case 1:
-	  Window.reqCreateWindow(this);
+	  XWindow.reqCreateWindow(this);
 	  break;
 	case 2:
-	  Window.reqChangeWindowAttributes(this);
+	  XWindow.reqChangeWindowAttributes(this);
 	  break;
 	case 3:
-	  Window.reqGetWindowAttributes(this);
+	  XWindow.reqGetWindowAttributes(this);
 	  break;
 	case 4:
-	  Window.reqDestroyWindow(this);
+	  XWindow.reqDestroyWindow(this);
 	  break;
 	case 5:
-	  Window.reqDestroySubwindows(this);
+	  XWindow.reqDestroySubwindows(this);
 	  break;
 	case 6:
 	  SaveSet.reqChangeSaveSet(this);
 	  break;
 	case 7:
-	  Window.reqReparentWindow(this);
+	  XWindow.reqReparentWindow(this);
 	  break;
 	case 8:
-	  Window.reqMapWindow(this);
+	  XWindow.reqMapWindow(this);
 	  break;
 	case 9:
-	  Window.reqMapSubWindows(this);
+	  XWindow.reqMapSubWindows(this);
 	  break;
 	case 10:
-	  Window.reqUnmapWindow(this);
+	  XWindow.reqUnmapWindow(this);
 	  break;
 	case 11:
-	  Window.reqUnmapSubWindows(this);
+	  XWindow.reqUnmapSubWindows(this);
 	  break;
 	case 12:
-	  Window.reqConfigureWindow(this);
+	  XWindow.reqConfigureWindow(this);
 	  break;
 	case 13:
-	  Window.reqCirculateWindow(this);
+	  XWindow.reqCirculateWindow(this);
 	  break;
 	case 14:
-	  Window.reqGetGeometry(this);
+	  XWindow.reqGetGeometry(this);
 	  break;
 	case 15:
-	  Window.reqQueryTree(this);
+	  XWindow.reqQueryTree(this);
 	  break;
 	case 16:
-	  Atom.reqInternAtom(this);
+	  XAtom.reqInternAtom(this);
 	  break;
 	case 17:
-	  Atom.reqGetAtomName(this);
+	  XAtom.reqGetAtomName(this);
 	  break;
 	case 18:
 	  Property.reqChangeProperty(this);
@@ -285,19 +285,19 @@ final class Client extends Thread {
 	  Selection.reqConvertSelection(this);
 	  break;
 	case 25:
-	  Window.reqSendEvent(this);
+	  XWindow.reqSendEvent(this);
 	  break;
 	case 26:
-	  Window.reqGrabPointer(this);
+	  XWindow.reqGrabPointer(this);
 	  break;
 	case 27:
-	  Window.reqUngrabPointer(this);
+	  XWindow.reqUngrabPointer(this);
 	  break;
 	case 28:
-	  Window.reqGrabButton(this);
+	  XWindow.reqGrabButton(this);
 	  break;
 	case 29:
-	  Window.reqUngrabButton(this);
+	  XWindow.reqUngrabButton(this);
 	  break;
 	case 30:
           // ChangeActivePointerGrab
@@ -329,7 +329,7 @@ final class Client extends Thread {
 	  client.readPad(2);
 	  break;
 	case 35:
-	  Window.reqAllowEvents(this);
+	  XWindow.reqAllowEvents(this);
 	  break;
 	case 36:
 	  Client.reqGrabServer(this);
@@ -338,13 +338,13 @@ final class Client extends Thread {
 	  Client.reqUngrabServer(this);
 	  break;
 	case 38:
-	  Window.reqQueryPointer(this);
+	  XWindow.reqQueryPointer(this);
 	  break;
 	case 39:
-	  Window.reqGetMotionEvents(this);
+	  XWindow.reqGetMotionEvents(this);
 	  break;
 	case 40:
-	  Window.reqTranslateCoordinates(this);
+	  XWindow.reqTranslateCoordinates(this);
 	  break;
 	case 41:
           // WarpPointer
@@ -358,43 +358,43 @@ final class Client extends Thread {
 	  foo=client.readShort();
 	  break;
 	case 42:
-	  Window.reqSetInputFocus(this);
+	  XWindow.reqSetInputFocus(this);
 	  break;
 	case 43:
-	  Window.reqGetInputFocus(this);
+	  XWindow.reqGetInputFocus(this);
 	  break;
 	case 44:
 	  Keyboard.reqQueryKeymap(this);
 	  break;
 	case 45:
-	  Font.reqOpenFont(this);
+	  XFont.reqOpenFont(this);
 	  break;
 	case 46:
-	  Font.reqCloseFont(this);
+	  XFont.reqCloseFont(this);
 	  break;
 	case 47:
-	  Font.reqQueryFont(this);
+	  XFont.reqQueryFont(this);
 	  break;
 	case 48:
-	  Font.reqQueryTextExtents(this);
+	  XFont.reqQueryTextExtents(this);
 	  break;
 	case 49:
-	  Font.reqListFonts(this);
+	  XFont.reqListFonts(this);
 	  break;
 	case 50:
-	  Font.reqListFontsWithInfo(this);
+	  XFont.reqListFontsWithInfo(this);
 	  break;
 	case 51:
-	  Font.reqSetFontPath(this);
+	  XFont.reqSetFontPath(this);
 	  break;
 	case 52:
-	  Font.reqGetFontPath(this);
+	  XFont.reqGetFontPath(this);
 	  break;
 	case 53:
-	  Pixmap.reqCreatePixmap(this);
+	  XPixmap.reqCreatePixmap(this);
 	  break;
 	case 54:
-	  Pixmap.reqFreePixmap(this);
+	  XPixmap.reqFreePixmap(this);
 	  break;
 	case 55:
 	  GC.reqCreateGC(this);
@@ -415,13 +415,13 @@ final class Client extends Thread {
 	  GC.reqFreeGC(this);
 	  break;
 	case 61:
-	  Window.reqClearArea(this);
+	  XWindow.reqClearArea(this);
 	  break;
 	case 62:
-	  Window.reqCopyArea(this);
+	  XWindow.reqCopyArea(this);
 	  break;
 	case 63:
-	  Window.reqCopyPlane(this);
+	  XWindow.reqCopyPlane(this);
 	  break;
 	case 64:
 	case 65:
@@ -437,7 +437,7 @@ final class Client extends Thread {
 	case 77:
 	  foo=client.readInt();
 	  length-=2;
-	  Drawable d=lookupDrawable(foo);
+	  XDrawable d=lookupDrawable(foo);
 	  if(d==null){
 	    errorValue=foo;
 	    errorReason=9; // BadDrawable; ??
@@ -503,13 +503,13 @@ final class Client extends Thread {
 	  }
 	  break;
 	case 72:
-	  Pixmap.reqPutImage(this);
+	  XPixmap.reqPutImage(this);
 	  break;
 	case 73:
-	  Pixmap.reqGetImage(this);
+	  XPixmap.reqGetImage(this);
 	  break;
 	case 78:
-	  Colormap.reqCreateColormap(this);
+	  XColormap.reqCreateColormap(this);
 	  break;
 	case 79:
 	  // FreeColormap
@@ -521,55 +521,55 @@ final class Client extends Thread {
 	  foo=client.readInt();
 	  break;
 	case 81:
-	  Colormap.reqInstallColormap(this);
+	  XColormap.reqInstallColormap(this);
 	  break;
 	case 82:
-	  Colormap.reqUninstallColormap(this);
+	  XColormap.reqUninstallColormap(this);
 	  break;
 	case 83:
-	  Colormap.reqListInstalledColormaps(this);
+	  XColormap.reqListInstalledColormaps(this);
 	  break;
 	case 84:
-	  Colormap.reqAllocColor(this);
+	  XColormap.reqAllocColor(this);
 	  break;
 	case 85:
-	  Colormap.reqAllocNamedColor(this);
+	  XColormap.reqAllocNamedColor(this);
 	  break;
 	case 86:
-	  Colormap.reqAllocColorCells(this);
+	  XColormap.reqAllocColorCells(this);
 	  break;
 	case 87:
-	  Colormap.reqAllocColorPlanes(this);
+	  XColormap.reqAllocColorPlanes(this);
 	  break;
 	case 88:
-	  Colormap.reqFreeColors(this);
+	  XColormap.reqFreeColors(this);
 	  break;
 	case 89:
-	  Colormap.reqStoreColors(this);
+	  XColormap.reqStoreColors(this);
 	  break;
 	case 90:
-	  Colormap.reqStoreNamedColor(this);
+	  XColormap.reqStoreNamedColor(this);
 	  break;
 	case 91:
-	  Colormap.reqQueryColors(this);
+	  XColormap.reqQueryColors(this);
 	  break;
 	case 92:
-	  Colormap.reqLookupColor(this);
+	  XColormap.reqLookupColor(this);
 	  break;
 	case 93:
-	  Cursor.reqCreateCursor(this);
+	  XCursor.reqCreateCursor(this);
 	  break;
 	case 94:
-	  Cursor.reqCreateGlyphCursor(this);
+	  XCursor.reqCreateGlyphCursor(this);
 	  break;
 	case 95:
-	  Cursor.reqFreeCursor(this);
+	  XCursor.reqFreeCursor(this);
 	  break;
 	case 96:
-	  Cursor.reqRecolorCursor(this);
+	  XCursor.reqRecolorCursor(this);
 	  break;
 	case 97:
-	  Window.reqQueryBestSize(this);
+	  XWindow.reqQueryBestSize(this);
 	  break;
 	case 98:
 	  Extension.reqQueryExtension(this);
@@ -607,7 +607,7 @@ final class Client extends Thread {
 	  foo=client.readByte();
 	  break;
 	case 106:
-	  Window.reqGetPointerControl(this);
+	  XWindow.reqGetPointerControl(this);
 	  break;
 	case 107:
           // SetScreenSaver
@@ -618,7 +618,7 @@ final class Client extends Thread {
 	  client.readPad(2);
 	  break;
 	case 108:
-          Window.reqGetScreenSaver(this);
+          XWindow.reqGetScreenSaver(this);
 	  break;
 	case 109:
 	  Acl.reqChangeHosts(this);
@@ -652,10 +652,10 @@ final class Client extends Thread {
           // ForceScreenSaver
 	  break;
 	case 116:
-	  Window.reqSetPointerMapping(this);
+	  XWindow.reqSetPointerMapping(this);
 	  break;
 	case 117:
-	  Window.reqGetPointerMapping(this);
+	  XWindow.reqGetPointerMapping(this);
 	  break;
 	case 118:
 	  Keyboard.reqSetModifierMapping(this);
@@ -832,7 +832,7 @@ private final void prolog() throws java.io.IOException{
     }
 
     Client killclient;
-    if ((killclient=Resource.lookupClient(foo))!=null){
+    if ((killclient=XResource.lookupClient(foo))!=null){
       killclient.closeDown();
     }
     else {
@@ -881,14 +881,14 @@ private final void prolog() throws java.io.IOException{
 	  }
 	  unGraber();
 	}
-	if(Window.grab!=null &&
-	   this!=Window.grab.getClient()){
-	  Window.grab=null;
+	if(XWindow.grab!=null &&
+	   this!=XWindow.grab.getClient()){
+	  XWindow.grab=null;
 	}
 	Selection.delete(this);
 
 	if(!really_close_down){
-	  Resource.freeClientNeverResources(this);
+	  XResource.freeClientNeverResources(this);
 	}
 	clientGone=true;
 	if(client!=null) try{client.close();}catch(Exception ee){}
@@ -899,7 +899,7 @@ private final void prolog() throws java.io.IOException{
 	catch(Exception ee){ 
 	  // System.out.println("saveSet.hanlde: "+ee);
 	}      
-	Resource.freeClientResources(this);
+	XResource.freeClientResources(this);
 	if(index < nextClient){
 	  nextClient=index;
 	}
@@ -950,26 +950,26 @@ private final void prolog() throws java.io.IOException{
   }
 
   int bag1id=0, bag2id=0;
-  Drawable bag1d, bag2d;
-  Drawable lookupDrawable(int id){
+  XDrawable bag1d, bag2d;
+  XDrawable lookupDrawable(int id){
     if(bag1id==id) return bag1d;
     if(bag2id==id){
       bag2id=bag1id; bag1id=id;
-      Drawable d=bag2d; bag2d=bag1d; bag1d=d;
+      XDrawable d=bag2d; bag2d=bag1d; bag1d=d;
       return d;
     }
-    Resource r=Resource.lookupIDByClass(id, Resource.RC_DRAWABLE);
-    if((r!=null) && (r instanceof Drawable)){
+    XResource r=XResource.lookupIDByClass(id, XResource.RC_DRAWABLE);
+    if((r!=null) && (r instanceof XDrawable)){
       bag2id=bag1id; bag2d=bag1d;
-      bag1id=id; bag1d=(Drawable)r;
+      bag1id=id; bag1d=(XDrawable)r;
       return bag1d;
     }
     return null;
   }
 
-  Window lookupWindow(int id){
-    Drawable d=lookupDrawable(id);
-    if(d==null || (d instanceof Window)) return (Window)d;
+  XWindow lookupWindow(int id){
+    XDrawable d=lookupDrawable(id);
+    if(d==null || (d instanceof XWindow)) return (XWindow)d;
     return null;
   }
 
@@ -982,7 +982,7 @@ private final void prolog() throws java.io.IOException{
       GC gc=bag2gc; bag2gc=bag1gc; bag1gc=gc;
       return gc;
     }
-    Resource r=Resource.lookupIDByType(id, Resource.RT_GC);
+    XResource r=XResource.lookupIDByType(id, XResource.RT_GC);
     if((r!=null) && (r instanceof GC)){
       bag2gid=bag1gid; bag2gc=bag1gc;
       bag1gid=id; bag1gc=(GC)r;

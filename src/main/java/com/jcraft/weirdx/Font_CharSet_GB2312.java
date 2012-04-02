@@ -50,7 +50,7 @@ class Font_CharSet_GB2312 implements Font_CharSet{
 
   public void init(){
     if(_flist==null)return;
-    Font.addFont(_flist);
+    XFont.addFont(_flist);
     _flist=null;
   }
   public int encode(byte[] bbuffer, int start, int len, char[] cbuffer){

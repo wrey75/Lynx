@@ -25,8 +25,8 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class Resource{
-	private static Log LOG = LogFactory.getLog(Resource.class);
+class XResource{
+	private static Log LOG = LogFactory.getLog(XResource.class);
   static Object LOCK=Client.class;
   static final int RC_VANILLA=0;
   static final int RC_CACHED=1<<31;
@@ -77,8 +77,8 @@ class Resource{
   int id;
   int rtype;
 
-  Resource(){}
-  Resource(int id, int rtype){
+  XResource(){}
+  XResource(int id, int rtype){
     this.id=id; this.rtype=rtype;
   }
 
@@ -88,9 +88,9 @@ class Resource{
 
   public boolean equals(Object o){
     if(o==null || id !=o.hashCode()) return false;
-    if(!(o instanceof Resource)) return true;
+    if(!(o instanceof XResource)) return true;
     if(!(o instanceof Key)){
-      return rtype==((Resource)o).rtype;
+      return rtype==((XResource)o).rtype;
     }
     Key key=(Key)o;
     if(key.clss==0){return rtype==key.rtype; }
@@ -98,19 +98,19 @@ class Resource{
     else{ return (rtype&key.clss)!=0; }
   }
 
-  static void add(Resource r){
+  static void add(XResource r){
     int client=((r.id & CLIENTMASK) >> CLIENTOFFSET);
     ClientResource cr=clients[client];
     cr.put(r, r);
   }
 
-  static void RemoveResource(Resource r){
+  static void RemoveResource(XResource r){
     int client=((r.id & CLIENTMASK) >> CLIENTOFFSET);
     ClientResource cr=clients[client];
     RemoveResource(cr, r);
   }
 
-  static void RemoveResource(ClientResource cr, Resource r){
+  static void RemoveResource(ClientResource cr, XResource r){
     synchronized(LOCK){
       if ((r.rtype & RC_CACHED)!=0){ Client.flushCache(r.id); }
     }
@@ -119,7 +119,7 @@ class Resource{
  
   static void freeResource(int id, int skip) {
     while(true){
-      Resource r=lookupIDByClass(id, RC_ANY);
+      XResource r=lookupIDByClass(id, RC_ANY);
       if(r==null) break;
       RemoveResource(r);
       try{
@@ -131,7 +131,7 @@ class Resource{
   }
 
   static void freeResourceByType(int id, int typ, int skip) {
-    Resource r=lookupIDByType(id, typ);
+    XResource r=lookupIDByType(id, typ);
     if(r!=null){
       RemoveResource(r);  // should check type
       try{
@@ -143,7 +143,7 @@ class Resource{
     }
   }
 
-  static Resource lookupIDByClass(int id, int clss){
+  static XResource lookupIDByClass(int id, int clss){
     int client=((id & CLIENTMASK) >> CLIENTOFFSET);
     if(clients.length<=client)return null;
     ClientResource cr=clients[client];
@@ -153,7 +153,7 @@ class Resource{
       try{
 	cr.key.id=id;
 	cr.key.clss=clss;
-	Resource r=(Resource)cr.get(cr.key);
+	XResource r=(XResource)cr.get(cr.key);
 	return r;
       }
       catch(Exception e){}
@@ -161,7 +161,7 @@ class Resource{
     }
   }
 
-  static Resource lookupIDByType(int id, int rtype){
+  static XResource lookupIDByType(int id, int rtype){
     int client=((id & CLIENTMASK) >> CLIENTOFFSET);
     if(clients.length<=client)return null;
     ClientResource cr=clients[client];
@@ -171,7 +171,7 @@ class Resource{
       cr.key.id=id;
       cr.key.clss=0;
       cr.key.rtype=rtype;
-      Resource r=(Resource)cr.get(cr.key);
+      XResource r=(XResource)cr.get(cr.key);
       return r;
     }
   }
@@ -182,7 +182,7 @@ class Resource{
     synchronized(LOCK){
       try{
       for (Enumeration e=cr.elements() ; e.hasMoreElements();){
-	Resource r=(Resource)e.nextElement();
+	XResource r=(XResource)e.nextElement();
 	if ((r.rtype & RC_NEVERRETAIN)!=0){
           deleteit(r); 
 	  //System.out.println("freeclientResource: "+r);
@@ -199,7 +199,7 @@ class Resource{
     synchronized(LOCK){
       try{
       for (Enumeration e=cr.elements() ; e.hasMoreElements();){
-	Resource r=(Resource)e.nextElement();
+	XResource r=(XResource)e.nextElement();
         deleteit(r);
         RemoveResource(cr, r);
       }
@@ -207,7 +207,7 @@ class Resource{
     }
   }
 
-  static void deleteit(Resource r){
+  static void deleteit(XResource r){
     try{ r.delete(); }
     catch(Exception ee){ 
       //System.out.println("r.delete: exception ->"+ee);
@@ -218,7 +218,7 @@ class Resource{
   void delete() throws IOException{ }
 
   static Client lookupClient(int rid){
-    Resource res=lookupIDByClass(rid, RC_ANY);
+    XResource res=lookupIDByClass(rid, RC_ANY);
     int clientIndex=((rid & CLIENTMASK) >> CLIENTOFFSET);
     if (clientIndex!=0 && 
 	res!=null && 
@@ -288,7 +288,7 @@ class ClientResource extends Hashtable{
   Key key=new Key();
 }
 
-class Key extends Resource{
+class Key extends XResource{
   int clss=0;
   public int hashCode(){
     return id;

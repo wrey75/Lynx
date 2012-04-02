@@ -24,7 +24,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 
-public abstract class Drawable extends Resource{
+public abstract class XDrawable extends XResource{
   public static final byte DRAWABLE_WINDOW=0;
   public static final byte DRAWABLE_PIXMAP=1;
   public static final byte UNDRAWABLE_WINDOW=2;
@@ -45,7 +45,7 @@ public abstract class Drawable extends Resource{
   int gmask=0;
   GC currentGC=null;
 
-  Drawable(int id, int type){
+  XDrawable(int id, int type){
     super(id, type);
     if(++serial > max) serial=1;
     serialNumber=serial;
@@ -55,6 +55,6 @@ public abstract class Drawable extends Resource{
   abstract void restoreClip();
 
   abstract Graphics getGraphics(GC gc, int mask);   
-  abstract Colormap getColormap();
+  abstract XColormap getColormap();
   abstract Image getImage(GC gc, int x, int y, int width, int height);
 }

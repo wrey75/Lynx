@@ -24,9 +24,9 @@ package com.jcraft.weirdx;
 
 final class Screen {
   static Screen[] screen;
-  Window root;
+  XWindow root;
   int rootId;
-  Colormap defaultColormap;
+  XColormap defaultColormap;
   int defaultColormapId;
   int white;
   int black;
@@ -47,7 +47,7 @@ final class Screen {
   Depth depth[];
   Visual visual[];
 
-  Pixmap[] pixmaps;
+  XPixmap[] pixmaps;
 
 //  private static final int visibilityOffset=17;
 //  private static final int visibility=(3<<visibilityOffset);
@@ -69,15 +69,15 @@ final class Screen {
   int getRootVisual() { return rootVisual; }
   void setRootVisual(int r) { this.rootVisual=r; }
 
-  Window getRoot() { return root; }
-  void setRoot(Window root) { this.root=root; }
+  XWindow getRoot() { return root; }
+  void setRoot(XWindow root) { this.root=root; }
 
   Depth[] getDepth() { return depth; }
   void setDepth(Depth[] d) { depth=d; }
 
   int depths() { return depth.length; }
 
-  Colormap defaultColormap() { return defaultColormap; }
+  XColormap defaultColormap() { return defaultColormap; }
   int defaultColormapId() { return defaultColormapId; }
 
   int getWhite() { return white; }
@@ -170,7 +170,7 @@ final class Screen {
 
   static void resetScreen(int scrn){
     Client.closeDownAll();
-    Colormap cmap=screen[0].defaultColormap;
+    XColormap cmap=screen[0].defaultColormap;
     if((cmap.visual.clss & 1/*DynamicClass*/)!=0){
       cmap.flags|=4/*Colormap.BeingCreated*/;
       cmap.freeAll();

@@ -238,13 +238,13 @@ final class Event {
   int getDetail(){ return event[1]; }
   int getFlags(){ return event[31]; }
 
-  void fixUpEventFromWindow(Window w, 
+  void fixUpEventFromWindow(XWindow w, 
                             int child, 
                             int rootx, int rooty, 
                             boolean calcChild){
     int flags=0;
     if(calcChild){
-      Window tmpw=Window.spriteTrace[Window.spriteTraceGood-1];
+      XWindow tmpw=XWindow.spriteTrace[XWindow.spriteTraceGood-1];
       while(tmpw!=null){
 	if(tmpw==w){
 	  child=0;
@@ -263,7 +263,7 @@ final class Event {
     ey=rooty-w.y;
     index=0;
     _writePad(8);
-    _writeInt(Window.spriteTrace[0].id);
+    _writeInt(XWindow.spriteTrace[0].id);
     _writeInt(w.id);
     _writeInt(child);
     _writeShort(rootx);

@@ -27,7 +27,7 @@ import java.applet.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class RootWindow extends Window{
+class RootWindow extends XWindow{
 	private static Log LOG = LogFactory.getLog(RootWindow.class);
 	
   private static final int InputOutput=1;
@@ -36,7 +36,7 @@ class RootWindow extends Window{
     super(screen.rootId);
     rootwindow=container;
     client=c;
-    screen.setRoot((Window)this);
+    screen.setRoot((XWindow)this);
     this.width=(short)(screen.width);
     this.height=(short)(screen.height);
     this.screen=screen;
@@ -59,11 +59,11 @@ class RootWindow extends Window{
     setBorderIsPixel();
     border.pixel=screen.black;
     borderWidth=0;
-    Resource.add(this);
+    XResource.add(this);
     makeOptional();
     attr&=~(1<<3); //cursorIsNone
 
-    optional.cursor=Cursor.rootCursor;
+    optional.cursor=XCursor.rootCursor;
     setColormap(screen.defaultColormap);
 
 //  if(rootwindow instanceof JFrame){
@@ -73,7 +73,7 @@ class RootWindow extends Window{
       rootwindow.setSize(this.width, this.height);
 //  }
 
-    try{ddxwindow=(DDXWindow)(Window.dDXWindow.newInstance());}
+    try{ddxwindow=(DDXWindow)(XWindow.dDXWindow.newInstance());}
     catch(Exception e){ 
       LOG.error(e);
       /*ddxwindow=new DDXWindowImp();*/ 
@@ -129,11 +129,11 @@ class RootWindow extends Window{
     }
 
     ddxwindow.requestFocus();
-    Window.focus.win=id;               
+    XWindow.focus.win=id;               
 
-    Window.LOCK=rootwindow.getTreeLock();
+    XWindow.LOCK=rootwindow.getTreeLock();
     Client.LOCK=rootwindow.getTreeLock();
-    Resource.LOCK=rootwindow.getTreeLock();
+    XResource.LOCK=rootwindow.getTreeLock();
 
     spriteTrace[0]=this;
     sprite.win=this;

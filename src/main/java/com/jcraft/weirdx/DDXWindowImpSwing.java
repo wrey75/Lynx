@@ -59,7 +59,7 @@ class DDXWindowImpSwing extends JPanel
   private static DDXWindow ddxwindow=null;
   private static final int VK_ALT_GRAPH = 0x15;
 
-  Window window;
+  XWindow window;
   int width, height;
   int bw;
 
@@ -77,7 +77,7 @@ class DDXWindowImpSwing extends JPanel
   DDXWindowImpSwing(){
   }
 
-  public void init(Window w){
+  public void init(XWindow w){
     if(serverClient==null){
       ddxwindow=w.screen.root.ddxwindow;
       threeButton=WeirdX.threeButton;
@@ -121,7 +121,7 @@ class DDXWindowImpSwing extends JPanel
         if(frame instanceof java.awt.Frame){
           frame.add("Center", this);
           frame.pack();
-          synchronized(Window.LOCK){
+          synchronized(XWindow.LOCK){
             Property p=window.getProperty();
             while(p!=null){
   	      if(p.propertyName==39)break;
@@ -475,7 +475,7 @@ return;
     catch(Exception ee){}
   }
 
-  public void setBorderPixmap(Pixmap p){
+  public void setBorderPixmap(XPixmap p){
   }
 
   public void mouseClicked(MouseEvent e){
@@ -488,7 +488,7 @@ return;
 	 frame==e.getSource()){
         try{
           if(window.isRealized()){
-            Window.setInputFocus(window.client, window.id, 1,
+            XWindow.setInputFocus(window.client, window.id, 1,
 				 (int)System.currentTimeMillis(), false);
 	  }
 	}
@@ -542,14 +542,14 @@ return;
 
     if(window.isMapped()){
       requestFocus();
-      Window.focus.win=window.id;
+      XWindow.focus.win=window.id;
     }
 
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
 
-    Window.sprite.hot.x=x;
-    Window.sprite.hot.y=y;
+    XWindow.sprite.hot.x=x;
+    XWindow.sprite.hot.y=y;
 
     int mod=e.getModifiers();
     int state=0;
@@ -569,7 +569,7 @@ return;
 			0x1|0x02  // focus|same-screen
 			);
     try{
-      Window.sendDeviceEvent(window, event, Window.grab, null, 1);
+      XWindow.sendDeviceEvent(window, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
@@ -585,8 +585,8 @@ return;
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
 
-    Window.sprite.hot.x=x;
-    Window.sprite.hot.y=y;
+    XWindow.sprite.hot.x=x;
+    XWindow.sprite.hot.y=y;
 
     int mod=e.getModifiers();
     int state=0;
@@ -606,7 +606,7 @@ return;
 			0x1|0x02  // focus|same-screen
 			);
     try{
-      Window.sendDeviceEvent(window, event, Window.grab, null, 1);
+      XWindow.sendDeviceEvent(window, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
@@ -636,8 +636,8 @@ return;
   private void procPressed(MouseEvent e){
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
-    Window.sprite.hot.x=x;
-    Window.sprite.hot.y=y;
+    XWindow.sprite.hot.x=x;
+    XWindow.sprite.hot.y=y;
     int mod=e.getModifiers();
     if(mod==0){ mod|=InputEvent.BUTTON1_MASK; } // ?????
 
@@ -658,15 +658,15 @@ return;
 			x, y, e.getX(), e.getY(), state, 1);
 
     try{
-      if(Window.grab==null){
-	if(Window.checkDeviceGrabs(event, 0, 1)){
+      if(XWindow.grab==null){
+	if(XWindow.checkDeviceGrabs(event, 0, 1)){
 	  return;
 	}
       }
-      if(Window.grab!=null)
-	Window.sendGrabbedEvent(event, false, 1);
+      if(XWindow.grab!=null)
+	XWindow.sendGrabbedEvent(event, false, 1);
       else
-	Window.sendDeviceEvent(window, event, Window.grab, null, 1);
+	XWindow.sendDeviceEvent(window, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
@@ -678,7 +678,7 @@ return;
 //    if((mod & InputEvent.CTRL_MASK)!=0) state|=4;
                                   // alt -> state|=8;
 
-    Window.sprite.hot.state=state;
+    XWindow.sprite.hot.state=state;
   }
   public void mouseReleased(MouseEvent e){
     if(threeButton){
@@ -707,8 +707,8 @@ return;
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
 
-    Window.sprite.hot.x=x;
-    Window.sprite.hot.y=y;
+    XWindow.sprite.hot.x=x;
+    XWindow.sprite.hot.y=y;
 
     int mod=e.getModifiers();
     int state=0;
@@ -720,19 +720,19 @@ return;
     if((mod & InputEvent.SHIFT_MASK)!=0) state|=1;
     if((mod & InputEvent.CTRL_MASK)!=0) state|=4;
                                   // alt -> state|=8;
-    Window.sprite.hot.state=0; // ?????
+    XWindow.sprite.hot.state=0; // ?????
     Event.filters[Event.MotionNotify]=Event.PointerMotionMask/*|
   				      ((Event.Button1Mask>>1)<<detail)*/;
     event.mkButtonRelease(detail, window.screen.rootId, window.id, 0,
 			  x, y, e.getX(), e.getY(), state, 1);
 
     try{
-      if(Window.grab!=null) Window.sendGrabbedEvent(event, true, 1);
-      else Window.sendDeviceEvent(window, event, Window.grab, null, 1);
+      if(XWindow.grab!=null) XWindow.sendGrabbedEvent(event, true, 1);
+      else XWindow.sendDeviceEvent(window, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
-    Window.grab=null;
+    XWindow.grab=null;
   }
 
   @SuppressWarnings("unused")
@@ -759,8 +759,8 @@ public void mouseDragged(MouseEvent e){
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
 
-    Window.sprite.hot.x=x;
-    Window.sprite.hot.y=y;
+    XWindow.sprite.hot.x=x;
+    XWindow.sprite.hot.y=y;
 
     int mod=e.getModifiers();
 
@@ -780,13 +780,13 @@ public void mouseDragged(MouseEvent e){
     if((mod & InputEvent.SHIFT_MASK)!=0) state|=1;
     if((mod & InputEvent.CTRL_MASK)!=0) state|=4;
                                   // alt -> state|=8;
-    Window.sprite.hot.state=state;
+    XWindow.sprite.hot.state=state;
 
     px=x;
     py=y;
 
     event.mkMotionNotify(1, window.screen.rootId, /*window.id,*/
-			 Window.sprite.win.id, 0, 
+			 XWindow.sprite.win.id, 0, 
 			 px, py, 
 			 e.getX(),
 			 e.getY(),
@@ -794,22 +794,22 @@ public void mouseDragged(MouseEvent e){
 
 
     try{
-      if(!Window.checkMotion(event, window)){
+      if(!XWindow.checkMotion(event, window)){
 	return;
       }
       event.mkMotionNotify(1, window.screen.rootId, /*window.id,*/
-			   Window.sprite.win.id, 0, 
+			   XWindow.sprite.win.id, 0, 
 			   px, py, 
-			   px-Window.sprite.win.x,
-			   py-Window.sprite.win.y,
+			   px-XWindow.sprite.win.x,
+			   py-XWindow.sprite.win.y,
 			   //e.getX(),
 			   //e.getY(),
 			   state, 1);
-      if(Window.grab!=null)
-	Window.sendGrabbedEvent(event, false, 1);
+      if(XWindow.grab!=null)
+	XWindow.sendGrabbedEvent(event, false, 1);
       else
-	Window.sendDeviceEvent(Window.sprite.win, 
-				   event, Window.grab, null, 1);
+	XWindow.sendDeviceEvent(XWindow.sprite.win, 
+				   event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
@@ -819,8 +819,8 @@ public void mouseDragged(MouseEvent e){
     int x=e.getX()+window.x;
     int y=e.getY()+window.y;
 
-    Window.sprite.hot.x=x;
-    Window.sprite.hot.y=y;
+    XWindow.sprite.hot.x=x;
+    XWindow.sprite.hot.y=y;
 
     int mod=e.getModifiers();
     int state=0;
@@ -834,7 +834,7 @@ public void mouseDragged(MouseEvent e){
     if((mod & InputEvent.SHIFT_MASK)!=0) state|=1;
     if((mod & InputEvent.CTRL_MASK)!=0) state|=4;
                                   // alt -> state|=8;
-    Window.sprite.hot.state=state;
+    XWindow.sprite.hot.state=state;
 
     event.mkMotionNotify(0, window.screen.rootId, window.id, 0, 
 			 x, y, 
@@ -843,13 +843,13 @@ public void mouseDragged(MouseEvent e){
 			 state, 1);
 
     try{
-      if(!Window.checkMotion(event, window)){
+      if(!XWindow.checkMotion(event, window)){
 	return;
       }
-      if(Window.grab!=null)
-	Window.sendGrabbedEvent(event, false, 1);
+      if(XWindow.grab!=null)
+	XWindow.sendGrabbedEvent(event, false, 1);
       else
-	Window.sendDeviceEvent(window, event, Window.grab, null, 1);
+	XWindow.sendDeviceEvent(window, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
@@ -869,11 +869,11 @@ public void mouseDragged(MouseEvent e){
     if(e.getKeyCode()==KeyEvent.VK_CAPS_LOCK){
       if(clck_toggle){
         clck_toggle=false;
-        Window.sprite.hot.state&=(~1);
+        XWindow.sprite.hot.state&=(~1);
       }
       else{
         clck_toggle=true;
-        Window.sprite.hot.state|=1;
+        XWindow.sprite.hot.state|=1;
       }
     }
 
@@ -887,7 +887,7 @@ public void mouseDragged(MouseEvent e){
       }
       else if(((e.getModifiers() & InputEvent.CTRL_MASK)!=0) &&
 	      e.getKeyCode()==KeyEvent.VK_E){
-	Window.printWindowTree(window.screen.root);
+	XWindow.printWindowTree(window.screen.root);
       }
 //    else if(((e.getModifiers() & InputEvent.CTRL_MASK)!=0) &&
 //	      e.getKeyCode()==KeyEvent.VK_I){
@@ -909,12 +909,12 @@ public void mouseDragged(MouseEvent e){
 //    }
     }
 
-    Window dest=Window.sprite.win;
-    if(Window.focus.window!=null) dest=Window.focus.window;
+    XWindow dest=XWindow.sprite.win;
+    if(XWindow.focus.window!=null) dest=XWindow.focus.window;
 
     if(window.screen.windowmode!=0 &&
        dest==window.screen.root){
-       if(Window.focus.window!=null) dest=Window.sprite.win;
+       if(XWindow.focus.window!=null) dest=XWindow.sprite.win;
        else dest=window;
     }
 
@@ -923,24 +923,24 @@ public void mouseDragged(MouseEvent e){
     int kcode=Keymap.km.getCode(e);
     event.mkKeyPress(kcode, window.screen.rootId,
 		     dest.id, 0,
-		     Window.sprite.hot.x, 
-		     Window.sprite.hot.y, 
-		     Window.sprite.hot.x-window.x,
-		     Window.sprite.hot.y-window.y,
-                     Window.sprite.hot.state,
+		     XWindow.sprite.hot.x, 
+		     XWindow.sprite.hot.y, 
+		     XWindow.sprite.hot.x-window.x,
+		     XWindow.sprite.hot.y-window.y,
+                     XWindow.sprite.hot.state,
 		     1);
 
     try{
-      if(Window.grab!=null)
-	Window.sendGrabbedEvent(event, false, 1);
+      if(XWindow.grab!=null)
+	XWindow.sendGrabbedEvent(event, false, 1);
       else
-	Window.sendDeviceEvent(dest, event, Window.grab, null, 1);
+	XWindow.sendDeviceEvent(dest, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
 
     kcode=e.getKeyCode();
-    int state=Window.sprite.hot.state;
+    int state=XWindow.sprite.hot.state;
     if(kcode==KeyEvent.VK_CONTROL){
       if((state&4)==0) state|=4;
     } 
@@ -959,7 +959,7 @@ public void mouseDragged(MouseEvent e){
       state|=ALT_GR_MASK;
     }
 
-    Window.sprite.hot.state=state;
+    XWindow.sprite.hot.state=state;
   }
   public void keyReleased(KeyEvent e){
     if ((window == null) || (!window.isMapped())) 
@@ -969,25 +969,25 @@ public void mouseDragged(MouseEvent e){
 
     int kcode=Keymap.km.getCode(e);
     event.mkKeyRelease(kcode, window.screen.rootId, window.id, 0,
-		       Window.sprite.hot.x, 
-		       Window.sprite.hot.y, 
-		       Window.sprite.hot.x-window.x,
-		       Window.sprite.hot.y-window.y,
-		       Window.sprite.hot.state,
+		       XWindow.sprite.hot.x, 
+		       XWindow.sprite.hot.y, 
+		       XWindow.sprite.hot.x-window.x,
+		       XWindow.sprite.hot.y-window.y,
+		       XWindow.sprite.hot.state,
 //		       state,
 		       1);
 
     try{
-      if(Window.grab!=null)
-	Window.sendGrabbedEvent(event, false, 1);
+      if(XWindow.grab!=null)
+	XWindow.sendGrabbedEvent(event, false, 1);
       else
-	Window.sendDeviceEvent(window, event, Window.grab, null, 1);
+	XWindow.sendDeviceEvent(window, event, XWindow.grab, null, 1);
     }
     catch(Exception ee){
     }
 
     kcode=e.getKeyCode();
-    int state=Window.sprite.hot.state;
+    int state=XWindow.sprite.hot.state;
     if(kcode==KeyEvent.VK_CONTROL){
       if((state&4)!=0) state-=4;
       // check for windoze ALT_GR (is equal to ALT+CONTROL), by Marcus.
@@ -1002,7 +1002,7 @@ public void mouseDragged(MouseEvent e){
     else if(kcode==VK_ALT_GRAPH){
       if((state&ALT_GR_MASK)!=0) state-=ALT_GR_MASK;
     }
-    Window.sprite.hot.state=state;
+    XWindow.sprite.hot.state=state;
   }
 
   public void keyTyped(KeyEvent e){
@@ -1017,7 +1017,7 @@ public void mouseDragged(MouseEvent e){
   public Image getImage(GC gc, int x, int y, int w, int h){
     Image i=getImage();
     if(gc!=null && gc.clip_mask!=null && gc.clip_mask instanceof ClipPixmap){
-      TransparentFilter tf=new TransparentFilter(0, 0, (Pixmap)(gc.clip_mask.getMask()));
+      TransparentFilter tf=new TransparentFilter(0, 0, (XPixmap)(gc.clip_mask.getMask()));
       i=Toolkit.getDefaultToolkit().
 	createImage(new FilteredImageSource(i.getSource(), tf));
     }
@@ -1092,7 +1092,7 @@ public void mouseDragged(MouseEvent e){
     }
 
     if((mask&GC.GCFont)!=0){
-      Font font=gc.font;
+      XFont font=gc.font;
       graphics.setFont(font.getFont());
     }
 
@@ -1209,7 +1209,7 @@ public void mouseDragged(MouseEvent e){
   }
 
 
-  public void copyArea(Window dst, GC gc, 
+  public void copyArea(XWindow dst, GC gc, 
 		       int srcx, int srcy, int width, int height, 
 		       int destx, int desty){
     Graphics g=dst.getGraphics();
@@ -1286,7 +1286,7 @@ public void mouseDragged(MouseEvent e){
     if(offg!=null) offg.setClip(0, 0, window.width, window.height);	
   }
 
-  public Window getWindow(){
+  public XWindow getWindow(){
     return window;
   }
 }

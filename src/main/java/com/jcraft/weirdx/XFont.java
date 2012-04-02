@@ -26,10 +26,10 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-final class Font extends Resource{ 
-	private static Log LOG = LogFactory.getLog(Font.class);
+final class XFont extends XResource{ 
+	private static Log LOG = LogFactory.getLog(XFont.class);
 	
-  static Font dflt;
+  static XFont dflt;
   static List<Font_CharSet> charSets = new ArrayList<Font_CharSet>();
 
   byte[] name;
@@ -245,7 +245,7 @@ final class Font extends Resource{
       addAlias(_aliases);
       _aliases=null; // go away!!
     }
-    dflt=new Font(id, "fixed");
+    dflt=new XFont(id, "fixed");
 
     if(charset!=null){
       int start=0, end;
@@ -472,7 +472,7 @@ static void loadCharSet(String name){
     return size;
   }
 
-  Font(int id, String name) {
+  XFont(int id, String name) {
     super(id, RT_FONT);
     this.name=name.getBytes();
     if(name.equals("fixed") || name.equals("cursor")){
@@ -529,7 +529,7 @@ static void loadCharSet(String name){
     n=c.length;
     foo=io.readInt();
     c.length-=2;
-    Font f=(Font)Resource.lookupIDByType(foo, RT_FONT);
+    XFont f=(XFont)XResource.lookupIDByType(foo, RT_FONT);
     if(f==null){
       c.errorValue=foo;
       c.errorReason=7; // BadFont;
@@ -838,7 +838,7 @@ static void reqSetFontPath(Client c) throws IOException{
       io.readByte(path[i], 0, foo);
     }
     io.readPad((-count)&3);
-    synchronized (Font.class) {
+    synchronized (XFont.class) {
       fpath=path;
     }
   }
@@ -916,7 +916,7 @@ static void reqListFonts(Client c) throws IOException{
         for(int i=0; i<flist.length;i++){
 	  if(match_scalable(flist[i].lfname, pattern)){
 	    count++;
-	    byte[] tmp=Font.genScaleName(flist[i].lfname, pattern);
+	    byte[] tmp=XFont.genScaleName(flist[i].lfname, pattern);
 	    length+=(1+tmp.length);
 	    if(maxname<count)break;
 	  }
@@ -953,7 +953,7 @@ static void reqListFonts(Client c) throws IOException{
         for(int i=0; i<flist.length;i++){
 	  if(match_scalable(flist[i].lfname, pattern)){
 	    count--;
-	    byte[] tmp=Font.genScaleName(flist[i].lfname, pattern);
+	    byte[] tmp=XFont.genScaleName(flist[i].lfname, pattern);
 	    io.writeByte(tmp.length);
 	    io.writeByte(tmp);
 	    if(count==0)break;
@@ -970,7 +970,7 @@ static void reqListFonts(Client c) throws IOException{
     IO io=c.client;
     foo=c.length;
     foo=io.readInt();
-    Resource.freeResource(foo, Resource.RT_NONE);
+    XResource.freeResource(foo, XResource.RT_NONE);
   }
   void delete() throws IOException{
     name=null;
@@ -1005,8 +1005,8 @@ static void reqOpenFont(Client c) throws IOException{
     }
 
     try{
-      Font f=new Font(fid, s);
-      Resource.add(f);
+      XFont f=new XFont(fid, s);
+      XResource.add(f);
     }
     catch(Exception e){
       //System.out.println(e);
@@ -1020,7 +1020,7 @@ static void reqQueryFont(Client c) throws IOException{
     IO io=c.client;
     foo=io.readInt();
     c.length-=2;
-    Font f=(Font)Resource.lookupIDByType(foo, Resource.RT_FONT);
+    XFont f=(XFont)XResource.lookupIDByType(foo, XResource.RT_FONT);
     if(f==null){
       c.errorValue=foo;
       c.errorReason=7; // BadFont

@@ -21,7 +21,7 @@
 package com.jcraft.weirdx;
 import java.io.*;
 
-final class GC extends Resource {
+final class GC extends XResource {
   static final byte GXclear=0;
   static final byte GXand=1;
   static final byte GXandReverse=2;
@@ -124,8 +124,8 @@ final class GC extends Resource {
   static final int CT_YXSORTED          =14;
   static final int CT_YXBANDED          =18;
 
-  Drawable drawable;
-  Font font;
+  XDrawable drawable;
+  XFont font;
   short lineWidth;
   byte function;
   float dash[];
@@ -133,7 +133,7 @@ final class GC extends Resource {
   int attr;
   int time;
   Pix tile;
-  Pixmap stipple;
+  XPixmap stipple;
   short tile_stipple_x_origin;
   short tile_stipple_y_origin;
   int clip_x_origin;
@@ -141,14 +141,14 @@ final class GC extends Resource {
   Clip clip_mask;
   int fgPixel, bgPixel;
 
-  GC(int id, Drawable dr) {
+  GC(int id, XDrawable dr) {
     super(id, RT_GC);
     this.drawable=dr;
     init();
   }
 
   private void init(){
-    font=Font.dflt;
+    font=XFont.dflt;
     lineWidth=1 /*0*/;
     function=GXcopy;
     dash=null;
@@ -234,7 +234,7 @@ static void reqSetDashes(Client c) throws IOException{
     ClipRectangles cr=null;
     if(gc.clip_mask!=null){
       if(gc.clip_mask instanceof ClipPixmap){
-        try{((Pixmap)(gc.clip_mask.getMask())).delete();}
+        try{((XPixmap)(gc.clip_mask.getMask())).delete();}
         catch(Exception e){}
         gc.clip_mask=null;
       }	
@@ -273,7 +273,7 @@ static void reqSetDashes(Client c) throws IOException{
       c.errorReason=13; // GC
       return;
     }
-    Resource.freeResource(foo, Resource.RT_NONE);
+    XResource.freeResource(foo, XResource.RT_NONE);
   }
   void delete() throws IOException{
     dash=null;
@@ -284,7 +284,7 @@ static void reqSetDashes(Client c) throws IOException{
     if(clip_mask!=null){
       try{
 	if(clip_mask instanceof ClipPixmap){
-	  ((Pixmap)(clip_mask.getMask())).delete();
+	  ((XPixmap)(clip_mask.getMask())).delete();
 	}
       }catch(Exception e){}
       clip_mask=null;
@@ -347,7 +347,7 @@ static void reqChangeGC(Client c) throws IOException{
     int cid=io.readInt();
     foo=io.readInt();
     c.length-=3;
-    Drawable d=c.lookupDrawable(foo);
+    XDrawable d=c.lookupDrawable(foo);
     if(d==null){
       c.errorValue=foo;
       c.errorReason=9; // Drawable
@@ -361,7 +361,7 @@ static void reqChangeGC(Client c) throws IOException{
     if(mask!=0){
       gc.changeAttr(c, mask);
     }
-    Resource.add(gc);
+    XResource.add(gc);
   }
 
   private void copyAttr(Client c, int vmask, GC srcgc) throws IOException{
@@ -457,7 +457,7 @@ static void reqChangeGC(Client c) throws IOException{
 	if(clip_mask!=null){
 	  try{
 	    if(clip_mask instanceof ClipPixmap){
-	      ((Pixmap)(clip_mask.getMask())).delete();
+	      ((XPixmap)(clip_mask.getMask())).delete();
 	    }
 	  }catch(Exception e){}
 	  clip_mask=null;
@@ -465,7 +465,7 @@ static void reqChangeGC(Client c) throws IOException{
 	clip_mask=srcgc.clip_mask;
 	if(clip_mask!=null){
 	  if(clip_mask instanceof ClipPixmap){
-	    ((Pixmap)(clip_mask.getMask())).ref();
+	    ((XPixmap)(clip_mask.getMask())).ref();
 	  }
 	}
 	break;
@@ -594,9 +594,9 @@ static void reqChangeGC(Client c) throws IOException{
       case GCTile:
 	foo=io.readInt();
 	{
-	  Resource o=Resource.lookupIDByType(foo, Resource.RT_PIXMAP);
-	  if(o!=null && (o instanceof Pixmap)){
-	    Pixmap tmp=(Pixmap)o;
+	  XResource o=XResource.lookupIDByType(foo, XResource.RT_PIXMAP);
+	  if(o!=null && (o instanceof XPixmap)){
+	    XPixmap tmp=(XPixmap)o;
 	    if(tmp.depth!=drawable.depth ||
 	       tmp.screen!=drawable.screen){
 	      c.errorValue=foo;
@@ -620,9 +620,9 @@ static void reqChangeGC(Client c) throws IOException{
       case GCStipple:
 	foo=io.readInt();
 	{
-	  Resource o=Resource.lookupIDByType(foo, Resource.RT_PIXMAP);
-	  if(o!=null && (o instanceof Pixmap)){
-	    Pixmap tmp=(Pixmap)o;
+	  XResource o=XResource.lookupIDByType(foo, XResource.RT_PIXMAP);
+	  if(o!=null && (o instanceof XPixmap)){
+	    XPixmap tmp=(XPixmap)o;
 	    if(tmp.depth!=1 ||
 	       tmp.screen!=drawable.screen){
 	      c.errorValue=foo;
@@ -652,7 +652,7 @@ static void reqChangeGC(Client c) throws IOException{
 	break;
       case GCFont:
 	foo=io.readInt();
-	font=(Font)Resource.lookupIDByType(foo, RT_FONT);
+	font=(XFont)XResource.lookupIDByType(foo, RT_FONT);
 	if(font==null){
 	}
 	break;
@@ -686,15 +686,15 @@ static void reqChangeGC(Client c) throws IOException{
 	  if(clip_mask!=null){
 	    try{
 	      if(clip_mask instanceof ClipPixmap){
-		((Pixmap)(clip_mask.getMask())).delete();
+		((XPixmap)(clip_mask.getMask())).delete();
 	      }
 	    }catch(Exception e){}
 	  }
 	  clip_mask=null;
 	}
 	else{
-	  Drawable d=c.lookupDrawable(foo);
-	  if(d==null || !(d instanceof Pixmap) || d.depth!=1){
+	  XDrawable d=c.lookupDrawable(foo);
+	  if(d==null || !(d instanceof XPixmap) || d.depth!=1){
 	    c.errorValue=foo;
 	    c.errorReason=8; // BadMatch
 	    break;
@@ -702,12 +702,12 @@ static void reqChangeGC(Client c) throws IOException{
 	  if(clip_mask!=null){
 	    try{
 	      if(clip_mask instanceof ClipPixmap){
-		((Pixmap)(clip_mask.getMask())).delete();
+		((XPixmap)(clip_mask.getMask())).delete();
 	      }
 	    }catch(Exception e){}
 	  }
-	  ((Pixmap)d).ref();
-	  clip_mask=new ClipPixmap((Pixmap)d);
+	  ((XPixmap)d).ref();
+	  clip_mask=new ClipPixmap((XPixmap)d);
 	}
 	//System.out.println(clip_mask);
 	break;
@@ -751,7 +751,7 @@ static void reqChangeGC(Client c) throws IOException{
     return result;
   }
 
-  static private GC getGC(int id, Drawable d){
+  static private GC getGC(int id, XDrawable d){
     GC gc=get();
     if(gc==null){ return new GC(id, d);}
     gc.id=id; gc.drawable=d;

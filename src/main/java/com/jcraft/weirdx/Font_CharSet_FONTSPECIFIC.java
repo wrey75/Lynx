@@ -92,13 +92,13 @@ class Font_CharSet_FONTSPECIFIC implements Font_CharSet{
 
   public void init(){
     if(_flist==null)return;
-    Font.addFont(_flist);
+    XFont.addFont(_flist);
     _flist=null;
-    Font.addFont(_flist_scalable);
+    XFont.addFont(_flist_scalable);
     _flist_scalable=null;
-    Font.addFont(_flist_scalable_proportional);
+    XFont.addFont(_flist_scalable_proportional);
     _flist_scalable_proportional=null;
-    Font.addAlias(_aliases);
+    XFont.addAlias(_aliases);
   }
 
   public int encode(byte[] bbuffer, int start, int len, char[] cbuffer){

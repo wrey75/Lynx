@@ -22,8 +22,8 @@ package com.jcraft.weirdx;
 
 import java.io.*;
 
-final class Cursor extends Resource{
-  static Cursor rootCursor;
+final class XCursor extends XResource{
+  static XCursor rootCursor;
   java.awt.Cursor cursor;
 
   @SuppressWarnings("unused")
@@ -43,11 +43,11 @@ private static int[] cursors={
     java.awt.Cursor.HAND_CURSOR,
     java.awt.Cursor.MOVE_CURSOR
   };
-  Cursor(int id){
+  XCursor(int id){
     super(id, RT_CURSOR);
     cursor=java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR);
   }
-  Cursor(int id, Pixmap src, Pixmap msk,
+  XCursor(int id, XPixmap src, XPixmap msk,
 	 int fr, int fg, int fb,
 	 int br, int bg, int bb,
 	 int hx, int hy){
@@ -177,7 +177,7 @@ private static int[] cursors={
     }
     return j;
   }
-  Cursor(int id, Font src, Font msk,
+  XCursor(int id, XFont src, XFont msk,
 	 int srcc, int mskc,
 	 int fr, int fg, int fb,
 	 int br, int bg, int bb){
@@ -189,13 +189,13 @@ private static int[] cursors={
 static void reqCreateGlyphCursor(Client c) throws IOException{
     int n, foo, cid, fr, fg, fb, br, bg, bb;
     int x, y;
-    Resource r;
+    XResource r;
     int srcc, mskc;
-    Font src, msk;
+    XFont src, msk;
     cid=c.client.readInt();
     foo=c.client.readInt();
     c.length-=3;
-    src=(Font)Resource.lookupIDByType(foo, Resource.RT_FONT);
+    src=(XFont)XResource.lookupIDByType(foo, XResource.RT_FONT);
     if(src==null){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
@@ -203,7 +203,7 @@ static void reqCreateGlyphCursor(Client c) throws IOException{
     }
     foo=c.client.readInt();
     c.length--;
-    msk=(Font)Resource.lookupIDByType(foo, Resource.RT_FONT);
+    msk=(XFont)XResource.lookupIDByType(foo, XResource.RT_FONT);
     if(msk==null){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
@@ -219,22 +219,22 @@ static void reqCreateGlyphCursor(Client c) throws IOException{
     bg=(short)c.client.readShort();
     bb=(short)c.client.readShort();
 
-    Cursor cur=new Cursor(cid, src, msk, srcc, mskc, 
+    XCursor cur=new XCursor(cid, src, msk, srcc, mskc, 
 			  fr, fg, fb, br, bg, bb);
-    Resource.add(cur);
+    XResource.add(cur);
   }
   static void reqFreeCursor(Client c) throws IOException{
     int foo;
     foo=c.client.readInt();
     c.length-=2;
-    Cursor cur=(Cursor)Resource.lookupIDByType(foo, Resource.RT_CURSOR);
+    XCursor cur=(XCursor)XResource.lookupIDByType(foo, XResource.RT_CURSOR);
     if(cur==null){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
       return; 
 
     }
-    Resource.freeResource(foo, Resource.RT_NONE);
+    XResource.freeResource(foo, XResource.RT_NONE);
   }
   void recolor(int fr, int fg, int fb, int br, int bg, int bb){
   }
@@ -245,11 +245,11 @@ static void reqCreateGlyphCursor(Client c) throws IOException{
 static void reqRecolorCursor(Client c) throws IOException{
     int n, foo, cid, fr, fg, fb, br, bg, bb;
     int x, y;
-    Resource r;
-    Pixmap src, msk;
+    XResource r;
+    XPixmap src, msk;
     foo=c.client.readInt();
     c.length-=2;
-    Cursor cur=(Cursor)Resource.lookupIDByType(foo, Resource.RT_CURSOR);
+    XCursor cur=(XCursor)XResource.lookupIDByType(foo, XResource.RT_CURSOR);
     if(cur==null){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
@@ -269,29 +269,29 @@ static void reqRecolorCursor(Client c) throws IOException{
 static void reqCreateCursor(Client c) throws IOException{
     int n, foo, cid, fr, fg, fb, br, bg, bb;
     int x, y;
-    Resource r;
-    Pixmap src, msk;
+    XResource r;
+    XPixmap src, msk;
 
     cid=c.client.readInt();
     foo=c.client.readInt();
     c.length-=3;
-    r=Resource.lookupIDByType(foo, RT_PIXMAP);
-    if(r==null || !(r instanceof Pixmap)){
+    r=XResource.lookupIDByType(foo, RT_PIXMAP);
+    if(r==null || !(r instanceof XPixmap)){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
       return; 
     }
-    src=(Pixmap)r;
+    src=(XPixmap)r;
 
     foo=c.client.readInt();
     c.length--;
-    r=Resource.lookupIDByType(foo, RT_PIXMAP);
-    if(r==null || !(r instanceof Pixmap)){
+    r=XResource.lookupIDByType(foo, RT_PIXMAP);
+    if(r==null || !(r instanceof XPixmap)){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
       return; 
     }
-    msk=(Pixmap)r;
+    msk=(XPixmap)r;
 
     fr=(short)c.client.readShort();
     fg=(short)c.client.readShort();
@@ -301,7 +301,7 @@ static void reqCreateCursor(Client c) throws IOException{
     bb=(short)c.client.readShort();
     x=(short)c.client.readShort();
     y=(short)c.client.readShort();
-    Cursor cur=new Cursor(cid, src, msk, fr, fg, fb, br, bg, bb, x, y);
-    Resource.add(cur);
+    XCursor cur=new XCursor(cid, src, msk, fr, fg, fb, br, bg, bb, x, y);
+    XResource.add(cur);
   }
 }

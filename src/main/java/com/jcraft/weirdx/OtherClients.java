@@ -24,7 +24,7 @@ import java.io.IOException;
 
 final class OtherClients extends Clients{
   int mask;
-  Window window;
+  XWindow window;
   OtherClients(int id){super(id);}
 
   void delete() throws IOException{

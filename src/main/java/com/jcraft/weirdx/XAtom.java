@@ -22,7 +22,7 @@ package com.jcraft.weirdx;
 import java.io.*;
 import java.util.*;
 
-final class Atom {
+final class XAtom {
   private static int lastAtom=0;
 
   private static String[] idTable={
@@ -189,7 +189,7 @@ final class Atom {
     io.readPad((-n) & 3);
 
     c.length=0;
-    int atm=Atom.make(bb, 0, n, exp==0);
+    int atm=XAtom.make(bb, 0, n, exp==0);
 
     synchronized(io){
       io.writeByte(1);

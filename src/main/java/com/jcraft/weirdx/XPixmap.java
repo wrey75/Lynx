@@ -40,15 +40,15 @@ import org.apache.commons.logging.LogFactory;
 
                                 
 
-class Pixmap extends Drawable {
-	private static Log LOG = LogFactory.getLog(Pixmap.class);
+class XPixmap extends XDrawable {
+	private static Log LOG = LogFactory.getLog(XPixmap.class);
 
   static void init(Screen[] screen){
     ImageFactory.init(screen[0]);
-    screen[0].pixmaps=new Pixmap[Format.format.length];
+    screen[0].pixmaps=new XPixmap[Format.format.length];
     for(int i=0; i < Format.format.length; i++){
       screen[0].pixmaps[i]=
-	ResizablePixmap.createPixmap(Resource.fakeClientId(Client.clients[0]), 
+	ResizablePixmap.createPixmap(XResource.fakeClientId(Client.clients[0]), 
 				     screen[0].root, 
 				     1, 1, Format.format[i].depth);
     }
@@ -62,11 +62,11 @@ class Pixmap extends Drawable {
 
   byte lpad;
 
-  Colormap colormap;
+  XColormap colormap;
   boolean dirty=true;
 
   MemoryImageSource mis=null;
-  Drawable drawable=null;
+  XDrawable drawable=null;
   int refcnt;
   int datasize;
   Image img=null;
@@ -76,11 +76,11 @@ class Pixmap extends Drawable {
   boolean imageDirty=false;
   int imageDirtyX, imageDirtyY, imageDirtyWidth, imageDirtyHeight;
 
-  Pixmap(int id, Drawable d,
+  XPixmap(int id, XDrawable d,
 		int width, int height, byte depth) {
     super(id, RT_PIXMAP);
 
-    type=Drawable.DRAWABLE_PIXMAP;
+    type=XDrawable.DRAWABLE_PIXMAP;
     clss=0;
     this.screen=d.screen;
     this.depth=depth;
@@ -119,15 +119,15 @@ class Pixmap extends Drawable {
     return img;
   }
 
-  Image getImage(Window win){
+  Image getImage(XWindow win){
     return getImage(win, fg, bg);
   }
 
-  Image getImage(Window win, GC gc){
+  Image getImage(XWindow win, GC gc){
     return getImage(win, gc.fgPixel, gc.bgPixel);
   }
 
-  Image getImage(Window win, int fgPixel, int bgPixel){
+  Image getImage(XWindow win, int fgPixel, int bgPixel){
     if(img==null) return null;
     if(win==null) return getImage();
     if(imageDirty && colormap!=win.getColormap()){
@@ -160,7 +160,7 @@ class Pixmap extends Drawable {
     return getImage();
   }
 
-  Image getImage(Window win, GC gc, int x, int y, int w, int h){
+  Image getImage(XWindow win, GC gc, int x, int y, int w, int h){
     getImage(win, gc);
     return getImage(gc, x, y, w, h);
   }
@@ -177,7 +177,7 @@ class Pixmap extends Drawable {
 
     Image i=getImage();
     if(gc!=null && gc.clip_mask!=null && gc.clip_mask instanceof ClipPixmap){
-      TransparentFilter tf=new TransparentFilter(0, 0, (Pixmap)(gc.clip_mask.getMask()));
+      TransparentFilter tf=new TransparentFilter(0, 0, (XPixmap)(gc.clip_mask.getMask()));
       i=Toolkit.getDefaultToolkit().
 	createImage(new FilteredImageSource(i.getSource(), tf));
     }
@@ -223,14 +223,14 @@ class Pixmap extends Drawable {
     IO io=c.client;
     foo=c.length;
     foo=io.readInt();
-    Resource o=Resource.lookupIDByType(foo, RT_PIXMAP);
+    XResource o=XResource.lookupIDByType(foo, RT_PIXMAP);
     c.length-=2;
-    if(o==null || !(o instanceof Pixmap)){
+    if(o==null || !(o instanceof XPixmap)){
       c.errorValue=foo;
       c.errorReason=4; // BadValue;
       return;
     }
-    Resource.freeResource(foo, Resource.RT_NONE);
+    XResource.freeResource(foo, XResource.RT_NONE);
   }
 
   static void reqGetImage(Client c) throws IOException {
@@ -239,7 +239,7 @@ class Pixmap extends Drawable {
 
     format=c.data;
     foo=io.readInt();
-    Drawable d=c.lookupDrawable(foo);
+    XDrawable d=c.lookupDrawable(foo);
     c.length-=2;
     if(d==null){
       c.errorValue=foo;
@@ -255,7 +255,7 @@ class Pixmap extends Drawable {
     foo=io.readInt();
     c.length=0;
     Image img=null;
-    Colormap colormap=d.getColormap();
+    XColormap colormap=d.getColormap();
     img=d.getImage(null, x, y, width, height);
 
     //
@@ -283,14 +283,14 @@ class Pixmap extends Drawable {
       for(int i=0; i<pixels.length; i++)pixels[i]=0;
     }
 
-    if(d instanceof Window){
-      if(((Window)d)!=((Window)d).screen.root &&
-	 img!=((Window)d).getImage()){
+    if(d instanceof XWindow){
+      if(((XWindow)d)!=((XWindow)d).screen.root &&
+	 img!=((XWindow)d).getImage()){
 	img.flush();
       }
     }
     else{
-      if(img!=((Pixmap)d).getImage()){
+      if(img!=((XPixmap)d).getImage()){
 	img.flush();
       }
     }
@@ -540,11 +540,11 @@ class Pixmap extends Drawable {
     short width, height, dstx, dsty;
     byte depth;
     byte lpad;
-    Pixmap pixmap=null;
+    XPixmap pixmap=null;
     format=(byte)c.data;
     n=c.length;
     foo=io.readInt();
-    Drawable d=c.lookupDrawable(foo);
+    XDrawable d=c.lookupDrawable(foo);
     if(d==null){
       c.errorValue=foo;
       c.errorReason=9; // BadDrawable;
@@ -579,20 +579,20 @@ class Pixmap extends Drawable {
     int ddstx=dstx;
     int ddsty=dsty;
 
-    synchronized(Pixmap.class){
-      if (d instanceof Pixmap){
-	pixmap=(Pixmap)d;
+    synchronized(XPixmap.class){
+      if (d instanceof XPixmap){
+	pixmap=(XPixmap)d;
 	if(pixmap.imageDirty){
 	  pixmap.image2data();
 	}
       }
       else{
-	if(!((Window)d).ddxwindow.isVisible()){
+	if(!((XWindow)d).ddxwindow.isVisible()){
 	  io.readPad(n*4); 
 	  return;
 	}
 	pixmap=null;
-	Pixmap[] pixmaps=((Window)d).screen.pixmaps;
+	XPixmap[] pixmaps=((XWindow)d).screen.pixmaps;
 	for(int i=0; i<pixmaps.length; i++){
 	  if(pixmaps[i].depth==d.depth){
 	    pixmap=pixmaps[i];
@@ -620,7 +620,7 @@ class Pixmap extends Drawable {
 
       if(depth==1 && (pixmap.depth==1||pixmap.depth==8)){
 	int www=0;
-	if (d instanceof Window){ www=((Resizable)pixmap).getRealWidth(); }
+	if (d instanceof XWindow){ www=((Resizable)pixmap).getRealWidth(); }
 	else{ www=pixmap.width; }
 
         if(WeirdX.imageByteOrder==1){
@@ -659,7 +659,7 @@ class Pixmap extends Drawable {
 	  }
 
 	  int www=0;
-	  if (d instanceof Window){ www=((Resizable)pixmap).getRealWidth(); }
+	  if (d instanceof XWindow){ www=((Resizable)pixmap).getRealWidth(); }
 	  else{ www=pixmap.width; }
 	  j*=www;
 
@@ -724,7 +724,7 @@ class Pixmap extends Drawable {
 	}
 	else{
 	  int www=0;
-	  if (d instanceof Window){ www=((Resizable)pixmap).getRealWidth(); }
+	  if (d instanceof XWindow){ www=((Resizable)pixmap).getRealWidth(); }
 	  else{ www=pixmap.width; }
 	  n*=4;
 	  while(n!=0){
@@ -761,8 +761,8 @@ class Pixmap extends Drawable {
 	io.readPad(n*4);
       }
 
-      if(d instanceof Window){
-	Graphics g=((Window)d).getGraphics();
+      if(d instanceof XWindow){
+	Graphics g=((XWindow)d).getGraphics();
  	pixmap.mis.newPixels(dstx, dsty, width, height);
 	Image dataImg=Toolkit.getDefaultToolkit().createImage(pixmap.mis);
 	Image ii=dataImg;
@@ -772,7 +772,7 @@ class Pixmap extends Drawable {
 	g.drawImage(ii, ddstx, ddsty, Screen.screen[0].root.ddxwindow);
 	if(tmp==null){ g.setClip(0, 0, d.width, d.height); }
 	else{g.setClip(tmp);}
-	((Window)d).draw(ddstx, ddsty, width, height);    
+	((XWindow)d).draw(ddstx, ddsty, width, height);    
 	dataImg.flush();
       }
       else {
@@ -812,7 +812,7 @@ class Pixmap extends Drawable {
     foo=io.readInt();
     c.length-=3;
 
-    Drawable d=c.lookupDrawable(foo);
+    XDrawable d=c.lookupDrawable(foo);
     if(d==null){
       c.errorValue=foo;
       c.errorReason=9; // BadValue;
@@ -845,13 +845,13 @@ class Pixmap extends Drawable {
     createPixmap(pid, d, width, height, depth);
   }
 
-  static Pixmap createPixmap(int id, Drawable d, 
+  static XPixmap createPixmap(int id, XDrawable d, 
 			     int width, int height, byte depth){
-    Pixmap p=null;
+    XPixmap p=null;
     if(depth==1){ p=new Pixmap1(id, d, width, height); }
     else if(depth==16){p=new Pixmap16(id, d, width, height); }
-    else{ p=new Pixmap(id, d, width, height, depth); }
-    Resource.add(p);
+    else{ p=new XPixmap(id, d, width, height, depth); }
+    XResource.add(p);
     return p;
   }
 
@@ -902,7 +902,7 @@ class Pixmap extends Drawable {
       }
     }
     if((mask&GC.GCFont)!=0){
-      Font font=gc.font;
+      XFont font=gc.font;
       graphics.setFont(font.getFont());
     }
     if((mask&GC.GCLineWidth)!=0 ||
@@ -913,13 +913,13 @@ class Pixmap extends Drawable {
     return graphics;
   }
 
-  void copyPlane(Pixmap dst, GC gc, 
+  void copyPlane(XPixmap dst, GC gc, 
 		int sx, int sy, int dx, int dy, int w, int h){
     copyArea(dst, gc, sx, sy, dx, dy, w, h);
   }
 
   @SuppressWarnings("unused")
-void copyArea(Pixmap dst, GC gc, 
+void copyArea(XPixmap dst, GC gc, 
 		int sx, int sy, int dx, int dy, int w, int h){
     if((width-sx)<w) w=width-sx;
     if((dst.width-dx)<w) w=dst.width-dx;
@@ -957,7 +957,7 @@ void copyArea(Pixmap dst, GC gc,
     }
   }
 
-  Colormap getColormap(){
+  XColormap getColormap(){
     return colormap;
   }
 
@@ -1016,11 +1016,11 @@ class FBFilter extends RGBImageFilter {
   }
 }
 
-class Pixmap1 extends Pixmap {
+class Pixmap1 extends XPixmap {
   FBFilter fbFilter=null;
   Image fgImg=null;
 
-  Pixmap1(int id, Drawable d, int width, int height) {
+  Pixmap1(int id, XDrawable d, int width, int height) {
     super(id, d, width, height, (byte)1);
     reset();
   }
@@ -1030,7 +1030,7 @@ class Pixmap1 extends Pixmap {
     else return super.getImage();
   }
 
-  Image getImage(Window win, int fgPixel, int bgPixel){
+  Image getImage(XWindow win, int fgPixel, int bgPixel){
     setFgBg(win.getColormap(), fgPixel, bgPixel);
     return super.getImage(null, fgPixel, bgPixel);
   }
@@ -1311,14 +1311,14 @@ class Pixmap1 extends Pixmap {
     }
   }
 
-  void setFgBg(Colormap cmap, int fgPixel, int bgPixel){
+  void setFgBg(XColormap cmap, int fgPixel, int bgPixel){
     if(img==null) return;
     if(fbFilter!=null){
       fbFilter.setFgBg(cmap.getColor(fgPixel), cmap.getColor(bgPixel));
     }
   }
 
-  void copyArea(Pixmap dst, GC gc, 
+  void copyArea(XPixmap dst, GC gc, 
 		int sx, int sy, int dx, int dy, int w, int h){
     if(dst.depth!=1){
       setFgBg(dst.colormap, gc.fgPixel, gc.bgPixel);
@@ -1326,16 +1326,16 @@ class Pixmap1 extends Pixmap {
     super.copyArea(dst, gc, sx, sy, dx, dy, w, h);
   }
   void mkMIS(){
-    mis=new MemoryImageSource(width, height, Colormap.bwicm, data, 0, width);
+    mis=new MemoryImageSource(width, height, XColormap.bwicm, data, 0, width);
     mis.setAnimated(true);
   }
 }
 
-class Pixmap16 extends Pixmap {
+class Pixmap16 extends XPixmap {
 	private static Log LOG = LogFactory.getLog(Pixmap16.class);
   int[] idata;
 
-  Pixmap16(int id, Drawable d, int width, int height) {
+  Pixmap16(int id, XDrawable d, int width, int height) {
     super(id, d, width, height, (byte)16);
     img=ImageFactory.createImage(width, height);
     img.flush();
@@ -1353,10 +1353,10 @@ class Pixmap16 extends Pixmap {
     return data;
   }
 
-  Image getImage(Window win){
+  Image getImage(XWindow win){
     return getImage(win, null);
   }
-  Image getImage(Window win, GC gc){
+  Image getImage(XWindow win, GC gc){
     if(img==null) return null;
     if(win==null) return getImage();
 
@@ -1391,7 +1391,7 @@ class Pixmap16 extends Pixmap {
     return getImage();
   }
 
-  Image getImage(Window win, GC gc, int x, int y, int w, int h){
+  Image getImage(XWindow win, GC gc, int x, int y, int w, int h){
     getImage(win, gc);
     return getImage(gc, x, y, w, h);
   }
@@ -1408,7 +1408,7 @@ class Pixmap16 extends Pixmap {
     Image i=getImage();
 
     if(gc!=null && gc.clip_mask!=null && gc.clip_mask instanceof ClipPixmap){
-      TransparentFilter tf=new TransparentFilter(0, 0, (Pixmap)(gc.clip_mask.getMask()));
+      TransparentFilter tf=new TransparentFilter(0, 0, (XPixmap)(gc.clip_mask.getMask()));
       i=Toolkit.getDefaultToolkit().
 	createImage(new FilteredImageSource(i.getSource(), tf));
     }
@@ -1762,41 +1762,41 @@ void putImage(Client c, GC gc,
     mis.setAnimated(true);
   }
 
-  void copyArea(Pixmap dst, GC gc, 
+  void copyArea(XPixmap dst, GC gc, 
 		int sx, int sy, int dx, int dy, int w, int h){
     super.copyArea(dst, gc, sx, sy, dx, dy, w, h);
   }
 }
 
 interface Resizable {
-  void setColormap(Colormap colormap);
+  void setColormap(XColormap colormap);
   int getRealWidth();
   int getRealHeight();
   void setSize(int w, int h);
 }
 
-class ResizablePixmap extends Pixmap implements Resizable{
+class ResizablePixmap extends XPixmap implements Resizable{
   int real_width=0;
   int real_height=0;
 
-  ResizablePixmap(int id, Drawable d, int width, int height, byte depth) {
+  ResizablePixmap(int id, XDrawable d, int width, int height, byte depth) {
     super(id, d, width, height, depth);
     getData();
     real_width=width;
     real_height=height;
   }
 
-  public void setColormap(Colormap colormap){
+  public void setColormap(XColormap colormap){
     this.colormap=colormap;
   }
 
-  static Pixmap createPixmap(int id, Drawable d, 
+  static XPixmap createPixmap(int id, XDrawable d, 
 			     int width, int height, byte depth){
-    Pixmap p=null;
+    XPixmap p=null;
     if(depth==1){ p=new ResizablePixmap1(id, d, width, height); }
     else if(depth==16){ p=new ResizablePixmap16(id, d, width, height); }
     else{ p=new ResizablePixmap(id, d, width, height, depth); }
-    Resource.add(p);
+    XResource.add(p);
     return p;
   }
 
@@ -1835,14 +1835,14 @@ class ResizablePixmap1 extends Pixmap1  implements Resizable{
   int real_width=0;
   int real_height=0;
 
-  ResizablePixmap1(int id, Drawable d, int width, int height) {
+  ResizablePixmap1(int id, XDrawable d, int width, int height) {
     super(id, d, width, height);
     getData();
     real_width=width;
     real_height=height;
   }
 
-  public void setColormap(Colormap colormap){
+  public void setColormap(XColormap colormap){
   }
 
   public void setSize(int w, int h){
@@ -1851,7 +1851,7 @@ class ResizablePixmap1 extends Pixmap1  implements Resizable{
 	real_width/=2; real_height/=2;
 	data=new byte[real_width*real_height];
 	mis=new MemoryImageSource(real_width, real_height, 
-				  Colormap.bwicm, 
+				  XColormap.bwicm, 
 				  data, 0, real_width);
 	mis.setAnimated(true);
       }
@@ -1861,7 +1861,7 @@ class ResizablePixmap1 extends Pixmap1  implements Resizable{
       if(real_height<h) real_height=h;
       data=new byte[real_width*real_height];
       mis=new MemoryImageSource(real_width, real_height, 
-				Colormap.bwicm, 
+				XColormap.bwicm, 
 				data, 0, real_width);
       mis.setAnimated(true);
     }
@@ -1879,14 +1879,14 @@ class ResizablePixmap16 extends Pixmap16  implements Resizable{
   int real_width=0;
   int real_height=0;
 
-  ResizablePixmap16(int id, Drawable d, int width, int height) {
+  ResizablePixmap16(int id, XDrawable d, int width, int height) {
     super(id, d, width, height);
     getData();
     real_width=width;
     real_height=height;
   }
 
-  public void setColormap(Colormap colormap){
+  public void setColormap(XColormap colormap){
 //    this.colormap=colormap;
   }
 

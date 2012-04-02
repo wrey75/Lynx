@@ -26,7 +26,7 @@ import java.awt.Image;
 
 final class Pix{
   int pixel;
-  Pixmap pixmap;
+  XPixmap pixmap;
   Image img;
   Pix() { }
   Pix dup(){

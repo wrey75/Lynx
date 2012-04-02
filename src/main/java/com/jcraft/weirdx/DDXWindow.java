@@ -33,7 +33,7 @@ interface DDXWindow extends java.awt.image.ImageObserver {
  //Image offi;
  //Graphics offg;
  //static void init(Screen[] scrn , boolean tb);
- void init(Window w);
+ void init(XWindow w);
  void setBorder(int bw);
  public void setVisible(boolean b);
  public boolean isVisible();
@@ -52,18 +52,18 @@ interface DDXWindow extends java.awt.image.ImageObserver {
 //    public void paintBorder(java.awt.Graphics);
 //    public void paintComponent(java.awt.Graphics);
 //    public boolean isOpaque();
- void setBorderPixmap(Pixmap pixmap);
+ void setBorderPixmap(XPixmap pixmap);
  Image getImage();
  Image getImage(GC gc, int x, int y, int w, int h);
  Graphics getGraphics();
  Graphics getGraphics2();
  Graphics getGraphics(GC gc, int mask);
- Window getWindow();
+ XWindow getWindow();
  void drawImage(Clip clip, Image img, int dx, int dy, int w, int h);
  void drawImage(Image img, int dx, int dy, int w, int h);
  void fillImage(Image img, int w, int h);
  void fillImage(Image img, int w, int h, int offx, int offy);
- void copyArea(Window dst, GC gc , int srcx, int srcy, 
+ void copyArea(XWindow dst, GC gc , int srcx, int srcy, 
 	       int width, int height, int destx, int desty);
  void copyArea(int sx, int sy, int w, int h, int dx, int dy);
  void delete() throws java.io.IOException;

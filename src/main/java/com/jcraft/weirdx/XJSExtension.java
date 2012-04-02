@@ -67,8 +67,8 @@ final class XJSExtension extends Extension{
 
     eventcount=0;
     errorcount=0;
-    ctyp=Resource.newType();
-    etyp=Resource.newType();
+    ctyp=XResource.newType();
+    etyp=XResource.newType();
     name="WeirdX-JavaScript";
   }
 

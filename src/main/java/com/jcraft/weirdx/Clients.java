@@ -20,7 +20,7 @@
 
 package com.jcraft.weirdx;
 
-class Clients extends Resource{
+class Clients extends XResource{
   Clients next;
   int resource;
   Clients(int id){

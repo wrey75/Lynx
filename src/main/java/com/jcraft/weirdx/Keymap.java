@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
 
+@SuppressWarnings("serial")
 class Keymap implements Serializable {
   static Keymap km=null;
   int start;

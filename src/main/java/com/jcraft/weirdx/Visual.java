@@ -82,19 +82,19 @@ final class Visual {
   }
   static Visual[] getStaticGray1(Client c){
     Visual[] v=new Visual[1];
-    v[0]=new Visual(Resource.fakeClientId(c), 0, 1, 2, 0, 0, 0);
+    v[0]=new Visual(XResource.fakeClientId(c), 0, 1, 2, 0, 0, 0);
     return v;
   }
 
   static Visual[] getStaticGray8(Client c){
     Visual[] v=new Visual[1];
-    v[0]=new Visual(Resource.fakeClientId(c), 0, 8, 256, 0, 0, 0);
+    v[0]=new Visual(XResource.fakeClientId(c), 0, 8, 256, 0, 0, 0);
     return v;
   }
 
   static Visual[] getPseudoColor8(Client c){
     List<Visual> vec=new ArrayList<Visual>();
-    vec.add( new Visual(Resource.fakeClientId(c), 3, 6, 256, 0, 0, 0) );
+    vec.add( new Visual(XResource.fakeClientId(c), 3, 6, 256, 0, 0, 0) );
     Visual[] v = new Visual[vec.size()];
     for(int i=0; i<vec.size(); i++){
       v[i]=(Visual)vec.get(i);
@@ -106,7 +106,7 @@ final class Visual {
   static Visual[] getTrueColor16(Client c){
 	  List<Visual> vec=new ArrayList<Visual>();
     vec.add(
-      new Visual(Resource.fakeClientId(c), 4, 6, 64,
+      new Visual(XResource.fakeClientId(c), 4, 6, 64,
 		 0xf800, 0x7e0, 0x1f));
     Visual[] v=new Visual[vec.size()];
     for(int i=0; i<vec.size(); i++){

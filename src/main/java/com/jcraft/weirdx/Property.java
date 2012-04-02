@@ -38,7 +38,7 @@ final class Property{
   byte[] data;
 
   Property(){ }
-  static Property getProperty(Window w, int name, int type){
+  static Property getProperty(XWindow w, int name, int type){
     synchronized(w){
       Property p=w.getProperty();
       while(p!=null){
@@ -52,7 +52,7 @@ final class Property{
     }
   }
 
-  static void delProperty(Client c, Window w, int name, int type)
+  static void delProperty(Client c, XWindow w, int name, int type)
     throws IOException{
     Property p;
     synchronized(w){
@@ -85,7 +85,7 @@ final class Property{
   }
 
   static void changeWindowProperty(Client c,
-				   Window w, 
+				   XWindow w, 
 				   int property, int type,
 				   short format, byte mode,
 				   int len,
@@ -181,7 +181,7 @@ static void reqRotateProperties(Client c) throws IOException{
     IO io=c.client;
 
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     c.length-=2;
     if(w==null){
       c.errorValue=foo;
@@ -202,7 +202,7 @@ static void reqRotateProperties(Client c) throws IOException{
     while(n!=0){
       atoms[i]=io.readInt();
       c.length--;
-      if(!Atom.valid(atoms[i])){
+      if(!XAtom.valid(atoms[i])){
 	c.errorValue=atoms[i];
 	c.errorReason=5; // BadAtom
 	return;
@@ -250,7 +250,7 @@ static void reqRotateProperties(Client c) throws IOException{
     int foo, propty;
     IO io=c.client;
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -276,7 +276,7 @@ static void reqGetProperty(Client c) throws IOException{
     dlt=c.data;
 
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;
@@ -381,7 +381,7 @@ static void reqListProperties(Client c) throws IOException{
     IO io=c.client;
 
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     c.length-=2;
     if(w==null){
       c.errorValue=foo;
@@ -429,7 +429,7 @@ static void reqChangeProperty(Client c) throws IOException{
 
     n=c.length;;
     foo=io.readInt();
-    Window w=c.lookupWindow(foo);
+    XWindow w=c.lookupWindow(foo);
     if(c.errorReason==0 && w==null){
       c.errorValue=foo;
       c.errorReason=3; // BadWindow;

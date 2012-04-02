@@ -48,14 +48,14 @@ final class DummySHAPEExtension extends Extension {
   DummySHAPEExtension(){
     eventcount=1;
     errorcount=0;
-    ctyp=Resource.newType();
-    etyp=Resource.newType();
+    ctyp=XResource.newType();
+    etyp=XResource.newType();
     name="SHAPE";
   }
 
   @SuppressWarnings("unused")
 void dispatch(Client c) throws IOException {
-    Window window;
+    XWindow window;
     int kind, x, y, w, h, shaped, op;
     Rectangle[] rect;
     int foo;
@@ -128,13 +128,13 @@ void dispatch(Client c) throws IOException {
           return;
         }
 
-        Drawable d=c.lookupDrawable(foo);
-	if(d==null || !(d instanceof Pixmap)){
+        XDrawable d=c.lookupDrawable(foo);
+	if(d==null || !(d instanceof XPixmap)){
 	  c.errorValue=foo;
 	  c.errorReason=4; // BadPixmap;
 	  return;
 	}
-	Pixmap pixmap=(Pixmap)d;
+	XPixmap pixmap=(XPixmap)d;
 	if(pixmap.depth!=1){
 	  c.errorValue=foo;
 	  c.errorReason=8; // BadMatch
@@ -157,7 +157,7 @@ void dispatch(Client c) throws IOException {
 	io.readPad(1);
 	foo=io.readInt();
 	c.length-=3;
-	Window dwindow=c.lookupWindow(foo);
+	XWindow dwindow=c.lookupWindow(foo);
 	if(dwindow==null){
 	  c.errorValue=foo;
 	  c.errorReason=3; // BadWindow
@@ -167,7 +167,7 @@ void dispatch(Client c) throws IOException {
 	y=(short)io.readShort();
 	foo=io.readInt();
 	c.length-=2;
-	Window swindow=c.lookupWindow(foo);
+	XWindow swindow=c.lookupWindow(foo);
 	if(swindow==null){
 	  c.errorValue=foo;
 	  c.errorReason=3; // BadWindow
@@ -232,7 +232,7 @@ void dispatch(Client c) throws IOException {
 	}
 
         {
-	  Head head=(Head)Resource.lookupIDByType(window.id, DummySHAPEExtension.etyp);
+	  Head head=(Head)XResource.lookupIDByType(window.id, DummySHAPEExtension.etyp);
   	  if(foo==1){
 	    if(head!=null){
 	      for(ShapeEvent se=head.next; se!=null; se=se.next){
@@ -241,13 +241,13 @@ void dispatch(Client c) throws IOException {
 	        }
 	      }
 	    }
-	    ShapeEvent se=new ShapeEvent(Resource.fakeClientId(c),
+	    ShapeEvent se=new ShapeEvent(XResource.fakeClientId(c),
 		  		         DummySHAPEExtension.ctyp,
 				         c, window);
-	    Resource.add(se);
+	    XResource.add(se);
 	    if(head==null){
 	      head=new Head(window.id, DummySHAPEExtension.etyp);
-	      Resource.add(head);
+	      XResource.add(head);
 	    }
 	    else{
 	      se.next=head.next;
@@ -265,7 +265,7 @@ void dispatch(Client c) throws IOException {
 	      nse=se;
 	    }
 	    if(se!=null){
-	      Resource.freeResource(se.id, DummySHAPEExtension.ctyp);
+	      XResource.freeResource(se.id, DummySHAPEExtension.ctyp);
 	      if(nse!=null){
 	        nse.next=se.next;
 	      }
@@ -288,7 +288,7 @@ void dispatch(Client c) throws IOException {
         byte result=0;
         {
  	  Head head=
-            (Head)Resource.lookupIDByType(window.id, DummySHAPEExtension.etyp);
+            (Head)XResource.lookupIDByType(window.id, DummySHAPEExtension.etyp);
           if(head!=null){
             for(ShapeEvent se=head.next; se!=null; se=se.next){
               if(se.client==c){ result=1; break; }
@@ -337,10 +337,10 @@ void dispatch(Client c) throws IOException {
       }
   }
 
-  void sendShapeNotify(int kind, Window window, 
+  void sendShapeNotify(int kind, XWindow window, 
 		       int x, int y, int w, int h, int shaped)
     throws IOException{
-    Head head=(Head)Resource.lookupIDByType(window.id, DummySHAPEExtension.etyp);
+    Head head=(Head)XResource.lookupIDByType(window.id, DummySHAPEExtension.etyp);
     if(head==null)return;
     for(ShapeEvent se=head.next; se!=null; se=se.next){
       Client c=se.client;
@@ -375,7 +375,7 @@ void dispatch(Client c) throws IOException {
     e.swapInt();
   }
 
-  class Head extends Resource{
+  class Head extends XResource{
     ShapeEvent next;
     Head(int id, int typ){
       super(id, typ);
@@ -385,18 +385,18 @@ void dispatch(Client c) throws IOException {
       ShapeEvent pNext;
       for(ShapeEvent pCur=next; pCur!=null; pCur=pNext) {
 	pNext=pCur.next;
-	Resource.freeResource (pCur.id, DummySHAPEExtension.ctyp);
+	XResource.freeResource (pCur.id, DummySHAPEExtension.ctyp);
       }
       next=null;
       return;
     }
   }
 
-  class ShapeEvent extends Resource{
+  class ShapeEvent extends XResource{
     ShapeEvent next;
     Client client;
-    Window window;
-    ShapeEvent(int id, int typ, Client client, Window window){
+    XWindow window;
+    ShapeEvent(int id, int typ, Client client, XWindow window){
       super(id, typ);
       this.client=client;
       this.window=window;

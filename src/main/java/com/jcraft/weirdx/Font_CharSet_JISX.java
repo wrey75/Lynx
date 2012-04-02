@@ -98,8 +98,8 @@ class Font_CharSet_JISX implements Font_CharSet{
 
   public void init(){
     if(_flist==null)return;
-    Font.addFont(_flist);
-    Font.addAlias(_aliases);
+    XFont.addFont(_flist);
+    XFont.addAlias(_aliases);
     _flist=null;
   }
   public int encode(byte[] bbuffer, int start, int len, char[] cbuffer){

@@ -37,7 +37,7 @@ final class TransparentFilter extends RGBImageFilter {
   int cx;
   int cy;
 
-  TransparentFilter(int cx, int cy, Pixmap pixmap){
+  TransparentFilter(int cx, int cy, XPixmap pixmap){
     this.cx=cx;
     this.cy=cy;
 
