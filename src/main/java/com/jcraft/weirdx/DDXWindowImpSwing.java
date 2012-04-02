@@ -36,9 +36,13 @@ import java.awt.event.InputEvent;
 //import com.sun.java.swing.*;
 import javax.swing.*;                                    
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 class DDXWindowImpSwing extends JPanel 
                         implements DDXWindow,
                                    MouseListener, MouseMotionListener { 
+	static Log LOG = LogFactory.getLog(DDXWindowImpSwing.class);
   static boolean clck_toggle=false;
 
   private static final byte s=0;           // start
@@ -290,12 +294,12 @@ class DDXWindowImpSwing extends JPanel
         window.currentGC=null;
       }
       catch(Exception e){
-	System.err.println(e);
+	LOG.error(e);
 	offi=null;
 	offg=null;
       }
       catch(java.lang.OutOfMemoryError e){
-	System.err.println(e);
+    	  LOG.error(e);
 	offi=null;
 	offg=null;
       }
@@ -313,12 +317,12 @@ class DDXWindowImpSwing extends JPanel
       }
     }
     catch(Exception e){
-      System.err.println(e);
+    	LOG.error(e);
       offi=null;
       offg=null;
     }
     catch(java.lang.OutOfMemoryError e){
-      System.err.println(e);
+    	LOG.error(e);
       offi=null;
       offg=null;
     }
@@ -445,7 +449,7 @@ class DDXWindowImpSwing extends JPanel
     return (X>=xx && Y>=yy && X+W<=xx+ww && Y+H<=yy+hh);
   }
 
-  public void update(Graphics g){ System.out.println("update: "); }
+  public void update(Graphics g){ LOG.info("update: "); }
 
   public void paint(Graphics g){
 try{                              // ?????
@@ -489,7 +493,7 @@ return;
 	  }
 	}
 	catch(Exception ee){
-	    System.out.println(ee);
+		LOG.error(ee);
 	}
 	return;
       }

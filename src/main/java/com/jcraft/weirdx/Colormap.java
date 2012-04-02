@@ -26,7 +26,12 @@ import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 class Colormap extends Resource{
+	private static Log LOG = LogFactory.getLog(Resource.class);
+	
   static private final int REDMAP=0;
 //  static private final int GREENMAP=1;
 //  static private final int BLUEMAP=2;
@@ -647,7 +652,7 @@ static void reqLookupColor(Client c) throws IOException{
     String s=new String(c.bbuffer, 0, len);
     Color color=(Color)rgbTable.get(s);
     if(pixel==-1){
-      System.out.println("?? pixel="+pixel);
+      LOG.warn("?? pixel="+pixel);
       pixel=25;
     }
 

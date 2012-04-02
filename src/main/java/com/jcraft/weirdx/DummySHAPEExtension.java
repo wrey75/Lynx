@@ -23,8 +23,13 @@ package com.jcraft.weirdx;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-final class DummySHAPEExtension extends Extension{
+
+final class DummySHAPEExtension extends Extension {
+	private static Log LOG = LogFactory.getLog(DummySHAPEExtension.class);
+	
   static final int ShapeSet=0;
   static final int ShapeUnion=1;
   static final int ShapeIntersect=2;
@@ -328,7 +333,7 @@ void dispatch(Client c) throws IOException {
 	}
         break;
       default:
-	System.err.println("Shape: unknown code="+c.data);
+	LOG.error("Shape: unknown code="+c.data);
       }
   }
 

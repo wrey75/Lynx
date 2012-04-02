@@ -33,11 +33,16 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.InputEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
+
+@SuppressWarnings("serial")
 class DDXWindowImp extends Panel 
                    implements DDXWindow, 
-                              MouseListener, MouseMotionListener { 
+                              MouseListener, MouseMotionListener {
+	private static Log LOG = LogFactory.getLog( DDXWindowImp.class );
   static boolean clck_toggle=false;
 
   private static final byte s=0;           // start
@@ -193,7 +198,7 @@ class DDXWindowImp extends Panel
 		    window.origin.y-window.borderWidth+        
 		    window.parent.borderWidth);                
 /*      if(x<0 && y<0){
-        System.out.println("x="+x+", y="+y+", width="+window.width+
+        LOG.debug("x="+x+", y="+y+", width="+window.width+
                            ", height="+window.height);
       } */	
     }                                                            
@@ -289,12 +294,12 @@ class DDXWindowImp extends Panel
         window.currentGC=null;
       }
       catch(Exception e){
-	System.err.println(e);
+	LOG.equals(e);
 	offi=null;
 	offg=null;
       }
       catch(java.lang.OutOfMemoryError e){
-	System.err.println(e);
+	LOG.error(e);
 	offi=null;
 	offg=null;
       }
@@ -312,12 +317,12 @@ class DDXWindowImp extends Panel
       }
     }
     catch(Exception e){
-      System.err.println(e);
+      LOG.error(e);
       offi=null;
       offg=null;
     }
     catch(java.lang.OutOfMemoryError e){
-      System.err.println(e);
+    	LOG.error(e);
       offi=null;
       offg=null;
     }
@@ -496,7 +501,7 @@ if(window==null)return;
 	  }
 	}
 	catch(Exception ee){
-	    System.out.println(ee);
+	    LOG.error(ee);
 	}
 	return;
       }

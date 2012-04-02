@@ -22,10 +22,14 @@ package com.jcraft.weirdx;
 
 import java.awt.*;
 import java.io.IOException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
                        
 @SuppressWarnings("unused")
 class Window extends Drawable {
-
+	private static Log LOG = LogFactory.getLog(Window.class);
+	
   static Object LOCK=Window.class;
 
   private static final int CWBackPixmap=(1<<0);
@@ -205,12 +209,12 @@ class Window extends Drawable {
     try{ 
     	dDXWindow = Class.forName("com.jcraft.weirdx.DDXWindowImp");
     }
-    catch(Exception e){System.err.println(e);}
+    catch(Exception e){LOG.error(e);}
   }
   static void installDDXWindow(String name){
     Class<?> c=null;
     try{if(name.startsWith("com.jcraft.weirdx."))c=Class.forName(name);}
-    catch(Exception e){System.err.println(e);}
+    catch(Exception e){LOG.error(e);}
     if(c!=null) dDXWindow=c;
   }
 
@@ -385,7 +389,7 @@ class Window extends Drawable {
 
     //  ddxwindow=new DDXWindow();
     try{ ddxwindow=(DDXWindow)dDXWindow.newInstance();}
-    catch(Exception e){ System.err.println(e); /*ddxwindow=new DDXWindow();*/ }
+    catch(Exception e){ LOG.error(e); /*ddxwindow=new DDXWindow();*/ }
     ddxwindow.init(this);
 
     try{
@@ -2794,7 +2798,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
 
     /*
-    System.out.println("copyArea: "+dsrc+" sx="+sx+",sy="+sy+
+    LOG.info("copyArea: "+dsrc+" sx="+sx+",sy="+sy+
                                   ", w="+width+", h="+height+" "+
                                    ddst+" destx="+destx+",desty="+desty);
     */
@@ -4128,16 +4132,20 @@ static void enter_leaveEvent(int type, int mode, int detail,
   }
 
   static void printWindow(Window p1, int indent){
-    for(int i=0; i<indent; i++) System.err.print(" ");
+	  StringBuffer buf = new StringBuffer();
+    for(int i=0; i<indent; i++) buf.append(" ");
     try{
-      System.err.print(Integer.toHexString(p1.id));
-//    System.err.print(" mapped: "+p1.isMapped());
-//    System.err.print(", realized: "+p1.isRealized());
-      System.err.print(" ("+p1.x+","+p1.y+","+p1.width+","+p1.height+")");
-//    System.err.print(" location: "+p1.ddxwindow.getLocation());
-      System.err.println(" isVisible: "+p1.ddxwindow.isVisible());
+      buf.append(Integer.toHexString(p1.id));
+//    buf.append(" mapped: "+p1.isMapped());
+//    buf.append(", realized: "+p1.isRealized());
+      buf.append(" ("+p1.x+","+p1.y+","+p1.width+","+p1.height+")");
+//    buf.append(" location: "+p1.ddxwindow.getLocation());
+      buf.append(" isVisible: "+p1.ddxwindow.isVisible());
+      LOG.error(buf.toString());
     }
-    catch(Exception ee){}
+    catch(Exception ee){
+    	LOG.error(ee);
+    }
   }
   static void printChildren(Window p1, int indent){
     Window p2;
@@ -4149,7 +4157,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     }
   }
   static void printWindowTree(Window win){
-    System.err.println("printWindowTree");
+    LOG.error("printWindowTree");
     printWindow(win, 0);
     Window p1;
     for(int i=0; i<1; i++){
@@ -4253,7 +4261,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 		}
 	      }
               catch(Exception ee){
-                System.out.println(ee);
+                LOG.error(ee);
               }
             }
           }

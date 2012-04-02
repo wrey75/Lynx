@@ -30,7 +30,12 @@ import com.jcraft.util.*;
 //import com.sun.java.swing.*;
 import javax.swing.*;                                    
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 class XRexec implements ActionListener{
+	private static Log LOG = LogFactory.getLog(XRexec.class);
+	
   private final JTextField name=new JTextField(8);
   private final JTextField host=new JTextField(20);
   private final JPasswordField passwd=new JPasswordField(8);
@@ -50,7 +55,7 @@ class XRexec implements ActionListener{
     }
     catch(Exception e){
       display="localhost:"+num+".0";
-      System.out.println(e);
+      LOG.error(e);
     }    
 
     JFrame jframe=new JFrame();
@@ -150,7 +155,7 @@ public static void main(String[] arg){
       jrexec.close();
     }
     catch(Exception ee) {
-      System.out.println(ee);
+      LOG.error(ee);
     }
   }
 }

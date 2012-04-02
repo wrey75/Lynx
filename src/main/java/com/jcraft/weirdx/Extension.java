@@ -22,9 +22,14 @@ package com.jcraft.weirdx;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 
 abstract class Extension {
+	private static Log LOG = LogFactory.getLog(Extension.class); 
+	
   static int currentMaxType=127;
   static int currentMaxEventType=/*Event.EXTENSION_EVENT_BASE=*/64;
   static int currentMaxErrorType=17;
@@ -66,7 +71,7 @@ abstract class Extension {
       ext=foo;
     }
     catch(Exception e){
-      System.err.println(e);
+      LOG.error(e);
     }
   }
 
@@ -85,7 +90,7 @@ abstract class Extension {
 	return;
       }
     }
-    System.err.println("Extension: unknown reqType "+reqType);
+    LOG.error("Extension: unknown reqType "+reqType);
   }
 
   static void swap(int etyp, Event e){

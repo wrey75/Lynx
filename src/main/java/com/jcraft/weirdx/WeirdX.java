@@ -122,7 +122,7 @@ public final class WeirdX extends Applet {
       displaysocket.init(weirdx.displayNumber);
     }
     catch(Exception ee){
-      System.out.println(ee+" bye");
+      LOG.error(ee+" bye");
       displaysocket=null;
       return;
     }
@@ -338,7 +338,9 @@ public final class WeirdX extends Applet {
         Thread foo=(Thread)c.newInstance();
         foo.start();
       }
-      catch(Exception e){ System.out.println("WeirdX: "+e); }
+      catch(Exception e){
+    	  LOG.error("WeirdX: "+e);
+      }
     }
   }
 
@@ -389,7 +391,7 @@ public final class WeirdX extends Applet {
       while(true && weirdx!=null){
 	try{ socket=displaysocket.accept(); }
 	catch(Exception e){
-	  System.out.println(e);
+	  LOG.error(e);
           if(e instanceof NullPointerException){
             weirdx=null;
             break;
@@ -398,7 +400,7 @@ public final class WeirdX extends Applet {
 	}
 
 	if(!Acl.check(socket.getInetAddress())){
-	  System.err.println("ACL warning: unauthorized access from "+
+	  LOG.error("ACL warning: unauthorized access from "+
 			     socket.getInetAddress());
 	  try{socket.close();}catch(Exception e){};
 	  continue;
@@ -420,7 +422,7 @@ public final class WeirdX extends Applet {
 	if(byte_order[0]==0x6c){ client=new IOLSB(); }
 	else if(byte_order[0]==0x42){ client=new IOMSB(); }
 	else {
-	  System.out.println("protocol: error "+
+	  LOG.warn("protocol: error "+
 			     Integer.toHexString(byte_order[0]));
           continue;
 	}
@@ -512,7 +514,9 @@ public final class WeirdX extends Applet {
     s=getParameter("weirdx.displaynum");
     if(s!=null){
       try{ displayNumber=Integer.parseInt(s); }
-      catch(Exception ee){System.err.println(ee);}
+      catch(Exception ee){
+    	  LOG.error(ee);
+      }
     }
 
     weirdx=this;
@@ -636,7 +640,9 @@ public final class WeirdX extends Applet {
 	  }
 //	}
       }
-      catch(Exception ee){System.err.println(ee);}
+      catch(Exception ee){
+      	LOG.error(ee);
+      }
     }
 */
 
@@ -648,10 +654,10 @@ public final class WeirdX extends Applet {
       try{
         displaySocketClass=Class.forName(s);
         if(!s.equals("com.jcraft.weirdx.DisplaySocket6k"))
-          System.out.println(s+" is used for DisplaySocket");
+          LOG.warn(s+" is used for DisplaySocket");
       }
       catch(Exception e){
-        System.err.println(e);
+        LOG.error(e);
         displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
       }
     }
@@ -708,7 +714,7 @@ public final class WeirdX extends Applet {
       sprops=System.getProperties();
     } 
     catch (Exception e) {
-      System.err.println("Unable to read system properties: "+e);
+      LOG.error("Unable to read system properties: "+e);
       sprops=new Properties();
     }
     for( Object e: props.keySet() ){
@@ -735,7 +741,7 @@ public final class WeirdX extends Applet {
 	if(s!=null){ Window.installDDXWindow(s); }
       }
       catch(Exception ee){ 
-        System.err.println(ee);
+        LOG.error(ee);
       }
 
       try{
@@ -743,7 +749,7 @@ public final class WeirdX extends Applet {
 	if(s!=null){ width=Short.parseShort(s); }
       }
       catch(Exception ee){ 
-        //System.err.println(ee);
+        LOG.error(ee);
       }
 
       try{ s=(String)props.get("weirdx.display.height");
@@ -783,7 +789,7 @@ public final class WeirdX extends Applet {
         }
       }
       catch(Exception ee){ 
-        System.err.println(ee);
+        LOG.error(ee);
       }
 
       try{
@@ -791,7 +797,7 @@ public final class WeirdX extends Applet {
 	if(s!=null){ visuals=s; }
       }
       catch(Exception ee){ 
-        //System.err.println(ee);
+        LOG.warn(ee);
       }
 
       try{
@@ -801,7 +807,7 @@ public final class WeirdX extends Applet {
 	}
       }
       catch(Exception ee){ 
-        //System.err.println(ee);
+        LOG.warn(ee);
       }
 
       try{
@@ -809,7 +815,7 @@ public final class WeirdX extends Applet {
 	if(s!=null){ myAddress=s; }
       }
       catch(Exception ee){ 
-        //System.err.println(ee);
+        LOG.warn(ee);
       }
 
       try{
@@ -817,7 +823,7 @@ public final class WeirdX extends Applet {
 	if(s!=null){ weirdx.displayNumber=Integer.parseInt(s);}
       }
       catch(Exception ee){ 
-        //System.err.println(ee);
+        LOG.warn(ee);
       }
 
       try{
@@ -973,11 +979,11 @@ public final class WeirdX extends Applet {
               }
 //	    }
           }
-          catch(Exception ee){System.err.println(ee);}
+          catch(Exception ee){LOG.error(ee);}
         }
       }                                                           
       catch(Exception ee){                                        
-        //System.err.println(ee);                                 
+        LOG.error(ee);                                 
       }
 */
 
@@ -997,10 +1003,10 @@ public final class WeirdX extends Applet {
           try{
             displaySocketClass=Class.forName(s);
             if(!s.equals("com.jcraft.weirdx.DisplaySocket6k"))
-              System.out.println(s+" is used for DisplaySocket");
+              LOG.warn(s+" is used for DisplaySocket");
           }
           catch(Exception e){
-            System.err.println(e);
+            LOG.error(e);
             displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
           }
 	}                                                         
@@ -1010,7 +1016,9 @@ public final class WeirdX extends Applet {
       }
 
     }
-    catch(Exception e){System.err.println(e);}
+    catch(Exception e){
+    	LOG.error(e);
+    }
 
     WeirdX.weirdx=weirdx;
     Container container=new Frame("WeirdX");
@@ -1094,7 +1102,7 @@ public final class WeirdX extends Applet {
 	args[0]=new Integer(WeirdX.jdxpcport);
 	try{ foo = constructor.newInstance(args); }
 	catch(java.lang.reflect.InvocationTargetException eee){
-          System.err.println("fail to set jdxpcport="+WeirdX.jdxpcport);
+          LOG.error("fail to set jdxpcport="+WeirdX.jdxpcport);
           foo=c.newInstance();
         }
 
@@ -1120,7 +1128,7 @@ public final class WeirdX extends Applet {
 	((Thread)foo).run();
       }
       catch(Exception e){
-        System.err.println(e);
+        LOG.error(e);
       }
     }
   } 

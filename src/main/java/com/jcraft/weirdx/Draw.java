@@ -25,8 +25,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 final class Draw{
+	private static Log LOG = LogFactory.getLog(Draw.class);  
+	
   static void reqPolyPoint(Client c, Drawable d, GC gc) throws IOException {
     // int foo;
     int n=c.length;
@@ -259,7 +264,7 @@ final class Draw{
 	foo=c.client.readByte(); n--; i=(i<<8) | foo&0xff;
 	Font tmp=(Font)Resource.lookupIDByType(i, Resource.RT_FONT);
 	if(tmp!=null) { font=tmp; graphics.setFont(font.getFont()); }
-	else{ System.out.println("font is null!!");  }
+	else{ LOG.warn("font is null!!");  }
 	continue;
       }
       delta=c.client.readByte(); n--;
@@ -434,7 +439,9 @@ final class Draw{
 	foo=io.readByte(); n--; i=(i<<8) | foo&0xff;
 	Font tmp=(Font)Resource.lookupIDByType(i, Resource.RT_FONT);
 	if(tmp!=null) { font=tmp; graphics.setFont(font.getFont()); }
-	else{ System.out.println("font is null!!");  }
+	else {
+		LOG.warn("font is null!!");
+	}
 	continue;
       }
 

@@ -24,7 +24,12 @@ package com.jcraft.weirdx;
 import java.awt.*;
 import java.applet.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 class RootWindow extends Window{
+	private static Log LOG = LogFactory.getLog(RootWindow.class);
+	
   private static final int InputOutput=1;
   Container rootwindow;
   RootWindow(Container container, Screen screen, Format[] format, Client c) {
@@ -70,7 +75,7 @@ class RootWindow extends Window{
 
     try{ddxwindow=(DDXWindow)(Window.dDXWindow.newInstance());}
     catch(Exception e){ 
-      System.err.println(e);
+      LOG.error(e);
       /*ddxwindow=new DDXWindowImp();*/ 
     }
 

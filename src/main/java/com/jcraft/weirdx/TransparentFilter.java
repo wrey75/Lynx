@@ -25,11 +25,12 @@ import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RGBImageFilter;
 
-
-
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 final class TransparentFilter extends RGBImageFilter {
+	private static Log LOG = LogFactory.getLog(TransparentFilter.class);
+	
   int width;
   int height;
   byte[] pixels;
@@ -70,7 +71,7 @@ final class TransparentFilter extends RGBImageFilter {
       }
 
       if ((pg.getStatus() & ImageObserver.ABORT)!=0) {
-	System.err.println("image fetch aborted or errored");
+		LOG.error("image fetch aborted or errored");
 	return;
       }
 

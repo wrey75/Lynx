@@ -23,8 +23,12 @@ package com.jcraft.weirdx;
 import java.io.*;
 import java.net.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 @SuppressWarnings("unused")
-final class XDMCP extends Thread implements ClientListener{
+final class XDMCP extends Thread implements ClientListener {
+	private static Log LOG = LogFactory.getLog(XDMCP.class);
 
   private final static int start=1;
   private final static int query=2;
@@ -105,7 +109,7 @@ final class XDMCP extends Thread implements ClientListener{
 	bi++;
       }
     }
-    catch(Exception e){ System.err.println(e); }
+    catch(Exception e){ LOG.error(e); }
   }
 
   XDMCP(String host){
@@ -128,7 +132,7 @@ final class XDMCP extends Thread implements ClientListener{
        myaddress[1]==0 &&
        myaddress[2]==0 &&
        myaddress[3]==1){
-      System.err.println("XDMCP warning: InetAddress.getLocalHost() return loopback address");
+      LOG.warn("XDMCP warning: InetAddress.getLocalHost() return loopback address");
     }
 
     if(op==Query) mode=query;
@@ -156,8 +160,12 @@ final class XDMCP extends Thread implements ClientListener{
   }
 
   public void run(){
-    try{stateMachine();}
-    catch(Exception e){System.out.println(e);}
+    try{
+    	stateMachine();
+    }
+    catch(Exception e){
+    	LOG.error(e);
+    }
   }
 
   void stateMachine() throws IOException{
@@ -211,7 +219,7 @@ final class XDMCP extends Thread implements ClientListener{
 	    state=stop_connection;
 	  }
 	  else{
-	    System.out.println("unknow opcode("+opcode+") at "+state); 
+	    LOG.error("unknow opcode("+opcode+") at "+state); 
 	    return;
 	  }
 	}
@@ -381,7 +389,7 @@ final class XDMCP extends Thread implements ClientListener{
 	    state=stop_connection;
 	  }
 	  else{
-	    System.out.println("unknow opcode("+opcode+") at "+state);
+	    LOG.error("unknow opcode("+opcode+") at "+state);
 	    return;
 	  }
 	}
@@ -425,12 +433,12 @@ final class XDMCP extends Thread implements ClientListener{
 	      state=stop_connection;
 	    }
 	    else{
-	      System.out.println("await_manage_response: invalid failed "+id); 
+	      LOG.error("await_manage_response: invalid failed "+id); 
 	      return; 
 	    }
 	  }
 	  else {
-	    System.out.println("unknow opcode("+opcode+") at "+state);
+	    LOG.error("unknow opcode("+opcode+") at "+state);
 	    return;
 	  }
 	}
@@ -489,7 +497,7 @@ final class XDMCP extends Thread implements ClientListener{
 	break;
 
       default:
-	System.out.println("??");
+    	  LOG.warn("??");
       }
     }
   }
@@ -517,15 +525,19 @@ final class XDMCP extends Thread implements ClientListener{
 //	socket = new DatagramSocket();
 	socket = new DatagramSocket(6001); // dummy...
       }
-      catch(Exception e){System.err.println(e);}
+      catch(Exception e){LOG.error(e);}
       ba=new byte[1]; sa=new byte[2]; ia=new byte[8]; 
       recpacket = new DatagramPacket(buf, 1024);
       sndpacket=new DatagramPacket(outbuffer, 0, address, port);
     }
 
     void setTimeout(int i){
-      try{socket.setSoTimeout(i);}
-      catch(Exception e){System.out.println(e);}
+      try{
+    	  socket.setSoTimeout(i);
+      }
+      catch(Exception e){
+    	  LOG.error(e);
+      }
     }
 
     int getByte() throws java.io.IOException{

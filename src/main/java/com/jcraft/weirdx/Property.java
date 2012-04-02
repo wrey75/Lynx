@@ -21,7 +21,11 @@
 package com.jcraft.weirdx;
 import java.io.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 final class Property{
+	private static Log LOG = LogFactory.getLog(Property.class);
   static final byte PropModeReplace=0;
   static final byte PropModePrepend=1;
   static final byte PropModeAppend=2;
@@ -98,12 +102,12 @@ final class Property{
 
       if(p!=null){
 	if((format!=p.format) && (mode!=PropModeReplace)){
-	  System.err.println("error!");
+	  LOG.error("error!");
 	  c.errorReason=8; // BadMatch
 	  return;
 	}
 	if((type!=p.type) && (mode!=PropModeReplace)){
-	  System.err.println("error!");
+	  LOG.error("error!");
 	  c.errorReason=8; // BadMatch
 	  return;
 	}

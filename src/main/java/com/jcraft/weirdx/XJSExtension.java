@@ -30,7 +30,12 @@ package com.jcraft.weirdx;
 import java.io.IOException;
 import java.lang.reflect.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 final class XJSExtension extends Extension{
+	private static Log LOG = LogFactory.getLog(XJSExtension.class);
+	
   private static Object jswin=null;
   private static Method jseval=null;
   private static Method jscall=null;
@@ -152,7 +157,7 @@ final class XJSExtension extends Extension{
 	}
 	break;
       default:
-	System.err.println("XJS: unknown code="+c.data);
+		LOG.error("XJS: unknown code="+c.data);
     }
     if(result!=null){
       io.writeByte(1);

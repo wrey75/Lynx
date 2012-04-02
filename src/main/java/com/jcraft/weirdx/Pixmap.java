@@ -35,9 +35,13 @@ import java.awt.image.RGBImageFilter;
 //import java.awt.image.*;
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
                                 
 
-class Pixmap extends Drawable{
+class Pixmap extends Drawable {
+	private static Log LOG = LogFactory.getLog(Pixmap.class);
 
   static void init(Screen[] screen){
     ImageFactory.init(screen[0]);
@@ -196,11 +200,11 @@ class Pixmap extends Drawable{
     try {
       pg.grabPixels();
     } catch (InterruptedException e) {
-      System.err.println("interrupted waiting for pixels!");
+      LOG.error("interrupted waiting for pixels!");
       return;
     }
     if ((pg.getStatus() & ImageObserver.ABORT)!=0) {
-      System.err.println("image fetch aborted or errored");
+      LOG.error("image fetch aborted or errored");
       return;
     }
     byte[] dt=getData();
@@ -271,11 +275,11 @@ class Pixmap extends Drawable{
       pg.grabPixels();
     }
     catch (InterruptedException e) {
-      //System.err.println("interrupted waiting for pixels!");
+      LOG.error("interrupted waiting for pixels!");
       for(int i=0; i<pixels.length; i++)pixels[i]=0;
     }
     if ((pg.getStatus()&ImageObserver.ABORT)!=0) {
-      System.err.println("image fetch aborted or errored");
+      LOG.error("image fetch aborted or errored");
       for(int i=0; i<pixels.length; i++)pixels[i]=0;
     }
 
@@ -1328,6 +1332,7 @@ class Pixmap1 extends Pixmap {
 }
 
 class Pixmap16 extends Pixmap {
+	private static Log LOG = LogFactory.getLog(Pixmap16.class);
   int[] idata;
 
   Pixmap16(int id, Drawable d, int width, int height) {
@@ -1710,11 +1715,11 @@ void putImage(Client c, GC gc,
     try {
       pg.grabPixels();
     } catch (InterruptedException e) {
-      System.err.println("interrupted waiting for pixels!");
+      LOG.error("interrupted waiting for pixels!");
       return;
     }
     if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-      System.err.println("image fetch aborted or errored");
+      LOG.error("image fetch aborted or errored");
       return;
     }
 

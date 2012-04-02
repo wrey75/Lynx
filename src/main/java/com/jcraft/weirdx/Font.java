@@ -23,7 +23,12 @@ package com.jcraft.weirdx;
 import java.io.*;
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 final class Font extends Resource{ 
+	private static Log LOG = LogFactory.getLog(Font.class);
+	
   static Font dflt;
   static List<Font_CharSet> charSets = new ArrayList<Font_CharSet>();
 
@@ -548,7 +553,7 @@ static void loadCharSet(String name){
 	  s.getChars(0, n, c.cbuffer, 0);
         }
         catch(Exception e){
-	  System.out.println(e);
+	  LOG.error(e);
 	  return;
         }
       }

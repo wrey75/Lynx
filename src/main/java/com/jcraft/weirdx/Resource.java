@@ -22,7 +22,11 @@ package com.jcraft.weirdx;
 import java.io.*;
 import java.util.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 class Resource{
+	private static Log LOG = LogFactory.getLog(Resource.class);
   static Object LOCK=Client.class;
   static final int RC_VANILLA=0;
   static final int RC_CACHED=1<<31;
