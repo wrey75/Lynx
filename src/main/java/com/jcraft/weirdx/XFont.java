@@ -523,7 +523,7 @@ static void loadCharSet(String name){
   static void reqQueryTextExtents(Client c) throws IOException{
     int n, foo;
     boolean odd=false;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.data;
     if(foo!=0)odd=true;
     n=c.length;
@@ -585,7 +585,7 @@ static void loadCharSet(String name){
 static void reqListFontsWithInfo(Client c) throws IOException{
     int foo, n;
     int maxname;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     maxname=io.readShort();
     foo=io.readShort();
@@ -823,7 +823,7 @@ static void reqListFontsWithInfo(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqSetFontPath(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     n=c.length;
     foo=io.readShort();
@@ -846,7 +846,7 @@ static void reqSetFontPath(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqGetFontPath(Client c) throws IOException{
     int foo,n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.length;
 
     synchronized(io){
@@ -874,7 +874,7 @@ static void reqGetFontPath(Client c) throws IOException{
 static void reqListFonts(Client c) throws IOException{
     int foo, n;
     int maxname;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     maxname=foo=io.readShort();
     foo=io.readShort();
@@ -967,7 +967,7 @@ static void reqListFonts(Client c) throws IOException{
 
   static void reqCloseFont(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.length;
     foo=io.readInt();
     XResource.freeResource(foo, XResource.RT_NONE);
@@ -986,7 +986,7 @@ static void reqOpenFont(Client c) throws IOException{
     int foo;
     int n;
     int fid;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt(); fid=foo;
     foo=io.readShort();
@@ -1017,7 +1017,7 @@ static void reqOpenFont(Client c) throws IOException{
 static void reqQueryFont(Client c) throws IOException{
     int foo;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XFont f=(XFont)XResource.lookupIDByType(foo, XResource.RT_FONT);
@@ -1102,7 +1102,7 @@ static void reqQueryFont(Client c) throws IOException{
   }
 
   void dumpCharInfo(Client c) throws IOException{
-    IO io=c.client;
+	  InputOutput io=c.client;
     char w=0;
     int ma=font.getMaxAscent();
     int md=font.getMaxDescent();

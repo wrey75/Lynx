@@ -77,7 +77,7 @@ final class XJSExtension extends Extension{
 
   void dispatch(Client c) throws IOException {
     int len, i, k, m;
-    IO io=c.client;
+    InputOutput io=c.client;
     String result=null;
 
     switch(c.data){

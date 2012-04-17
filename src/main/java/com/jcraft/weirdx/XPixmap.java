@@ -220,7 +220,7 @@ class XPixmap extends XDrawable {
 
   static void reqFreePixmap(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.length;
     foo=io.readInt();
     XResource o=XResource.lookupIDByType(foo, RT_PIXMAP);
@@ -235,7 +235,7 @@ class XPixmap extends XDrawable {
 
   static void reqGetImage(Client c) throws IOException {
     int n ,foo, format;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     format=c.data;
     foo=io.readInt();
@@ -535,7 +535,7 @@ class XPixmap extends XDrawable {
 
   static void reqPutImage(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     byte format;
     short width, height, dstx, dsty;
     byte depth;
@@ -806,7 +806,7 @@ class XPixmap extends XDrawable {
     byte depth;
     short width, height;
     int pid;
-    IO io=c.client;
+    InputOutput io=c.client;
     depth=(byte)c.data;
     pid=io.readInt();
     foo=io.readInt();
@@ -1047,7 +1047,7 @@ class Pixmap1 extends XPixmap {
   static void putData(Client c, byte[] d, int width,
 		      int dx, int dy, int dwidth, int lpad)
     throws IOException{
-    IO io=c.client;
+    InputOutput io=c.client;
     int j=dy*width;
     int n=c.length;
     int foo;
@@ -1174,7 +1174,7 @@ class Pixmap1 extends XPixmap {
   static void putData_LSB(Client c, byte[] d, int width,
 		      int dx, int dy, int dwidth, int lpad)
     throws IOException{
-    IO io=c.client;
+    InputOutput io=c.client;
     int j=dy*width;
     int n=c.length;
     int foo;
@@ -1420,7 +1420,7 @@ void putImage(Client c, GC gc,
 		int dstx, int dsty, int dwidth, int dheight, 
 		int lpad, int format, int depth)
     throws IOException{
-    IO io=c.client;
+    InputOutput io=c.client;
     int scanWidth=getScanWidth();
     byte[] d=getData(); 
 

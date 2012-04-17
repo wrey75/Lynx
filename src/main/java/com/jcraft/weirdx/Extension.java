@@ -111,7 +111,7 @@ abstract class Extension {
   static void reqListExtensions(Client c) throws IOException{
     // int foo;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     // foo = c.length;
 
     synchronized(io){
@@ -155,7 +155,7 @@ abstract class Extension {
   static void reqQueryExtension(Client c) throws IOException{
     // int foo;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     // foo = c.length;
     n=io.readShort();
     io.readPad(2);

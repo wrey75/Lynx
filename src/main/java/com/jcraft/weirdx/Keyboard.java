@@ -51,7 +51,7 @@ final class Keyboard {
     this.maxKeyCode=maxKeyCode;
   }
 
-  void writeByte(IO out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws java.io.IOException{
     out.writeByte(minKeyCode);
     out.writeByte(maxKeyCode);
   }
@@ -75,7 +75,7 @@ public void getMap() {
   @SuppressWarnings("unused")
 static void reqGrabKeyboard(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.data;
     foo=c.length;
     foo=io.readInt();
@@ -96,7 +96,7 @@ static void reqGrabKeyboard(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqGetKeyboardControl(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.length;
 
     synchronized(io){
@@ -120,7 +120,7 @@ static void reqGetKeyboardControl(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqQueryKeymap(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.length;
 
     synchronized(io){
@@ -136,7 +136,7 @@ static void reqQueryKeymap(Client c) throws IOException{
   }
   static void reqChangeKeyboardMapping(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     int first=io.readByte();
     int kpk=io.readByte();
@@ -155,7 +155,7 @@ static void reqQueryKeymap(Client c) throws IOException{
   static void reqGetKeyboardMapping(Client c) throws IOException{
     int n;
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     int i=io.readByte();
     foo=io.readByte();
@@ -182,7 +182,7 @@ static void reqQueryKeymap(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqSetModifierMapping(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     int kpm=c.data;
     n=c.length;
 
@@ -208,7 +208,7 @@ static void reqSetModifierMapping(Client c) throws IOException{
 static void reqGetModifierMapping(Client c) throws IOException{
     int n;
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     Keymodifier kmod=null;
 
     synchronized(io){

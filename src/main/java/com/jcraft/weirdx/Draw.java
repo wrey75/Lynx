@@ -35,7 +35,7 @@ final class Draw{
   static void reqPolyPoint(Client c, XDrawable d, GC gc) throws IOException {
     // int foo;
     int n=c.length;
-    IO io=c.client;
+    InputOutput io=c.client;
     Graphics graphics = d.getGraphics(gc, GC.GCFunction|GC.GCSubwindowMode);
     if(graphics==null){
       io.readPad(n*4); 
@@ -106,7 +106,7 @@ final class Draw{
     throws IOException{
     //int foo;
     int n=c.length;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     Graphics graphics=d.getGraphics(gc, GC.GCFunction|GC.GCSubwindowMode);
     if(graphics==null){
@@ -162,7 +162,7 @@ final class Draw{
   static void reqPolyArc(Client c, XDrawable d, GC gc) throws IOException{
     //int foo;
     int n=c.length;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     Graphics graphics=d.getGraphics(gc, 
 				    GC.GCFunction|GC.GCSubwindowMode
@@ -400,7 +400,7 @@ final class Draw{
     int n=c.length;
     //int len;
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     Graphics graphics=d.getGraphics(gc, 
 				    GC.GCFunction | GC.GCFont
@@ -510,7 +510,7 @@ final class Draw{
     int len=c.data;
     int n=c.length;
     //int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     Graphics graphics=d.getGraphics(gc, GC.GCFunction|GC.GCFont);
     if(graphics==null){

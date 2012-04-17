@@ -174,7 +174,7 @@ final class XAtom {
     // int atom;
     int exp;
     int n=0;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     exp=c.data;
     n=io.readShort();
@@ -206,7 +206,7 @@ final class XAtom {
     // int foo;
     int atom;
     // int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     atom=io.readInt();
     if(atom<0){ atom&=0x7fffffff;}
     if(!valid(atom)){         // Error

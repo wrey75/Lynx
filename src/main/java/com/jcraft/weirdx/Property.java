@@ -178,7 +178,7 @@ final class Property{
   @SuppressWarnings("unused")
 static void reqRotateProperties(Client c) throws IOException{
     int foo, propty;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
     XWindow w=c.lookupWindow(foo);
@@ -248,7 +248,7 @@ static void reqRotateProperties(Client c) throws IOException{
 
   static void reqDeleteProperty(Client c) throws IOException{
     int foo, propty;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     XWindow w=c.lookupWindow(foo);
     if(w==null){
@@ -272,7 +272,7 @@ static void reqGetProperty(Client c) throws IOException{
     int prprty;
     int typ;
     int ffst, lngth;
-    IO io=c.client;
+    InputOutput io=c.client;
     dlt=c.data;
 
     foo=io.readInt();
@@ -378,7 +378,7 @@ static void reqGetProperty(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqListProperties(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
     XWindow w=c.lookupWindow(foo);
@@ -417,7 +417,7 @@ static void reqChangeProperty(Client c) throws IOException{
     byte frmt;
     int typ;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     mode=(byte)c.data;
     if((mode!=PropModeReplace) && (mode!=PropModeAppend) &&

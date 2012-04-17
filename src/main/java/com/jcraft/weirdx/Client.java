@@ -84,7 +84,7 @@ final class Client extends Thread {
   int[] xarray=new int[4];
   int[] yarray=new int[4];
   Event cevent=new Event();
-  IO client;
+  InputOutput client;
 
   SaveSet saveSet=null;
 
@@ -99,21 +99,20 @@ final class Client extends Thread {
 
   Client(){this(null);}
 
-  Client(IO client){
-    if(client==null){
+  Client(InputOutput client2){
+    if(client2==null){
       closeDownMode=RetainPermanent;
       index=0;
       return;
     }
-    this.client=client; 
+    this.client=client2; 
 
-    if(!(client instanceof IOMSB)) swap=true;
-    else swap=false;
+    swap = client2.isMSB();
 
     bbuffer=new byte[1024];
     cbuffer=new char[1024];
 
-    if(swap)sevent=new byte[32];
+    if(swap) sevent=new byte[32];
 
     index=-1;
 
@@ -715,7 +714,7 @@ final class Client extends Thread {
   static int bitmapScanPad=32;
   static int initialLength=0;
 
-  void writeByte(IO out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws java.io.IOException{
     synchronized(out){
       out.writeByte(1);
       out.writePad(1);
@@ -769,7 +768,7 @@ private final void prolog() throws java.io.IOException{
     }
   }
 
-  private final void init() throws java.io.IOException{
+  private final void init() throws IOException{
     prolog();
     writeByte(client);
     seq=0;

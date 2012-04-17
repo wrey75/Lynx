@@ -204,19 +204,28 @@ class XWindow extends XDrawable {
   static Point gpoint=new Point();
   static Grab grab=null;
 
-  static Class<?> dDXWindow = null;
-  static{
-    try{ 
-    	dDXWindow = Class.forName("com.jcraft.weirdx.DDXWindowImp");
-    }
-    catch(Exception e){LOG.error(e);}
-  }
-  static void installDDXWindow(String name){
-    Class<?> c=null;
-    try{if(name.startsWith("com.jcraft.weirdx."))c=Class.forName(name);}
-    catch(Exception e){LOG.error(e);}
-    if(c!=null) dDXWindow=c;
-  }
+  	static Class<?> dDXWindow = null;
+	
+  	static {
+		try {
+			dDXWindow = Class.forName("com.jcraft.weirdx.DDXWindowImp");
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+	}
+	
+	static void installDDXWindow(String name) {
+		Class<?> c = null;
+		try {
+			if (name.startsWith("com.jcraft.weirdx.")){
+				LOG.debug("Loading class " + name + "...");
+				c = Class.forName(name);
+				dDXWindow = c;
+			}
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+	}
 
   Client client;
   XWindow parent;
@@ -465,7 +474,7 @@ class XWindow extends XDrawable {
     boolean borderRelative=false;
     int index=0;
     int mask=vmask;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     while(mask!=0 && c.length!=0){
       index=lowbit(mask);
@@ -817,7 +826,7 @@ class XWindow extends XDrawable {
 
   static final void reqCirculateWindow(Client c) throws IOException{
     int n, foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     int direction=c.data;
     foo=io.readInt();
@@ -867,7 +876,7 @@ class XWindow extends XDrawable {
 
   static final void reqAllowEvents(Client c) throws IOException{
     int foo, mode;
-    IO io=c.client;
+    InputOutput io=c.client;
     mode=c.data;
     foo=io.readInt();
     switch(mode){
@@ -894,7 +903,7 @@ class XWindow extends XDrawable {
 
   static final void reqGetMotionEvents(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
     XWindow w=c.lookupWindow(foo);
@@ -919,7 +928,7 @@ class XWindow extends XDrawable {
   }
   static final void reqTranslateCoordinates(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     XWindow srcw=c.lookupWindow(foo);
     if(srcw==null){
@@ -975,7 +984,7 @@ class XWindow extends XDrawable {
 
   static final void reqGetScreenSaver(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     synchronized(io){
       io.writeByte(1);
@@ -993,7 +1002,7 @@ class XWindow extends XDrawable {
 
   static final void reqQueryBestSize(Client c) throws IOException{
     int foo, clss;
-    IO io=c.client;
+    InputOutput io=c.client;
     clss=c.data;
     foo=io.readInt();
     c.length-=2;
@@ -1027,7 +1036,7 @@ class XWindow extends XDrawable {
 
   static final void reqDestroySubwindows(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XWindow w=c.lookupWindow(foo);
@@ -1293,7 +1302,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 
   static final void reqDestroyWindow(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XWindow w=c.lookupWindow(foo);
@@ -1312,7 +1321,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
     XWindow win;
     XWindow effectiveFocus=null;   // only set if dest==InputFocus
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     int prop=c.data;
     int dest=io.readInt();
     int emask=io.readInt();    
@@ -1359,7 +1368,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
   }
   static final void reqGetPointerMapping(Client c) throws IOException{
     int foo,n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     synchronized(io){
       io.writeByte(1);
@@ -1373,7 +1382,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 
   static final void reqSetPointerMapping(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=c.data;                 
     n=c.length;
     n--;
@@ -1393,7 +1402,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
   }
   static final void reqGetPointerControl(Client c) throws IOException{
     int foo,n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     synchronized(io){
       io.writeByte(1);
@@ -1410,7 +1419,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 
   static final void reqQueryPointer(Client c) throws IOException{
     int n, foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XWindow w=c.lookupWindow(foo);
@@ -1466,7 +1475,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
   }
 
   static final void reqGetGeometry(Client c) throws IOException{
-    IO io=c.client;
+    InputOutput io=c.client;
     int foo=io.readInt();
 
     XDrawable d=c.lookupDrawable(foo);
@@ -1507,7 +1516,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
 
   static final void reqChangeWindowAttributes(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     int wid=io.readInt(); 
     int mask=io.readInt(); 
@@ -1536,7 +1545,7 @@ private void deleteEvent(boolean freeResources) throws IOException {
   @SuppressWarnings("static-access")
 static final void reqUngrabPointer(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     if((XWindow.grab!=null) && XWindow.grab.sameClient(c)){
       XWindow.grab.deactivatePointerGrab();
@@ -1546,7 +1555,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
   static final void reqUngrabButton(Client c) throws IOException{
     int foo;
     int button, mod;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     button=c.data;
     foo=io.readInt();
@@ -1571,7 +1580,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
   static final void reqGrabButton(Client c) throws IOException{
     int foo, n;
     int pmode, kmode, oe, emask, button, mod;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     oe=c.data;
     if(oe!=0 && oe!=1){
@@ -1627,7 +1636,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
   static final void reqGrabPointer(Client c) throws IOException{
     int foo, n;
     int pmode, kmode, oe, emask, time;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     oe=c.data;
     if(oe!=0 && oe!=1){
@@ -1722,7 +1731,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     int x, y, width, height, bwidth, clss;
     int visual;
     int mask;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     depth=(byte)c.data;
 
@@ -1944,7 +1953,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
   static final void reqUnmapSubWindows(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
 
     c.length-=2;
@@ -1994,7 +2003,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
     XWindow firstMapped=null;
     boolean anyMarked=false;
 
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
 
@@ -2044,7 +2053,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
   static final void reqUnmapWindow(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
 
@@ -2163,7 +2172,7 @@ static final void reqUngrabPointer(Client c) throws IOException{
 
   static final void reqMapWindow(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
 
@@ -2455,7 +2464,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
     int visual;
     int mask;
     int rootId;
-    IO io=c.client;
+    InputOutput io=c.client;
     wid=io.readInt(); 
     c.length-=2;
     w=c.lookupWindow(wid);
@@ -2497,7 +2506,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static final void reqSetInputFocus(Client c) throws IOException{
     int foo, n, reverto;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     reverto=c.data;
     foo=io.readInt();
@@ -2580,7 +2589,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static final void reqGetInputFocus(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     synchronized(io){
       io.writeByte(1);
@@ -2595,7 +2604,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
 
   static final void reqGetWindowAttributes(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
     c.length-=2;
@@ -2644,7 +2653,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   static final void reqCopyPlane(Client c) throws IOException{
     int foo;
     XDrawable dsrc=null, ddst=null;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     dsrc=c.lookupDrawable(foo);
     if(dsrc==null){
@@ -2743,7 +2752,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   static final void reqCopyArea(Client c) throws IOException{
     int foo;
     XDrawable dsrc=null, ddst=null;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
     dsrc=c.lookupDrawable(foo);
@@ -2882,7 +2891,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   static final void reqClearArea(Client c) throws IOException{
     int foo;
     int exposures=c.data;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XWindow w=c.lookupWindow(foo);
@@ -3032,7 +3041,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   static final void reqConfigureWindow(Client c) throws IOException{
     int foo;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     XWindow win=c.lookupWindow(foo);
     if(win==null){
@@ -3499,7 +3508,7 @@ static void enter_leaveEvent(int type, int mode, int detail,
   static final void reqReparentWindow(Client c) throws IOException{
     int foo;
     int x,y;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
     XWindow win=c.lookupWindow(foo);

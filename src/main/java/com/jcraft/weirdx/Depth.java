@@ -37,7 +37,7 @@ final class Depth {
     }
   }
 
-  void writeByte(IO out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws java.io.IOException{
     out.writeByte(depth);
     out.writePad(1);
     if(visual!=null) out.writeShort(visual.length);

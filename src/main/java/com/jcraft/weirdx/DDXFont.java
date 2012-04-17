@@ -20,8 +20,12 @@
 
 package com.jcraft.weirdx;
 
-import java.io.*;
-import java.util.*;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
 
 class DDXFont {
   static Map<String, RefCount> table = new HashMap<String, DDXFont.RefCount>();
@@ -29,24 +33,24 @@ class DDXFont {
   static class RefCount{
     int count=1;
     String key=null;
-    java.awt.Font font=null;
-    RefCount(String key, java.awt.Font font){ this.key=key; this.font=font; }
+    Font font=null;
+    RefCount(String key, Font font){ this.key=key; this.font=font; }
   }
 
-  private static synchronized java.awt.Font getFont(String name, int style, int size){
+  private static synchronized Font getFont(String name, int style, int size){
     String key=name+style+size;
     RefCount foo=(RefCount)table.get(key);
     if(foo!=null){
       foo.count++;
       return foo.font;
     }
-    java.awt.Font f=new java.awt.Font(name, style, size);
+    Font f=new Font(name, style, size);
     foo=new RefCount(key, f);
     table.put(key, foo);
     return f;
   }
 
-  private static synchronized void delFont(java.awt.Font f){
+  private static synchronized void delFont(Font f){
 
     for( RefCount foo : table.values() ){
       if(foo.font==f){
@@ -68,8 +72,8 @@ class DDXFont {
   }
 
   byte[] lfname;
-  java.awt.Font font;
-  java.awt.FontMetrics metric;
+  Font font;
+  FontMetrics metric;
   int[] prop;
 
   int min_char_or_byte2=32;
@@ -86,7 +90,7 @@ class DDXFont {
 
   DDXFont(){ }
 
-  void init(byte[] lfname) throws UnsupportedEncodingException{
+  void init(byte[] lfname) throws UnsupportedEncodingException {
     if(encoding!=null){
       if(charset==null) return;
       int tmp=default_char;
@@ -110,7 +114,7 @@ class DDXFont {
   }
 
 
-java.awt.Font getFont(){
+Font getFont(){
     if(font!=null) return font;
     int size=12;
     try{
@@ -118,9 +122,9 @@ java.awt.Font getFont(){
       if(tmp!=0) size=tmp;
     }
     catch(Exception e){}
-    int style=java.awt.Font.PLAIN;
-    if(getWeight().equals("bold")) style|=java.awt.Font.BOLD;
-    if(getStyle().equals("i")) style|=java.awt.Font.ITALIC;
+    int style=Font.PLAIN;
+    if(getWeight().equals("bold")) style|=Font.BOLD;
+    if(getStyle().equals("i")) style|=Font.ITALIC;
     if(getFamily().equals("times") ||
        getFamily().equals("times new roman") ||
        getFamily().equals("new century schoolbook")){
@@ -140,17 +144,15 @@ java.awt.Font getFont(){
     String reg=getCharsetRegistry();
     String enc=getCharsetEncoding();
 
-    //@SuppressWarnings("rawtypes") Enumeration e = Font.charSets;
     for( Font_CharSet foo : XFont.charSets ){
-      if(reg.equals(foo.getCharset()) ||
-	 enc.equals(foo.getCharset())){
+      if(reg.equals(foo.getCharset()) || enc.equals(foo.getCharset())){
         min_byte1=foo.getMinByte1();
         max_byte1=foo.getMaxByte1();
         min_char_or_byte2=foo.getMinCharOrByte2();
         max_char_or_byte2=foo.getMaxCharOrByte2();
         default_char=foo.getDefaultChar();
         encoding=foo.getEncoding();
-	charset=foo;
+        charset=foo;
         break;
       }
     }

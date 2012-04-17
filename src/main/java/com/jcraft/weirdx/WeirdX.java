@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.*;
@@ -369,7 +368,7 @@ public final class WeirdX extends Applet {
     InputStream in;
     OutputStream out;
 
-    IO client=null;
+    InputOutput client = null;
 
     if(xdmcp!=null){
       Client.addListener((ClientListener)xdmcp);
@@ -411,24 +410,26 @@ public final class WeirdX extends Applet {
 	  //System.out.println(eeee+" tcpnodelay");
 	}
 
-	in=socket.getInputStream();
-	out=socket.getOutputStream();
-
-	try{in.read(byte_order, 0, 1);}
-	catch(Exception e){continue;}
-
-        // 0x6c LSB
-        // 0x42 MSB
-	if(byte_order[0]==0x6c){ client=new IOLSB(); }
-	else if(byte_order[0]==0x42){ client=new IOMSB(); }
-	else {
-	  LOG.warn("protocol: error "+
-			     Integer.toHexString(byte_order[0]));
-          continue;
-	}
-
-        client.setInputStream(in);
-        client.setOutputStream(out);
+	
+	client.setSocket(socket);
+//	in=socket.getInputStream();
+//	out=socket.getOutputStream();
+//
+//	try{in.read(byte_order, 0, 1);}
+//	catch(Exception e){continue;}
+//
+//        // 0x6c LSB
+//        // 0x42 MSB
+//	if(byte_order[0]==0x6c){ client=new IOLSB(); }
+//	else if(byte_order[0]==0x42){ client=new IOMSB(); }
+//	else {
+//	  LOG.warn("protocol: error "+
+//			     Integer.toHexString(byte_order[0]));
+//          continue;
+//	}
+//
+//        client.setInputStream(in);
+//        client.setOutputStream(out);
 
 				Client foo = new Client(client);
 				if (foo.index != -1) {
@@ -1175,27 +1176,4 @@ public final class WeirdX extends Applet {
 		}
 	}
 
-}
-
-class DisplaySocket6k implements DisplaySocket {
-	private static Log LOG = LogFactory.getLog(DisplaySocket6k.class);
-	private ServerSocket sock = null;
-	private int displayNumber;
-
-	public void init(int displayNumber) throws java.io.IOException {
-		this.displayNumber = displayNumber;
-		sock = new ServerSocket(6000 + displayNumber);
-		LOG.info( "Display number " + displayNumber + " initialized." );
-	}
-
-	public java.net.Socket accept() throws java.io.IOException {
-		LOG.debug( "Accepting new process on display " + this.displayNumber );
-		return sock.accept();
-	}
-
-	public void close() throws java.io.IOException {
-		sock.close();
-		LOG.info( "Display " + this.displayNumber + " closed." );
-		sock = null;
-	}
 }

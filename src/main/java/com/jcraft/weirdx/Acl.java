@@ -204,7 +204,7 @@ final class Acl {
 
 	static void reqListHosts(Client c) throws IOException {
 		int foo;
-		IO io = c.client;
+		InputOutput io = c.client;
 		synchronized (Acl.class) {
 			synchronized (io) {
 				io.writeByte(1);

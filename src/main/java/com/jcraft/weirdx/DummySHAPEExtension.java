@@ -59,7 +59,7 @@ void dispatch(Client c) throws IOException {
     int kind, x, y, w, h, shaped, op;
     Rectangle[] rect;
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     switch(c.data){
       case 0:

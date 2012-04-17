@@ -69,7 +69,7 @@ final class Selection{
     // int foo;
     int selection, requestor, target, property, time;
     boolean paramsOkay=true;
-    IO io=c.client;
+    InputOutput io=c.client;
     requestor=io.readInt();
     XWindow w=c.lookupWindow(requestor);
     if(w==null){
@@ -130,7 +130,7 @@ final class Selection{
   static void reqSetSelectionOwner(Client c) throws IOException{
     int foo;
     int selection;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XWindow w=null;
@@ -186,7 +186,7 @@ final class Selection{
   static void reqGetSelectionOwner(Client c) throws IOException{
     //int foo;
     int selection;
-    IO io=c.client;
+    InputOutput io=c.client;
     selection=io.readInt();
 
     c.length-=2;

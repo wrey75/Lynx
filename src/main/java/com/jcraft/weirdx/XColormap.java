@@ -211,7 +211,7 @@ class XColormap extends XResource{
   @SuppressWarnings("unused")
 static void reqCreateColormap(Client c) throws IOException{
     int foo, n, mid, alloc;
-    IO io=c.client;
+    InputOutput io=c.client;
     alloc=c.data;
     if(alloc!=AllocNone && alloc!=AllocAll){
       c.errorValue=alloc;
@@ -255,7 +255,7 @@ static void reqCreateColormap(Client c) throws IOException{
 
   static void reqStoreColors(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -280,7 +280,7 @@ static void reqCreateColormap(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqUninstallColormap(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -315,7 +315,7 @@ static void reqUninstallColormap(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqInstallColormap(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -339,7 +339,7 @@ static void reqInstallColormap(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqListInstalledColormaps(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
 
     synchronized(io){
@@ -360,7 +360,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
 
   static void reqFreeColors(Client c) throws IOException{
     int n, foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -377,7 +377,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
   }
   static void reqAllocColorPlanes(Client c) throws IOException{
     int n, foo, cont;
-    IO io=c.client;
+    InputOutput io=c.client;
     cont=c.data;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -421,7 +421,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
   }
   static void reqAllocColorCells(Client c) throws IOException{
     int foo, n, m, cont;
-    IO io=c.client;
+    InputOutput io=c.client;
     cont=c.data;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -480,7 +480,7 @@ static void reqListInstalledColormaps(Client c) throws IOException{
   @SuppressWarnings("unused")
 static void reqLookupColor(Client c) throws IOException{
     int foo, n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     n=c.length;
     foo=io.readInt();
@@ -537,7 +537,7 @@ static void reqLookupColor(Client c) throws IOException{
 
   static void reqAllocColor(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, RT_COLORMAP);
     c.length-=2;
@@ -601,7 +601,7 @@ static void reqLookupColor(Client c) throws IOException{
   static void reqQueryColors(Client c) throws IOException{
     int n;
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -622,7 +622,7 @@ static void reqLookupColor(Client c) throws IOException{
 
   static void reqStoreNamedColor(Client c) throws IOException{
     int foo, n, len, doc, pixel;
-    IO io=c.client;
+    InputOutput io=c.client;
     doc=c.data;
     n=c.length;
     foo=io.readInt();
@@ -674,7 +674,7 @@ static void reqLookupColor(Client c) throws IOException{
     int foo;
     int n;
     int len;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt();
     XColormap cmap=(XColormap)XResource.lookupIDByType(foo, XResource.RT_COLORMAP);
@@ -987,7 +987,7 @@ private int findColor(Client client, Entry[] entries,
     boolean ok;
     //int	mask;
     int shift;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     if ((visual.clss & DynamicClass)==0){
       c.errorReason=11; // BadAlloc
@@ -1406,7 +1406,7 @@ private void allocColorCells (Client client, int colors, int planes, boolean con
   }
 
   private void freeColors (Client c, int rest, int mask) throws IOException{
-    IO io=c.client;
+    InputOutput io=c.client;
     if ((flags & AllAllocated)!=0){
       c.errorReason=10; // BadAccess
       return;
@@ -1530,7 +1530,7 @@ private void freeCo (Client client, int channel, int[] pixIn, int mask){
 
   private void storeColors (Client c, int rest) throws IOException{
     int	errVal=0;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     if((visual.clss & DynamicClass)==0 && 
        (flags & BeingCreated)==0){
@@ -1637,7 +1637,7 @@ private void freeCo (Client client, int channel, int[] pixIn, int mask){
   }
 
   private void queryColors (Client c, int[] ppixel) throws IOException{
-    IO io=c.client;
+    InputOutput io=c.client;
     if ((visual.clss & DynamicClass) == 0 &&
         visual.depth.depth==16){
       int n=ppixel.length;

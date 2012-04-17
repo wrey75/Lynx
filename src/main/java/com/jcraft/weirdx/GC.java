@@ -173,7 +173,7 @@ final class GC extends XResource {
 static void reqSetDashes(Client c) throws IOException{
     int foo, ordering;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt();
 
@@ -210,7 +210,7 @@ static void reqSetDashes(Client c) throws IOException{
   static void reqSetClipRectangles(Client c) throws IOException{
     int foo, ordering;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     ordering=c.data;
     n=c.length;
@@ -261,7 +261,7 @@ static void reqSetDashes(Client c) throws IOException{
 
   static void reqFreeGC(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     foo=io.readInt();
 
@@ -298,7 +298,7 @@ static void reqSetDashes(Client c) throws IOException{
   }
   static void reqCopyGC(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     foo=io.readInt();
     c.length-=2;
     GC srcgc=c.lookupGC(foo);
@@ -324,7 +324,7 @@ static void reqSetDashes(Client c) throws IOException{
 static void reqChangeGC(Client c) throws IOException{
     int foo;
     int n;
-    IO io=c.client;
+    InputOutput io=c.client;
     n=c.length;
     foo=io.readInt();
     c.length-=2;
@@ -343,7 +343,7 @@ static void reqChangeGC(Client c) throws IOException{
   }
   static void reqCreateGC(Client c) throws IOException{
     int foo;
-    IO io=c.client;
+    InputOutput io=c.client;
     int cid=io.readInt();
     foo=io.readInt();
     c.length-=3;
@@ -505,7 +505,7 @@ static void reqChangeGC(Client c) throws IOException{
     int index=0;
     int foo;
     int mask=vmask;
-    IO io=c.client;
+    InputOutput io=c.client;
 
     while(mask!=0){
       index=lowbit(mask);

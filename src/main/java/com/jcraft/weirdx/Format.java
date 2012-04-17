@@ -28,7 +28,7 @@ final class Format {
   Format(byte d, byte b, byte s) {
     depth=d; bpp=b; scanLinePad=s;
   }
-  void writeByte(IO out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws java.io.IOException{
     out.writeByte(depth);
     out.writeByte(bpp);
     out.writeByte(scanLinePad);

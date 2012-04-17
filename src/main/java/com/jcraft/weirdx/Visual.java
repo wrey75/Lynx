@@ -70,7 +70,7 @@ final class Visual {
     this.blueMask=blueMask;
   }
 
-  void writeByte(IO out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws java.io.IOException{
     out.writeInt(id);
     out.writeByte(clss);
     out.writeByte(bitsPerRGB);

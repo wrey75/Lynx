@@ -135,7 +135,7 @@ final class Screen {
     this.depth=depth;
   }
 
-  void writeByte(IO out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws java.io.IOException{
     out.writeInt(rootId);
     out.writeInt(defaultColormapId);
     out.writeInt(white);
