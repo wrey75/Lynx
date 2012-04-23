@@ -709,8 +709,8 @@ final class Client extends Thread {
     }
   }
 
-  static int major=11;
-  static int minor=0;
+  static int MAJOR = 11;
+  static int MINOR = 0;
   static int releaseNumber=0;
   static int motionBufferSize=0;
   static int maxRequestLength=65535;
@@ -721,12 +721,12 @@ final class Client extends Thread {
   static int bitmapScanPad=32;
   static int initialLength=0;
 
-  void writeByte(InputOutput out) throws java.io.IOException{
+  void writeByte(InputOutput out) throws IOException {
     synchronized(out){
       out.writeByte(1);
       out.writePad(1);
-      out.writeShort(major);        
-      out.writeShort(minor);
+      out.writeShort( MAJOR );        
+      out.writeShort( MINOR );
       out.writeShort(initialLength);  
       out.writeInt(releaseNumber);
       out.writeInt(clientAsMask);
