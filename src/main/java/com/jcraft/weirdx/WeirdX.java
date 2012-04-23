@@ -410,26 +410,26 @@ public final class WeirdX extends Applet {
 	  //System.out.println(eeee+" tcpnodelay");
 	}
 
-	
-	client.setSocket(socket);
-//	in=socket.getInputStream();
-//	out=socket.getOutputStream();
-//
-//	try{in.read(byte_order, 0, 1);}
-//	catch(Exception e){continue;}
-//
-//        // 0x6c LSB
-//        // 0x42 MSB
-//	if(byte_order[0]==0x6c){ client=new IOLSB(); }
-//	else if(byte_order[0]==0x42){ client=new IOMSB(); }
-//	else {
-//	  LOG.warn("protocol: error "+
-//			     Integer.toHexString(byte_order[0]));
-//          continue;
-//	}
-//
-//        client.setInputStream(in);
-//        client.setOutputStream(out);
+	client = null;
+
+	in=socket.getInputStream();
+	out=socket.getOutputStream();
+
+	try{in.read(byte_order, 0, 1);}
+	catch(Exception e){continue;}
+
+        // 0x6c LSB
+        // 0x42 MSB
+	if(byte_order[0]==0x6c){ client=new IOLSB(); }
+	else if(byte_order[0]==0x42){ client=new IOMSB(); }
+	else {
+	  LOG.warn("protocol: error "+
+			     Integer.toHexString(byte_order[0]));
+          continue;
+	}
+
+        client.setInputStream(in);
+        client.setOutputStream(out);
 
 				Client foo = new Client(client);
 				if (foo.index != -1) {

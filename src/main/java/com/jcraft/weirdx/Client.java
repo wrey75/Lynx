@@ -25,7 +25,12 @@ import java.util.*;
 import java.util.List;
 import java.awt.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 final class Client extends Thread {
+	private static final Log LOG = LogFactory.getLog(Client.class);
+	
   static Object LOCK=Client.class;
   private static final Object GrabServerLOCK=new Object();
 
@@ -99,15 +104,16 @@ final class Client extends Thread {
 
   Client(){this(null);}
 
-  Client(InputOutput client2){
-    if(client2==null){
+  Client(InputOutput client){
+    if(client==null){
       closeDownMode=RetainPermanent;
       index=0;
       return;
     }
-    this.client=client2; 
+    this.client=client; 
 
-    swap = client2.isMSB();
+    if(!(client instanceof IOMSB)) swap=true;
+    else swap=false;
 
     bbuffer=new byte[1024];
     cbuffer=new char[1024];
@@ -143,6 +149,7 @@ final class Client extends Thread {
     if(index!=-1){
       try{init();}
       catch(Exception e){
+    	  LOG.error(e);
       }
     }
 
