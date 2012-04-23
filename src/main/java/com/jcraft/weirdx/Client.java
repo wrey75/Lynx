@@ -60,6 +60,12 @@ final class Client extends Thread {
 //  private static final int ClientStateGone=4;
 //  private static final int ClientStateCheckingSecurity=5;
 //  private static final int ClientStateCheckedSecurity=6;
+  
+  private static final byte CONNECTION_SUCCESS = 1;
+  private static final byte CONNECTION_AUTHENTICATE = 1; 
+  private static final byte CONNECTION_FAILED = 1;
+  public static final int MAJOR_VERSION = 11;
+  public static final int MINOR_VERSION = 0;
 
   static final Client[] clients=new Client[MAXCLIENTS];
   static int nextClient=1;
@@ -100,81 +106,82 @@ final class Client extends Thread {
   int errorValue;
   int errorReason;
 
-  static List<ClientListener> listeners=new ArrayList<ClientListener>();
+  	static List<ClientListener> LISTENERS = new ArrayList<ClientListener>();
 
-  Client(){this(null);}
-
-  Client(InputOutput client){
-    if(client==null){
-      closeDownMode=RetainPermanent;
-      index=0;
-      return;
-    }
-    this.client=client; 
-
-    if(!(client instanceof IOMSB)) swap=true;
-    else swap=false;
-
-    bbuffer=new byte[1024];
-    cbuffer=new char[1024];
-
-    if(swap) sevent=new byte[32];
-
-    index=-1;
-
-    synchronized(LOCK){
-      if(servergraber!=-1){ this.serverisgrabed=true; }
-      else{ this.serverisgrabed=false; }
-      if(nextClient<MAXCLIENTS){
-	clients[nextClient]=this;
-	index=nextClient;
-	clientAsMask=index<<CLIENTOFFSET;
-	while(nextClient<MAXCLIENTS){
-	  if(clients[nextClient]==null)break;
-	  nextClient++;
+	Client(){
+		this(null);
 	}
-	if(index==currentMaxClients){
-	  currentMaxClients++;
+
+	Client(InputOutput client){
+		LOG.info("New client <" + client + ">");
+		if( client == null){
+			closeDownMode = RetainPermanent;
+			index = 0;
+		}
+		else {
+			this.client = client; 
+
+			swap = !(client instanceof IOMSB);
+
+			bbuffer = new byte[1024];
+			cbuffer = new char[1024];
+
+			if( swap ) sevent = new byte[32];
+
+			index = -1;
+
+			synchronized( LOCK ){
+				this.serverisgrabed = (servergraber != -1); 
+				if( nextClient < MAXCLIENTS ){
+					clients[nextClient] = this;
+					index = nextClient;
+					clientAsMask = index << CLIENTOFFSET;
+					while( nextClient < MAXCLIENTS ){
+						if(clients[nextClient]==null) break;
+						nextClient++;
+					}
+					if(index == currentMaxClients){
+						currentMaxClients++;
+					}
+					XResource.initClientResource(this);
+				}
+				else {
+					index = -1;
+					return;
+				}
+			}
+
+			connected(index);
+			if( index!=-1 ){
+				try{
+					init();
+				}
+				catch(Exception e){
+					LOG.error(e);
+				}
+			}
+		}
 	}
-	XResource.initClientResource(this);
-      }
-      else{
-        index=-1;
-        return;
-      }
-    }
 
-    connected(index);
-
-    if(index!=-1){
-      try{init();}
-      catch(Exception e){
-    	  LOG.error(e);
-      }
-    }
-
-//  if(index!=-1){ start(); }
-//  else{ System.err.println("running over clients table"); }
-  }
-
-  public static void addListener(ClientListener cl){ 
-    listeners.add( cl );
-  }
-  public static void removeListener(ClientListener cl){
-    listeners.remove( cl );
-  }
+	public static void addListener(ClientListener cl){
+		LISTENERS.add( cl );
+	}
+	
+	public static void removeListener(ClientListener cl){
+		LISTENERS.remove( cl );
+	}
 
 	static void connected(int index) {
-		synchronized (listeners) {
-			for (ClientListener cl : listeners) {
+		synchronized (LISTENERS) {
+			for (ClientListener cl : LISTENERS) {
 				cl.connected(index);
 			}
 		}
 	}
 
 	static void disconnected(int index) {
-		synchronized (listeners) {
-			for (ClientListener cl : listeners) {
+		synchronized (LISTENERS) {
+			for (ClientListener cl : LISTENERS) {
 				cl.disconnected(index);
 			}
 		}
@@ -190,8 +197,9 @@ final class Client extends Thread {
 	errorReason=0;
 	reqType=client.readByte(); 
 
-        seq++;
-
+    seq++;
+    LOG.debug("<" + this + "> Sequence " + seq );
+    
 	suspended=false;
 	waitforreq=false;
 
@@ -709,31 +717,41 @@ final class Client extends Thread {
     }
   }
 
-  static int MAJOR = 11;
-  static int MINOR = 0;
-  static int releaseNumber=0;
+
+  int releaseNumber = WeirdX.RELEASE_NUMBER;
   static int motionBufferSize=0;
   static int maxRequestLength=65535;
-  static byte[] vendor=null;
+  static String vendor = WeirdX.VENDOR;
 //static int imageByteOrder=1;
 //static int bitmapBitOrder=1;
   static int bitmapScanUnit=32;
   static int bitmapScanPad=32;
-  static int initialLength=0;
+  // static int initialLength=0;
 
-  void writeByte(InputOutput out) throws IOException {
-    synchronized(out){
-      out.writeByte(1);
-      out.writePad(1);
-      out.writeShort( MAJOR );        
-      out.writeShort( MINOR );
-      out.writeShort(initialLength);  
-      out.writeInt(releaseNumber);
-      out.writeInt(clientAsMask);
-      out.writeInt(IDMASK);
+  	void writeByte(InputOutput out) throws IOException {
+  		byte[] vendorByteArray = vendor.getBytes();
+  		
+  		int initialLength = 8;
+        for(int i=0; i<Screen.screen.length; i++){ 
+        	initialLength += Screen.screen[i].getLength(); 
+        }
+        if( Format.format != null) {
+        	initialLength += 2 * Format.format.length;
+        }
+        initialLength += ((vendorByteArray.length+3)/4);
+        
+  		synchronized(out){
+  			out.writeByte( CONNECTION_SUCCESS );
+  			out.writePad(1);
+  			out.write16( MAJOR_VERSION );        
+  			out.write16( MINOR_VERSION );
+  			out.writeShort( initialLength );  
+  			out.write32( releaseNumber );
+  			out.writeInt( clientAsMask);
+  			out.writeInt( IDMASK);
 
       out.writeInt(motionBufferSize);
-      out.writeShort(vendor.length);
+      out.writeShort(vendorByteArray.length);
       out.writeShort(maxRequestLength);
       out.writeByte(Screen.screen.length);
       out.writeByte(Format.format.length);
@@ -744,11 +762,16 @@ final class Client extends Thread {
       out.writeByte(Keyboard.keyboard.minKeyCode);
       out.writeByte(Keyboard.keyboard.maxKeyCode);
       out.writePad(4);
-      out.writeByte(vendor);
-      if(((-vendor.length)&3)!=0){ out.writePad((-vendor.length)&3); }
+      
+      out.writeByte(vendorByteArray);
+      if(((-vendorByteArray.length)&3)!=0){ 
+    	  out.writePad((-vendorByteArray.length)&3); 
+      }
+      
       for(int i=0; i<Format.format.length; i++){ 
         Format.format[i].writeByte(out); 
       }
+      
       for(int i=0; i<Screen.screen.length; i++){ 
         Screen.screen[i].writeByte(out); 
       }

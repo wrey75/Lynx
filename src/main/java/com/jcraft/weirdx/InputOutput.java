@@ -19,6 +19,7 @@
 
 package com.jcraft.weirdx;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -42,6 +43,24 @@ abstract class InputOutput {
 
   void setInputStream(InputStream in){this.in=in; }
   void setOutputStream(OutputStream out){ this.out=out; }
+  
+  /**
+   * Write a CARD16 (i.e.&nbsp;an unsigned value).
+   * 
+   * @param val a value between 0 and 65535 included.
+   * @throws IOException if an I/O error occurs.
+   */
+  void write16(int val) throws IOException {
+	  if(val < 0 || val > 65535){
+		  throw new IllegalArgumentException("writeCARD16(" + val + "): expected 0 < x < 65536");
+	  }
+	  writeShort(val);
+  }
+  
+  void write32(int val) throws IOException {
+	  writeInt(val);
+  }
+  
   int available() throws java.io.IOException{
     if(0<inrest) return 1;
     return in.available();
@@ -140,21 +159,27 @@ abstract class InputOutput {
     }
   }
 
-  void writePad(int n) throws java.io.IOException{
-    int i;
-    while(true){
-      if((i=(outbuffer.length-outindex))<n){
-	if(i!=0){
-	  outindex+=i;
-	  n-=i;
+  	/**
+  	 * Add padding in the message.
+  	 * 
+  	 * @param n the number of bytes to pad.
+  	 * @throws IOException if an I/O error occurs.
+  	 */
+	public void writePad(int n) throws IOException {
+		int i;
+		while(true){
+			if( (i = (outbuffer.length-outindex)) < n ){
+				if(i!=0){
+					outindex += i;
+					n -= i;
+				}
+				flush();
+				continue;
+			}
+			outindex+=n;
+			break;
+		}
 	}
-	flush();
-	continue;
-      }
-      outindex+=n;
-      break;
-    }
-  }
 
   synchronized void flush() throws java.io.IOException{
     if(outindex==0)return;

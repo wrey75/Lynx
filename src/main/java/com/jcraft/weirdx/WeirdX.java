@@ -45,12 +45,16 @@ public final class WeirdX extends Applet {
 
 	static final Object LOCK = WeirdX.class;
 
-	static final int major = 11;
-	static final int minor = 0;
-	static final int releaseNumber = 1032; // 1.0.32
+	public static final int MAJOR_VERSION = 11;
+	public static final int MINOR_VERSION = 0;
+	public static final int RELEASE_NUMBER = 1032; // 1.0.32
 	static final int motionBufferSize = 0;
 	static final int maxRequestLength = 65535;
-	static final byte[] vendor = "JCraft,Inc.".getBytes();
+	
+	/**
+	 * The vendor.
+	 */
+	public static final String VENDOR = "JCraft,Inc.";
 
 	static Screen[] screen = null;
 	static Format[] format = null;
@@ -152,8 +156,8 @@ public final class WeirdX extends Applet {
       Keyboard.keyboard=new Keyboard(Keymap.km.start, Keymap.km.start+Keymap.km.count-1);
     }
 
-    Client.releaseNumber=releaseNumber;
-    Client.vendor=vendor;
+    //Client.releaseNumber = RELEASE_NUMBER;
+    //Client.vendor=vendor;
 
     serverClient=new Client();
     serverClient.index=0;
@@ -283,14 +287,14 @@ public final class WeirdX extends Applet {
     }
 
     Format.format=format;
-    {
-      int len=0;
-      for(int i=0; i<screen.length; i++){ len+=screen[i].getLength(); }
-      if(format!=null) len+=2*format.length;
-      len+=((vendor.length+3)/4);
-      len+=8;
-      Client.initialLength=len;
-    }
+//    {
+//      int len=0;
+//      for(int i=0; i<screen.length; i++){ len+=screen[i].getLength(); }
+//      if(format!=null) len+=2*format.length;
+//      len+=((VENDOR.getBytes().length+3)/4);
+//      len+=8;
+//      Client.initialLength=len;
+//    }
     screen[0].defaultColormap=
       XColormap.getColormap(colormapid, screen[0], 
 			   defaultv, 0, serverClient);
