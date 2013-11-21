@@ -1,23 +1,23 @@
 
-WeirdX FAQ
+LynX FAQ (based on WeirdX FAQ)
 ====================================================================
-Last modified: Wed Mar 14 14:22:14 UTC 2001
+
 
 the latest info can be found at
-http://www.jcraft.com/weirdx/
---------------------------
+https://github.com/wrey75/lynx
+-------------------------------
 
 Summary of Contents:
 
 1 - Introduction 
-     1.1 What is WeirdX? 
-     1.2 Where can I get WeirdX? 
-     1.3 Why is it named "WeirdX"?
+     1.1 What is LynX? 
+     1.2 Where can I get LynX? 
+     1.3 Why is it named "LynX"?
      1.4 What X protocols are supported?
-     1.5 How about the relation between WeirdX and WiredX?
+     1.5 How about the relation between WeirdX and LynX?
 
 2 - Installation 
-     2.1 What are required to use WeirdX?
+     2.1 What are required to use LynX?
 
 3 - Usage 
 
@@ -33,32 +33,26 @@ Summary of Contents:
 Introduction:
 -=-=-=-=-=-=-
 
-1.1 What is WeirdX? 
+1.1 What is LynX? 
 ----------------------------------
-WeirdX is a pure JavaTM X Window System server.
-WeirdX handles X window protocol directly,
+LynX is a pure JavaTM X Window System server.
+LynX handles X window protocol directly,
 so any proxy programs are not needed on X client side.
-WeirdX had originated from an early version of WiredX-Lite. 
+LynX had forked from a version of WiredX (2004). 
 
-1.2 Where can I get WeirdX? 
+1.2 Where can I get LynX? 
 ----------------------------------
 The official site to get new developmental versions is
-http://www.jcraft.com/weirdx/ . 
+http://www.gibhub.com/wrey75/lynx/ 
 
-1.3 Why it is named "WeirdX"?
+1.3 Why it is named "LynX"?
 ----------------------------------
-That name has come from the development cycle of authors.
-First of all, X clients had be executed on WeirdX at random.
-Then, if 'weird' behaviors had been observed, 
-they had started dull bug hunting procedures, dumping X protocol
-sequences, interpreting them by eye balls,
-checking spec-docs of X protocols, etc,.
-If bugs had been identified and they had been fixed, 
-fixed code had been feed-backed to the source tree.
-These cycles has been repeated tons of times.
-You may find weird behaviors in current version.
-Some of them are forgiven to be fixed, because of poor functionalities
-of Java 1.1.* APIs.
+That name comes from "Linux" and "X" at the end to refer
+to the X-System Window. It is also a reference to
+the names of animals given by Apple to their MacOS X
+operating systems as LynX could be seen as a replacement of
+the graphical interface used in MacOS (basically it is 
+a window manager). 
 
 1.4 What X protocols are supported?
 ----------------------------------
@@ -67,7 +61,7 @@ In the core protocol, some requests are given up to be
 implemented. For example, the request "WarpPointer" is not
 supported. Do you know how to move a mouse pointer by Java APIs?
 
-1.5 How about the relation between WeirdX and WiredX?
+1.5 How about the relation between WeirdX and LynX?
 -----------------------------------------------------
 WiredX is a pure Java X server and it is a flagship of JCraft,Inc.
 JCraft has developed WiredX since April/1998 and continued to make best efforts
@@ -80,46 +74,24 @@ As you know, WeirdX is under GPL and on the other hand WiredX is not
 free software, to our regret. Of course, contributions from contributers
 to WeirdX must never be merged to WiredX.
 
+LynX is a fork of the WeirdX project as this project seems dead
+since 2004.
   
 -=-=-=-=-=-=-
 Installation:
 -=-=-=-=-=-=-
 
-2.1 What are required to use WeirdX?
-You need JDK 1.1.*(in some case, Swing 1.1.*) or Java2.
+2.1 What are required to use LynX?
+You need JRE 5 (the Java Runtime Environment).
 And of course, you must have a unix box, on which X clients run. 
-If you want to run WeirdX as an applet,
-you need Java plug-in, JRE 1.1.2 or Java2 and
-web browsers: Internet Explorer or Netscape Navigator.
-Don't use Java2 plug-in on Opera. Opera will crash.
+If you want to run LynX as an applet,
+you need Java plug-in, JRE 5 and
+web browsers. Currently, this behavior is NOT supported.
+
 
 2.2 What platforms are supported?
-Ideally, WeirdX will be available on any platform, which supports
-JDK 1.1.* and Swing 1.1.*. Confirmed platforms are listed below.
-If you succeed to run WeirdX on other platforms, please write to
-weirdx@jcraft.com. Your info will be added here.
-
-- Windows 95
-- Windows 98
-- Windows Me 
-- Windows NT
-- Windows 2000 Professional using JDK 1.3.0rc1 (feedback from Schult, John)
-- OS/2
-- Sparc Solaris, Netscape4.72&Java2 Plug-in (feedback from Chris Debenham)
-- Intel Solaris 2.6.0
-- Intel GNU/Linux, J2SE v.1.2.2 (feedback from David Golden)
-- Intel GNU/Linux, IBM JDK 1.3.0 (feedback from Henner Zeller)
-- PPC GNU/Linux, jdk1.2.2 RC4 (feedback from Brian Gilman)
-- Alpha GNU/Linux, Compaq J2SDK for Linux AE Alpha Version 1.3.1-beta
- (feedback from Wouter Rademaker)
-- Sun Ultra 10 GNU/Linux, Backdown's port of JDK 1.2.2 (feedback from Kwok Lau)
-- FreeBSD (feedback from Brian Gilman)
-- Alpha OSF1, J2SDK.v.1.2.1 (feedback from Keith Schincke)
-- MacOS X Beta, Java HotSpot Client 1.3 (feedback from Ryan Calder)
-- MacOS 9 with MRJ 2.1.4, MacOS 8.6 with MRJ 2.1.x 
-  (feedback from Tarun Reddy, Eric Albert)
-- NetWare 5.1 with JVM 1.1.7B (jvm03012000) (feedback from Patrick Medhurst)
-- SGI Irix 6.5.9m with JVM "3.2 (Sun 1.1.8)" (feedback from Marcus Herbert) 
+Ideally, LynX will be available on any platform, which supports
+JRE 5.
 
 
 -=-=-=-

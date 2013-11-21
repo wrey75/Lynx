@@ -1,23 +1,7 @@
 README for MacOS X
 ====================================================================
-Last modified: Wed Oct  4 15:21:47 UTC 2000
+MacOS X is the privilegied platform for the development of LynX as
+a successor of WeirdX. Building a working process is quite easy
+and you also can run a X-Server concurrently to compare performances
+and other stuff.
 
-According to a report from Kevin Hendricks(khendricks@ivey.uwo.ca),
-Java2 on Mac OSX beta does not the clipboard mechanism.
-
- |kbhend% java com.jcraft.weirdx.WeirdX
- |*** CFLog (18):
- |/System/Library/Frameworks/JavaVM.framework/Versions/1.2/Commands/java[340]
- |Failed to get reply data in pasteboard message of type 6.
- |Exception occurred during event dispatching:
- |com.apple.mrj.macos.toolbox.MacOSError: Error from Scrap Manager(-4960)
- |        at com.apple.mrj.internal.awt.VClipboard.check(VClipboard.java:346)>
- |        at com.apple.mrj.internal.awt.VClipboard.setContents(VClipboard.java:163)
- |        at com.jcraft.weirdx.CopyPaste.setString(CopyPaste.java:48)
- |        at com.jcraft.weirdx.DDXWindowImp.mouseEntered(DDXWindowImp.java:496)
- |kbhend% java -version
- |java version "1.2.2"
- |Java HotSpot(TM) Client VM (1.3.0, mixed mode, internal release build)
-
-So the copy/paste functionality has not been available on this environment.
-Please don't enable that functionality.

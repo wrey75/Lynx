@@ -1,14 +1,13 @@
 
-How to use WeirdX
+How to use LynX
 ====================================================================
-Last modified: Thu Apr 15 07:13:21 UTC 2004
+Last modified: November 2013
 
   * SUPPORTED PLATFORMS
   * REQUIREMENTS
   * OPTIONAL
   * USAGE
   * USAGE AS AN APPLET
-  * WeirdX runs without Swing!
   * XDMCP
   * Copy/Paste
   * Multibyte Characters
@@ -22,60 +21,37 @@ Last modified: Thu Apr 15 07:13:21 UTC 2004
 
 SUPPORTED PLATFORMS
 ===================
-WeirdX is implemented with JDK 1.1.*.
-So, WeirdX will be available on any platform, which support JDK 1.1.
-Here, we list supported platforms, which we have confirmed already.
-If you succeed to run WeirdX on other platform, please add it to
-this list. 
+WeirdX is implemented with JDK 5.
+So, WeirdX will be available on any platform, which support JRE 5.
 
-- Windows 95
-- Windows 98
-- Windows NT
-- Windows 2000 Professional using JDK 1.3.0rc1 (feedback from Schult, John)
-- OS/2, J2SE 1.3 (feeback from Dan Nimick)
-- Sparc Solaris, Netscape4.72&Java2 Plug-in
-  (feedback from Chris Debenham)
-- Intel Solaris 2.6.0
-- Intel GNU/Linux, J2SE v.1.2.2 
-  (feedback from David Golden)
-- FreeBSD
-  (feedback from Brian Gilman)
-- Alpha OSF1, J2SDK.v.1.2.1 
-  (feedback from Keith Schincke)
-- MacOS X Beta, Java HotSpot Client 1.3 
-  (feedback from Ryan Calder)
-- MacOS 9 with MRJ 2.1.4, MacOS 8.6 with MRJ 2.1.x 
-  (feedback from Tarun Reddy, Eric Albert)
+Here, we list expected supported platforms: 
+- Windows XP
+- Windows Vista
+- Windows 7
+- Windows 8
+- Linux (through OpenJDK)
+- MacOS X (using Java platform)
 
 REQUIREMENTS
 ============
 
-The following softwares are required to use WeirdX.
+The following softwares are required to use LynX.
+- JDK 5 (including Swing)
 
-- JDK 1.1.*(in some case, Swing 1.1.*) or Java2
-
-WeirdX runs without the Swing API and, in a optional mode, 
-it runs with the Swing API. 
-For the difference between them, please refer to the section
-'WeirdX runs without Swing!'.
+WeirdX was running without the Swing API and, in a optional mode, 
+was running runs with the Swing API. LynX requires Swing (which is part
+of JAVA5).
 
 
 OPTIONAL
 ========
+LynX should be also usable as an Java applet;
 
-WeirdX is also usable as an Java applet;
-WeirdX will run in a web browser, Internet Explorer, Netscape Navigator.
-If you try WeirdX on Windows 95/98, we recommend to run WeirdX in a
-web browser. If you run WeirdX as an application on DOS prompt,
-it will run very slowly.
+Currently, this task is not in the hight priority.
 
-- web browser.
-	Internet Explorer or Netscape Navigator.
-        Don't use Java2 plug-in on Opera. Opera will crash.
-
-USAGE
+USAGE (old stuff related to WeirdX)
 =====
-Before using WeirdX, check CLASSPATH includes swingall.jar in Swing 1.1.*
+Before using LynX, check CLASSPATH includes swingall.jar in Swing 1.1.*
 and current directory. Then type,
      
        javac -O com/jcraft/weirdx/*.java com/jcraft/util/*.java
@@ -107,7 +83,7 @@ and you have Un*x machine, named "bar". Try next command on machine "bar"
 At present, scripts for Unix, Windows and OS/2 are located.
 
 
-USAGE AS AN APPLET
+USAGE AS AN APPLET (legacy to WeirdX)
 ==================
 Copy "misc/weirdx.jar" and "misc/weirdx.html" to some directory,
 which is accessible through a http server, then open weirdx.html with 
@@ -121,21 +97,7 @@ In some situations, JVM may throw the Security Exception.
 WeirdX must gain access to TCP port(6002) and JVM may reject to do so.
 
 
-WeirdX runs without Swing!
-==========================
-Since 1.0.16, WeirdX runs without the Swing API.
-# This improvement has been done by Marcus Schiesser.
-This new version has advantages over previous versions, 
-which had used Swing API, in that, needless to say, 
-it can run on web browser without Java Plug-in
-and it is free from the snail Swing's painting system.
-The disadvantage is that you will observe unnecessary re-paintings on the
-Swing free version. In other words, WeirdX had used the Swing API to
-prevent those re-paintings. If you want to use Swing version, set a
-property 'weirdx.ddxwindow' as 'com.jcraft.weirdx.DDXWindowImpSwing' .
-
-
-XDMCP
+XDMCP (WeirdX information but also link to LynX)
 =====
 WeirdX supports XDMCP. If you want to use this functionality,
 specify properties, 'weirdx.xdmcp.mode' and 'weirdx.xdmcp.address'
@@ -159,18 +121,18 @@ So please use this functionality with your own risk.
 Copy/Paste
 ==========
 Copy/paste operations between the native window system
-and WeirdX(CUT_BUFFER0) has been supported. 
+and LynX (CUT_BUFFER0) has been supported (from WeirdX). 
 For example, you can copy/paste strings on 'xterm', 
-which runs on WeirdX, to 'notepad' on Windows98.
+which runs on LynX, to 'notepad' on Windows.
 At present, 'selection' has not been supported. So you can't copy strings
-on TextField widgets of GTK,Motif to apps on Windows98.
+on TextField widgets of GTK,Motif to apps on Windows.
 However, 'xcutsel' will help you.
 
 
 Multibyte Characters
 ====================
-WeirdX supports to display multibyte characters on the internationalized JRE.
-If you need to display Japanese, Korean and Chinese characters on Weirdx, try
+LynX supports to display multibyte characters on the internationalized JRE.
+If you need to display Japanese, Korean and Chinese characters on LynX, try
 weirdx.display.charset=JISX,KSC5601,GB2312
 At present, WeirdX supports Japanese, Korean and Chinese characters,
 but only Japanese characters have been confirmed to be
@@ -178,7 +140,7 @@ handled correctly.
 If you succeeded or failed to display others, please write us.
 
 
-Keyboard
+Keyboard (linked to WeirdX)
 ========
 In default settings, WeirdX supposes that key events are from
 US layout keyboard. If your keyboard is other layout one, 
@@ -193,7 +155,7 @@ java files for supporting your keyboard.
 Please refer to 'misc/keymap/HOWTO'for its usage.
 
 
-SSH2 X11 Forwarding in Java
+SSH2 X11 Forwarding in Java (linked to WeirdX)
 ===========================
 WeirdX allows you to get secure X accesses by X11 forwarding of SSH2
 in pure Java.  This functionality is based on JSch, which is a pure
@@ -219,7 +181,7 @@ this functionaly is named as 'com/jcraft/weirdx/SSHRexec.jav', so you have to
 rename it as 'com/jcraft/weirdx/SSHRexec.java' to compile it.
 
 
-Hacks for the Alpha Transparency
+Hacks for the Alpha Transparency (weirdX)
 ================================
 Two hacks for the alpha transparency have been added.
 * First hack renders backgrounds of every windows,
@@ -239,7 +201,7 @@ Please note those hacks are just for the fun, not for the practical use
 and they will be useful for surprising your friends.
 
 
-EsounD Support
+EsounD Support (WeirdX)
 ==============
 You can run EsounD compatible applications on WeirdX with JEsd.
 JEsd is a re-implementation of EsounD in pure Java and
@@ -256,7 +218,7 @@ functionality, try following steps,
    Try other EsounD compatible apps, mpg123, gqmpeg and xmms.
 
 
-DXPC Support
+DXPC Support (weirdX)
 ============
 The dxpc(Differential X Protocol Compressor) is an X protocol compressor 
 designed to improve the speed of X applications run over low-bandwidth links 
@@ -290,7 +252,7 @@ and enable you to use the JavaScriptTM engine from X clients.
 For further descriptions, please check 'misc/xjs/README'.
 
 
-PROPERTIES
+PROPERTIES (WeirdX)
 ==========
 WeirdX has some properties as below,
 

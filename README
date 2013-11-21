@@ -1,24 +1,49 @@
 
-                                  WeirdX
+                                  LynX
 
                    a pure JavaTM X Window System server
-                                by JCraft Inc.
+                             based on WeirdX
+                              by JCraft Inc.
 
                       http://www.jcraft.com/weirdx/
-
-Last modified: Thu Apr 15 08:28:56 UTC 2004
 
 
 Description
 ===========
+LynX is a pure Java implementation (basically JAVA6) based on
+the GPL project WeirdX available at http://www.jcraft.com/weirdx/
+
+LynX as a superset of WeirdX
+============================
+WeirdX is the codebase of LynX. The goal of the two projects
+are sighlty different. LynX is a basic new windows manager
+like GNOME or KDE. The basic idea behind LynX is to provide
+a fresh and pluggable graphical environment using the JAVA
+graphic environment.
+
+The features we want to have in this project:
+  - Having a full stack for a GUI environment
+  - Providing a X-compatible interface capable to run X-Window
+    programs.
+  - Proving a new lightweight protocol for applications to
+    ease the coding of graphical application giving the
+    description of the window rather than a complete 
+    fixed graphical implementation.
+  - Giving integrated systems (like full-text search as a plug
+  	system): like Spotlight on MacOS.
+  - Giving an integrated trash system for files running in LynX
+  	rather than driven by the application itself.
+
 WeirdX is a pure Java X Window System server under GNU GPL. It is 
-implemented with JDK 1.1 & Swing 1.1 APIs, so it will run on several 
+implemented with JDK 6 & Swing APIs, so it will run on several 
 platforms. WeirdX handles X window protocol directly,
 so any proxy programs are not needed on X client side.
 
-WeirdX is derived from WiredX/JXPie, which are also pure Java X Window
+LynxX is derived from WeirdX which is derived from WiredX/JXPie, 
+which are also pure Java X Window
 System server. WiredX is a pure Java X server for Java2 and
 JXPie is for PersonalJavaTM.
+
 
 
 Features
