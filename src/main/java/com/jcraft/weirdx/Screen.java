@@ -22,7 +22,7 @@ package com.jcraft.weirdx;
 
 
 
-final class Screen {
+public final class Screen {
   static Screen[] screen;
   XWindow root;
   int rootId;

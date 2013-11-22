@@ -20,7 +20,7 @@
 
 package com.jcraft.weirdx;
 
-final class Format {
+public final class Format {
   static Format[] format=null;
   byte depth;
   byte bpp;

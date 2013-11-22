@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 
 
 
-abstract class Extension {
+public abstract class Extension {
 	private static Log LOG = LogFactory.getLog(Extension.class); 
 	
   static int currentMaxType=127;

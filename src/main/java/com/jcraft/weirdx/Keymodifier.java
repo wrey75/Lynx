@@ -22,6 +22,7 @@ package com.jcraft.weirdx;
 import java.io.*;
 
 @SuppressWarnings("serial")
+public
 class Keymodifier implements Serializable {
   static Keymodifier kmod=null;
 

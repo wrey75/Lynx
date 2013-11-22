@@ -28,7 +28,7 @@ import java.awt.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-final class Client extends Thread {
+public final class Client extends Thread {
 	private static final Log LOG = LogFactory.getLog(Client.class);
 	
   static Object LOCK=Client.class;

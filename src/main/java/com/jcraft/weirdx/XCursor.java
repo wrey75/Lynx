@@ -22,7 +22,7 @@ package com.jcraft.weirdx;
 
 import java.io.*;
 
-final class XCursor extends XResource{
+public final class XCursor extends XResource{
   static XCursor rootCursor;
   java.awt.Cursor cursor;
 

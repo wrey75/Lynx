@@ -21,7 +21,7 @@
 package com.jcraft.weirdx;
 
 
-final class Depth {
+public final class Depth {
   int depth;  
   Visual visual[];
   int getDepth() { return depth; }

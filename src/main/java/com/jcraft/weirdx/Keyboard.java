@@ -21,7 +21,7 @@
 package com.jcraft.weirdx;
 import java.io.*;
 
-final class Keyboard {
+public final class Keyboard {
   static Keyboard keyboard=null;
 
   public int minKeyCode;

@@ -23,7 +23,7 @@ package com.jcraft.weirdx;
 import java.awt.*;
 import java.awt.datatransfer.*;
 
-final class CopyPaste implements ClipboardOwner{
+public final class CopyPaste implements ClipboardOwner{
   private static Clipboard clipboard=null;
   private static CopyPaste copypaste=null;
   private static boolean isOwner=true;

@@ -25,7 +25,7 @@ import java.util.List;
 
 
 
-final class Visual {
+public final class Visual {
   Depth depth;
   int id;
   int clss;

@@ -25,7 +25,7 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class XResource{
+public class XResource{
 	private static Log LOG = LogFactory.getLog(XResource.class);
   static Object LOCK=Client.class;
   static final int RC_VANILLA=0;

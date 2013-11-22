@@ -26,7 +26,7 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-final class XFont extends XResource{ 
+public final class XFont extends XResource{ 
 	private static Log LOG = LogFactory.getLog(XFont.class);
 	
   static XFont dflt;

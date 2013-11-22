@@ -113,240 +113,236 @@ public final class WeirdX extends Applet {
   static final int Rootless=1;
   static final int RootlessWM=2;
 
-  void weirdx_init( Container container ){
-//    try{ displaysocket=new ServerSocket(6000+weirdx.displaynum); }
-//    catch(Exception ee){
-//      System.out.println(ee+" bye");
-//      return;
-//    }
+	void weirdx_init(Container container) {
+		// try{ displaysocket=new ServerSocket(6000+weirdx.displaynum); }
+		// catch(Exception ee){
+		// System.out.println(ee+" bye");
+		// return;
+		// }
 
-    try{
-      displaysocket=(DisplaySocket)displaySocketClass.newInstance();
-      displaysocket.init(weirdx.displayNumber);
-    }
-    catch(Exception ee){
-      LOG.error(ee+" bye");
-      displaysocket=null;
-      return;
-    }
+		try {
+			displaysocket = (DisplaySocket) displaySocketClass.newInstance();
+			displaysocket.init(weirdx.displayNumber);
+		} catch (Exception ee) {
+			LOG.error(ee + " bye");
+			displaysocket = null;
+			return;
+		}
 
-    Class<?> c=null;
-    try{ c=Class.forName("com.jcraft.weirdx.Keymap_"+keymap);}
-    catch(Exception e){
-      try{ c=Class.forName("com.jcraft.weirdx.Keymap_101"); }
-      catch(Exception ee){ }
-    }
-    try{ if(c!=null) Keymap.km=(Keymap)c.newInstance(); }
-    catch(Exception e){ }
-    c=null;
-    if(!keymap.equals("101")){
-      try{ c=Class.forName("com.jcraft.weirdx.Keymodifier_"+keymap); }
-      catch(Exception e){ 
-      }
-    }
-    if(c==null){
-      try{ c=Class.forName("com.jcraft.weirdx.Keymodifier_gen"); }
-      catch(Exception e){ }
-    }
+		Class<?> c = null;
+		try {
+			c = Class.forName("com.jcraft.weirdx.Keymap_" + keymap);
+		} catch (Exception e) {
+			try {
+				c = Class.forName("com.jcraft.weirdx.Keymap_101");
+			} catch (Exception ee) {
+			}
+		}
+		try {
+			if (c != null)
+				Keymap.km = (Keymap) c.newInstance();
+		} catch (Exception e) {
+		}
+		c = null;
+		if (!keymap.equals("101")) {
+			try {
+				c = Class.forName("com.jcraft.weirdx.Keymodifier_" + keymap);
+			} catch (Exception e) {
+			}
+		}
+		if (c == null) {
+			try {
+				c = Class.forName("com.jcraft.weirdx.Keymodifier_gen");
+			} catch (Exception e) {
+			}
+		}
 
-    try{ if(c!=null) Keymodifier.kmod=(Keymodifier)c.newInstance(); }
-    catch(Exception e){ }
+		try {
+			if (c != null)
+				Keymodifier.kmod = (Keymodifier) c.newInstance();
+		} catch (Exception e) {
+		}
 
-    if(Keymap.km!=null){
-      Keyboard.keyboard=new Keyboard(Keymap.km.start, Keymap.km.start+Keymap.km.count-1);
-    }
+		if (Keymap.km != null) {
+			Keyboard.keyboard = new Keyboard(Keymap.km.start, Keymap.km.start
+					+ Keymap.km.count - 1);
+		}
 
-    //Client.releaseNumber = RELEASE_NUMBER;
-    //Client.vendor=vendor;
+		// Client.releaseNumber = RELEASE_NUMBER;
+		// Client.vendor=vendor;
 
-    serverClient=new Client();
-    serverClient.index=0;
-    Client.clients[0]=serverClient;
-    XResource.initClientResource(serverClient);
+		serverClient = new Client();
+		serverClient.index = 0;
+		Client.clients[0] = serverClient;
+		XResource.initClientResource(serverClient);
 
-    screen=Screen.init();
+		screen = Screen.init();
 
-    XColormap.init();
-    Extension.init(extension);
+		XColormap.init();
+		Extension.init(extension);
 
-    Depth[] depth=null;
+		Depth[] depth = null;
 
-    Visual[] visual=null;
-    Visual defaultv=null;
+		Visual[] visual = null;
+		Visual defaultv = null;
 
-    {
-      List<Depth> depthv=new ArrayList<Depth>();
+		{
+			List<Depth> depthv = new ArrayList<Depth>();
 
-      if(visuals.indexOf("TrueColor16")!=-1){
-        visual=Visual.getTrueColor16(serverClient);
-        defaultv=visual[0];
-        depthv.add(new Depth(16, visual));
+			if (visuals.indexOf("TrueColor16") != -1) {
+				visual = Visual.getTrueColor16(serverClient);
+				defaultv = visual[0];
+				depthv.add(new Depth(16, visual));
 
-        imageByteOrder=0;
-        bitmapBitOrder=0;
-      }
+				imageByteOrder = 0;
+				bitmapBitOrder = 0;
+			}
 
-      if(defaultv==null && visuals.indexOf("PseudoColor8")!=-1){               
-	visual=Visual.getPseudoColor8(serverClient);         
-	defaultv=visual[0];                                 
-	depthv.add(new Depth(8, visual));            
-      }                                                     
-      
-      if(defaultv==null && visuals.indexOf("StaticGray8")!=-1){                
-	visual=Visual.getStaticGray8(serverClient);          
-	defaultv=visual[0];                                  
-	depthv.add(new Depth(8, visual));             
-      }                                                      
+			if (defaultv == null && visuals.indexOf("PseudoColor8") != -1) {
+				visual = Visual.getPseudoColor8(serverClient);
+				defaultv = visual[0];
+				depthv.add(new Depth(8, visual));
+			}
 
-      if(defaultv==null){
-        visual=Visual.getStaticGray1(serverClient);
-        defaultv=visual[0];
-        depthv.add(new Depth(1, visual));
-      }
+			if (defaultv == null && visuals.indexOf("StaticGray8") != -1) {
+				visual = Visual.getStaticGray8(serverClient);
+				defaultv = visual[0];
+				depthv.add(new Depth(8, visual));
+			}
 
-      depth=new Depth[depthv.size()];
-      for(int i=0; i<depthv.size(); i++){
-	depth[i]=(Depth)depthv.get(i);
-      }
-      depthv.clear();
-    }
+			if (defaultv == null) {
+				visual = Visual.getStaticGray1(serverClient);
+				defaultv = visual[0];
+				depthv.add(new Depth(1, visual));
+			}
 
-    int rootid=XResource.fakeClientId(serverClient);
-    int colormapid=XResource.fakeClientId(serverClient);
+			depth = new Depth[depthv.size()];
+			for (int i = 0; i < depthv.size(); i++) {
+				depth[i] = (Depth) depthv.get(i);
+			}
+			depthv.clear();
+		}
 
-    XFont.init(XResource.fakeClientId(serverClient), charset); 
+		int rootid = XResource.fakeClientId(serverClient);
+		int colormapid = XResource.fakeClientId(serverClient);
 
-    XCursor.rootCursor=new XCursor(XResource.fakeClientId(serverClient));
-    XResource.add(XCursor.rootCursor);
+		XFont.init(XResource.fakeClientId(serverClient), charset);
 
-    int fgPixel=1, bgPixel=0;
-    if(visuals.indexOf("TrueColor16")!=-1){
-	fgPixel=0xffff; bgPixel=0x000000;
-    }
+		XCursor.rootCursor = new XCursor(XResource.fakeClientId(serverClient));
+		XResource.add(XCursor.rootCursor);
 
-    screen[0]=new Screen(rootid,
-			 colormapid,
-			 fgPixel,
-			 bgPixel,
-			 0,
-			 width,
-			 height,
-			 width/3,
-			 height/3,
-			 1,
-			 1,
-			 defaultv.id,
-			 0,
-			 0,
-                         defaultv.depth.depth,
-			 depth);
+		int fgPixel = 1, bgPixel = 0;
+		if (visuals.indexOf("TrueColor16") != -1) {
+			fgPixel = 0xffff;
+			bgPixel = 0x000000;
+		}
 
-    if(weirdx.mode.equals("MultiWindow") ||
-       weirdx.mode.equals("Rootless")){
-      screen[0].windowmode=Rootless; 
-    }   
-    else if(weirdx.mode.equals("MultiWindowWM") ||
-	    weirdx.mode.equals("RootlessWM")){
-	screen[0].windowmode=RootlessWM; 
-    }   
-    else {
-      screen[0].windowmode=InBrowser;
-    }
+		screen[0] = new Screen(rootid, colormapid, fgPixel, bgPixel, 0, width,
+				height, width / 3, height / 3, 1, 1, defaultv.id, 0, 0,
+				defaultv.depth.depth, depth);
 
-    {
-      int vcount=0;
-      for(int i=0; i<depth.length; i++){
-	vcount+=depth[i].getVisual().length;
-      }
-      visual=new Visual[vcount];
-      vcount=0;
-      for(int i=0; i<depth.length; i++){
-	Visual[] tmp=depth[i].getVisual();
-	for(int j=0; j<tmp.length; j++){
-	  visual[vcount]=tmp[j];
-	  vcount++;
+		if (weirdx.mode.equals("MultiWindow") || weirdx.mode.equals("Rootless")) {
+			screen[0].windowmode = Rootless;
+		} else if (weirdx.mode.equals("MultiWindowWM")
+				|| weirdx.mode.equals("RootlessWM")) {
+			screen[0].windowmode = RootlessWM;
+		} else {
+			screen[0].windowmode = InBrowser;
+		}
+
+		{
+			int vcount = 0;
+			for (int i = 0; i < depth.length; i++) {
+				vcount += depth[i].getVisual().length;
+			}
+			visual = new Visual[vcount];
+			vcount = 0;
+			for (int i = 0; i < depth.length; i++) {
+				Visual[] tmp = depth[i].getVisual();
+				for (int j = 0; j < tmp.length; j++) {
+					visual[vcount] = tmp[j];
+					vcount++;
+				}
+			}
+		}
+
+		screen[0].visual = visual;
+
+		if (defaultv.depth.depth == 8) {
+			format = new Format[2];
+			format[0] = new Format((byte) 1, (byte) 1, (byte) 32);
+			format[1] = new Format((byte) 8, (byte) 8, (byte) 32);
+		} else if (defaultv.depth.depth == 16) {
+			format = new Format[2];
+			format[0] = new Format((byte) 1, (byte) 1, (byte) 32);
+			format[1] = new Format((byte) 16, (byte) 16, (byte) 32);
+		} else {
+			format = new Format[1];
+			format[0] = new Format((byte) 1, (byte) 1, (byte) 32);
+		}
+
+		Format.format = format;
+		// {
+		// int len=0;
+		// for(int i=0; i<screen.length; i++){ len+=screen[i].getLength(); }
+		// if(format!=null) len+=2*format.length;
+		// len+=((VENDOR.getBytes().length+3)/4);
+		// len+=8;
+		// Client.initialLength=len;
+		// }
+		screen[0].defaultColormap = XColormap.getColormap(colormapid,
+				screen[0], defaultv, 0, serverClient);
+		XColormap cmap = screen[0].defaultColormap;
+		XColormap.installed[0] = cmap;
+
+		if (defaultv.depth.depth != 16) {
+			cmap.flags |= 4/* Colormap.BeingCreated */;
+			try {
+				cmap.allocColor(serverClient, 0, 0, 0);
+				cmap.allocColor(serverClient, 255, 255, 255);
+				if (defaultv.clss == 0 && // StaticGray
+						defaultv.depth.depth == 8) {
+					for (int i = 1; i < 255; i++) {
+						cmap.allocColor(serverClient, i, i, i);
+					}
+				}
+			} catch (Exception e) {
+			}
+			cmap.mkIcm();
+			cmap.flags &= ~4/* Colormap.BeingCreated */;
+		}
+
+		RootWindow w = null;
+		try {
+			w = new RootWindow(container, screen[0], format, serverClient);
+		} catch (Exception e) {
+		}
+
+		try {
+			w.mapWindow(serverClient);
+		} catch (Exception e) {
+		}
+
+		XPixmap.init(screen);
+
+		if (copypaste)
+			CopyPaste.init();
+
+		LogoImage.init(screen);
+		LogoImage.loadLogo(logo);
+
+		if (jesd != null) {
+			try {
+				c = Class.forName("com.jcraft.jesd.Daemon");
+				Thread foo = (Thread) c.newInstance();
+				foo.start();
+			} catch (Exception e) {
+				LOG.error("WeirdX: " + e);
+			}
+		}
 	}
-      }
-    }
 
-    screen[0].visual=visual;
-
-    if(defaultv.depth.depth==8){
-      format=new Format[2];
-      format[0]=new Format((byte)1, (byte)1, (byte)32);
-      format[1]=new Format((byte)8, (byte)8, (byte)32);
-    }
-    else if(defaultv.depth.depth==16){
-      format=new Format[2];
-      format[0]=new Format((byte)1, (byte)1, (byte)32);
-      format[1]=new Format((byte)16, (byte)16, (byte)32);
-    }
-    else{
-      format=new Format[1];
-      format[0]=new Format((byte)1, (byte)1, (byte)32);
-    }
-
-    Format.format=format;
-//    {
-//      int len=0;
-//      for(int i=0; i<screen.length; i++){ len+=screen[i].getLength(); }
-//      if(format!=null) len+=2*format.length;
-//      len+=((VENDOR.getBytes().length+3)/4);
-//      len+=8;
-//      Client.initialLength=len;
-//    }
-    screen[0].defaultColormap=
-      XColormap.getColormap(colormapid, screen[0], 
-			   defaultv, 0, serverClient);
-    XColormap cmap=screen[0].defaultColormap;
-    XColormap.installed[0]=cmap;
-
-    if(defaultv.depth.depth!=16){                  
-      cmap.flags|=4/*Colormap.BeingCreated*/;
-      try{
-        cmap.allocColor(serverClient, 0, 0, 0);
-        cmap.allocColor(serverClient, 255, 255, 255);
-        if(defaultv.clss==0 &&      // StaticGray
-  	   defaultv.depth.depth==8){
-	  for(int i=1; i<255; i++){                      
-	    cmap.allocColor(serverClient, i, i, i);      
-	  }                                              
-        }
-      }
-      catch(Exception e){}
-      cmap.mkIcm();
-      cmap.flags&=~4/*Colormap.BeingCreated*/;
-    }
-
-    RootWindow w=null;
-    try{ 
-      w=new RootWindow(container, screen[0], format, serverClient); 
-    }
-    catch(Exception e){}
-
-    try{ w.mapWindow(serverClient); }
-    catch(Exception e){}
-
-    XPixmap.init(screen);
-
-    if(copypaste)
-      CopyPaste.init();
-
-    LogoImage.init(screen);
-    LogoImage.loadLogo(logo);
-
-    if(jesd!=null){
-      try{
-        c=Class.forName("com.jcraft.jesd.Daemon");
-        Thread foo=(Thread)c.newInstance();
-        foo.start();
-      }
-      catch(Exception e){
-    	  LOG.error("WeirdX: "+e);
-      }
-    }
-  }
-
+	
   	void weirdx_start(Container container) throws ConnectException {
 		if( xdmcpmode != null ){
 			LOG.debug( "XDMC Mode = " + xdmcpmode );

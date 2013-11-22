@@ -26,7 +26,7 @@ import java.awt.Toolkit;
 import java.awt.image.*;
 import java.net.URL;
 
-final class LogoImage{
+public final class LogoImage{
   static Screen screen;
   static String name="weirdx.jpg";
   static Image logoimage=null;

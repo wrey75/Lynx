@@ -40,7 +40,7 @@ import org.apache.commons.logging.LogFactory;
 
                                 
 
-class XPixmap extends XDrawable {
+public class XPixmap extends XDrawable {
 	private static Log LOG = LogFactory.getLog(XPixmap.class);
 
   static void init(Screen[] screen){

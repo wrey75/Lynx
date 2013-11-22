@@ -25,7 +25,7 @@ import java.io.Serializable;
 
 
 @SuppressWarnings("serial")
-class Keymap implements Serializable {
+public class Keymap implements Serializable {
   static Keymap km=null;
   int start;
   int width;

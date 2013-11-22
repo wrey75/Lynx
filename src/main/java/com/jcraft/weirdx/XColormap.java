@@ -29,7 +29,7 @@ import java.awt.image.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class XColormap extends XResource{
+public class XColormap extends XResource{
 	private static Log LOG = LogFactory.getLog(XResource.class);
 	
   static private final int REDMAP=0;

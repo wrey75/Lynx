@@ -27,7 +27,7 @@ import java.applet.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class RootWindow extends XWindow{
+public class RootWindow extends XWindow{
 	private static Log LOG = LogFactory.getLog(RootWindow.class);
 	
   private static final int InputOutput=1;
