@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
                        
 @SuppressWarnings("unused")
+public
 class XWindow extends XDrawable {
 	private static Log LOG = LogFactory.getLog(XWindow.class);
 	
@@ -214,7 +215,7 @@ class XWindow extends XDrawable {
 		}
 	}
 	
-	static void installDDXWindow(String name) {
+	public static void installDDXWindow(String name) {
 		Class<?> c = null;
 		try {
 			if (name.startsWith("com.jcraft.weirdx.")){

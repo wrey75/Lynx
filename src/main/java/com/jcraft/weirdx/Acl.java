@@ -23,7 +23,7 @@ package com.jcraft.weirdx;
 import java.io.*;
 import java.net.*;
 
-final class Acl {
+final public class Acl {
 	private static int mode = 0;
 	private static int count = 0;
 	private static int[] hosts;
@@ -33,7 +33,7 @@ final class Acl {
 			hosts[i] = 0;
 	}
 
-	static void parse(String str) {
+	public static void parse(String str) {
 		str = "," + str;
 		char[] b = str.toCharArray();
 		int i = 0, s = 0, e = 0;

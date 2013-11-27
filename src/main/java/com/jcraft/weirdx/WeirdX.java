@@ -20,18 +20,14 @@
 
 package com.jcraft.weirdx;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.awt.*;
-import java.awt.event.*;
 import java.applet.*;
 
 import org.apache.commons.logging.Log;
@@ -39,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
                                  
 
 @SuppressWarnings("serial")
-public final class WeirdX extends Applet {
+public class WeirdX extends Applet {
 
 	private static Log LOG = LogFactory.getLog(WeirdX.class);
 
@@ -64,50 +60,50 @@ public final class WeirdX extends Applet {
   static final int bitmapScanUnit=32; //32
   static final int bitmapScanPad=32;  //32
 
-  private static short width = 768;
-  private static short height = 576;
+	public short width = 768;
+	public short height = 576;
 
-  private static String visuals = "PseudoColor8";
-  private static String keymap = "101";
-  private int displayNumber = 2;
-  static String myAddress=null;
+  public String visuals = "PseudoColor8";
+  protected static String keymap = "101";
+  public int displayNumber = 2;
+  protected static String myAddress=null;
 
-  static boolean threeButton=false;
-  static boolean copypaste=false;
+  protected static boolean threeButton=false;
+  protected static boolean copypaste=false;
 
   static Client serverClient=null;
-  String mode = "InBrowser";
-  String logo = null;
+  public String mode = "InBrowser";
+  public String logo = null;
 
   //static String extension=null;
-  static String extension="DummySHAPE";
+  protected static String extension="DummySHAPE";
 
-  static String charset=null;
+  protected static String charset=null;
 
 
-  static XRexec xrexec=null;                              
-  static String jesd=null;
+  protected static XRexec xrexec=null;                              
+  protected static String jesd=null;
   static String sxrexec=null;
-  static String ssshrexec=null;
+  protected static String ssshrexec=null;
 
-  static String jdxpc=null;
-  static int jdxpcport=4000;
-  static String jdxpcsocket=null;
-  static String jdxpcserverproxy="com.jcraft.jdxpc.ServerProxy";
+  protected static String jdxpc=null;
+  protected static int jdxpcport=4000;
+  protected static String jdxpcsocket=null;
+  protected static String jdxpcserverproxy="com.jcraft.jdxpc.ServerProxy";
 
-  static String alphaBackground=null;                             
+  protected static String alphaBackground=null;                             
 
   static AppletContext acontext=null;
 
   //static ServerSocket displaysocket=null;
   static DisplaySocket displaysocket=null;
-  static Class<?> displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
+  protected static Class<?> displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
 
-  static XDMCP xdmcp=null;
+  protected static XDMCP xdmcp=null;
   static String xdmcpmode=null;                           
   static String xdmcpaddr=null;                           
 
-  static WeirdX weirdx=null;
+  protected static WeirdX weirdx=null;
 
   static final int InBrowser=0;
   static final int Rootless=1;
@@ -343,7 +339,7 @@ public final class WeirdX extends Applet {
 	}
 
 	
-  	void weirdx_start(Container container) throws ConnectException {
+  	public void weirdx_start(Container container) throws ConnectException {
 		if( xdmcpmode != null ){
 			LOG.debug( "XDMC Mode = " + xdmcpmode );
 			if (xdmcpmode.equals("query")) {
@@ -675,372 +671,6 @@ public final class WeirdX extends Applet {
   }
 
 
-  public static void main(String args[]) {
-    String s;
-    WeirdX weirdx=new WeirdX();
-
-    LOG.info("Starting Lynx...");
-    
-    Properties props=new Properties();
-    try{
-      InputStream rs = null;
-      /* accept a command line argument of a URL from which to get
-         properties. This is required because of a bug in netscape, where
-         it refuses to properly load resources in certain cases */
-      if (args!=null && args.length >= 2 && args[1]!=null) {
-        URL propsurl=new URL(args[1]);
-        rs=propsurl.openStream();
-      }
-      else{
-       rs = weirdx.getClass().getResourceAsStream("/props");
-      }
-      if(rs!=null)
-        props.load(rs);
-    }
-    catch(Exception e){ 
-      //System.err.println(e);
-    }
-
-    try{
-      String root=props.getProperty("user.dir", null);
-      File guess=new File(new File(root, "config"), "props");
-      props.load(new FileInputStream(guess));
-    }
-    catch(Exception e){ 
-      //System.err.println(e);
-    }
-
-    Properties sprops=null;
-    try{
-      sprops=System.getProperties();
-    } 
-    catch (Exception e) {
-      LOG.error("Unable to read system properties: "+e);
-      sprops=new Properties();
-    }
-    for( Object e: props.keySet() ){
-      String key=(String)e;
-      //if(key.startsWith("weirdx.") && sprops.get(key)==null){
-      //  System.setProperty(key, (String)(props.get(key)));
-      //}
-      if(key.startsWith("weirdx.") && sprops.get(key)==null){
-        sprops.put(key, (String)(props.get(key)));
-      }
-    }
-
-    try{
-      System.setProperties(sprops);
-      props=System.getProperties();
-    }
-    catch (Exception e) {
-      System.err.println("Error updating system properties: "+e);
-    }
-
-    try{
-      try{
-	s=(String)props.get("weirdx.ddxwindow");
-	if(s!=null){ XWindow.installDDXWindow(s); }
-      }
-      catch(Exception ee){ 
-        LOG.error(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.display.width");
-	if(s!=null){ width=Short.parseShort(s); }
-      }
-      catch(Exception ee){ 
-        LOG.error(ee);
-      }
-
-      try{ s=(String)props.get("weirdx.display.height");
-	if(s!=null){ height=Short.parseShort(s); }
-      }
-      catch(Exception ee){ 
-        //System.err.println(ee);
-      }
-
-      /* support for autodetect of screen size */
-      try{ 
-        s=(String)props.get("weirdx.display.autosize");
-        if(s!=null){ 
-          if (Boolean.valueOf(s).booleanValue()) {
-              /* auto-calculate screen size */
-                
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension ScrSize= toolkit.getScreenSize();
-            int widthreduce=20;
-            int heightreduce=60;
-                 
-            try{ 
-              s=(String)props.get("weirdx.display.autosize.widthreduce");
-              if(s!=null){ widthreduce=Short.parseShort(s); }
-            } 
-            catch(Exception ee){ }
-
-            try{ 
-              s=(String)props.get("weirdx.display.autosize.heightreduce");
-              if(s!=null){ heightreduce=Short.parseShort(s); }
-            } 
-            catch(Exception ee){ }
-
-            width=(short)(ScrSize.width-widthreduce);
-            height=(short)(ScrSize.height-heightreduce);
-          }
-        }
-      }
-      catch(Exception ee){ 
-        LOG.error(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.display.visual");
-	if(s!=null){ visuals=s; }
-      }
-      catch(Exception ee){ 
-        LOG.warn(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.windowmode");
-	if(s!=null){
-	  weirdx.mode=s;
-	}
-      }
-      catch(Exception ee){ 
-        LOG.warn(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.myaddress");
-	if(s!=null){ myAddress=s; }
-      }
-      catch(Exception ee){ 
-        LOG.warn(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.displaynum");
-	if(s!=null){ weirdx.displayNumber=Integer.parseInt(s);}
-      }
-      catch(Exception ee){ 
-        LOG.warn(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.display.acl");
-	if(s!=null){ Acl.parse(s); }
-      }
-      catch(Exception ee){ 
-        //System.err.println(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.display.threebutton");
-	if(s.equals("yes")){ threeButton=true;}
-      }
-      catch(Exception ee){ 
-        //System.err.println(ee);
-      }
-
-      try{
-	s=(String)props.get("weirdx.display.copypaste");
-	if(s.equals("yes")){ copypaste=true;}
-      }
-      catch(Exception ee){ 
-        //System.err.println(ee);
-      }
-             
-      try{                                                        
-	s=(String)props.get("weirdx.display.keymap");              
-	if(s!=null){ keymap=s; }
-      }                                                           
-      catch(Exception ee){                                        
-	//System.err.println(ee);                                 
-      }                                                           
-
-      try{
-	s=(String)props.get("weirdx.display.charset");
-	if(s!=null&&s.length()>0){ charset=s; }
-      }
-      catch(Exception ee){
-	//System.err.println(ee);
-      }
-
-      try{
-        s=(String)props.get("weirdx.xdmcp.mode");
-        if(s!=null){
-	  String ss=(String)props.get("weirdx.xdmcp.address");
-          if(s.equals("query")){
-            xdmcp=new XDMCP(ss, myAddress, weirdx.displayNumber);
-          }
-          else if(s.equals("broadcast")){
-            xdmcp=new XDMCP(XDMCP.BroadcastQuery, ss, myAddress, weirdx.displayNumber);
-          }
-          else if(s.equals("indirect")){
-            xdmcp=new XDMCP(XDMCP.IndirectQuery, ss, myAddress, weirdx.displayNumber);
-          }
-	}
-      }
-      catch(Exception ee){
-        //System.err.println(ee);
-      }
-
-      try{                                                        
-	s=(String)props.get("weirdx.xrexec");                      
-	if(s.equals("yes")){ 
-	  xrexec=new XRexec(myAddress, weirdx.displayNumber);         
-	}                                                         
-      }                                                           
-      catch(Exception ee){                                        
-        //System.err.println(ee);                                 
-      }
-
-      try{                                                        
-	s=(String)props.get("weirdx.sshrexec");                      
-	ssshrexec=s;
-      }                                                           
-      catch(Exception ee){                                        
-        //System.err.println(ee);                                 
-      }
-
-      try{
-	s=(String)props.get("weirdx.jesd");
-	if(s!=null && s.equals("yes")){
-	  jesd=s;
-	}
-      }
-      catch(Exception ee){}
-
-      try{
-	s=(String)props.get("weirdx.jdxpc");
-	if(s!=null && s.length()!=0  && !s.equals("no")){
-	  jdxpc=s;
-	}
-      }
-      catch(Exception ee){}
-
-      try{
-	  s=(String)props.get("weirdx.jdxpcport");
-	  if(s!=null){ jdxpcport=Integer.parseInt(s);}
-      }
-      catch(Exception ee){}
-
-      try{
-        s=(String)props.get("weirdx.jdxpc.socket");
-        if(s!=null){ jdxpcsocket=s;}
-      }
-      catch(Exception ee){}
-
-      try{
-        s=(String)props.get("weirdx.jdxpc.serverproxy");
-        if(s!=null){ jdxpcserverproxy=s;}
-      }
-      catch(Exception ee){}
-
-      try{                                                        
-	s=(String)props.get("weirdx.extension");
-	if(s!=null){                                      
-	  WeirdX.extension=s;
-	}                                                         
-      }                                                           
-      catch(Exception ee){                                        
-        //System.err.println(ee);                                 
-      }
-
-      try{                                                        
-	s=(String)props.get("weirdx.display.background.alpha");
-        if(s!=null){ alphaBackground=s;}
-      }                                                           
-      catch(Exception ee){                                        
-        //System.err.println(ee);                                 
-      }
-
-/*
-      try{                                                        
-	s=(String)props.get("weirdx.display.background.alpha");
-        if(s!=null){
-          try{ 
-//            int balpha=Integer.parseInt(s); 
-//            balpha&=0xff;
-//            if(balpha!=255){
-  	      String ss=(String)props.get("weirdx.display.background.alpha.class");
-              if(ss!=null && 
-                ss.equals("com.jcraft.weirdx.DDXWindowAlphaBackground2D")){
-                int balpha=Integer.parseInt(s); 
-                balpha&=0xff;
-                if(balpha!=255){
-                  Window.dDXWindow=DDXWindowAlphaBackground2D.class;
-                  DDXWindowAlphaBackground2D.setAlpha(balpha);
-		}
-              }
-              else{
-                Window.dDXWindow=DDXWindowAlphaBackground.class;
-                DDXWindowAlphaBackground.setAlpha(s);
-              }
-//	    }
-          }
-          catch(Exception ee){LOG.error(ee);}
-        }
-      }                                                           
-      catch(Exception ee){                                        
-        LOG.error(ee);                                 
-      }
-*/
-
-      try{                                                        
-	s=(String)props.get("weirdx.logo");
-	if(s!=null){                                      
-	  weirdx.logo=s;
-	}                                                         
-      }                                                           
-      catch(Exception ee){                                        
-        //System.err.println(ee);                                 
-      }
-
-      try{                                                        
-	s=(String)props.get("weirdx.displaysocket");
-	if(s!=null){                                      
-          try{
-            displaySocketClass=Class.forName(s);
-            if(!s.equals("com.jcraft.weirdx.DisplaySocket6k"))
-              LOG.warn(s+" is used for DisplaySocket");
-          }
-          catch(Exception e){
-            LOG.error(e);
-            displaySocketClass=com.jcraft.weirdx.DisplaySocket6k.class;
-          }
-	}                                                         
-      }                                                           
-      catch(Exception ee){                                        
-        //System.err.println(ee);                                 
-      }
-
-    }
-    catch(Exception e){
-    	LOG.error(e);
-    }
-
-    WeirdX.weirdx=weirdx;
-    Container container=new Frame("WeirdX");
-
-    ((Frame)container).addWindowListener(
-      new WindowAdapter() {                
-        public void windowClosed(WindowEvent e){ System.exit(0); }
-	public void windowClosing(WindowEvent e){ 
-          ((Frame)e.getWindow()).dispose();
-          System.exit(0); 
-        }
-      }
-    );
-
-		try {
-			weirdx.weirdx_start(container);
-		} 
-		catch (Exception e) {
-			LOG.fatal( "I/O Error: " + e.getLocalizedMessage() );
-		}
-	}
 
   static void resetScreen(int scrn){
     Client.closeDownAll();

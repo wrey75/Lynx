@@ -27,6 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 @SuppressWarnings("unused")
+public
 final class XDMCP extends Thread implements ClientListener {
 	private static Log LOG = LogFactory.getLog(XDMCP.class);
 
@@ -49,9 +50,9 @@ final class XDMCP extends Thread implements ClientListener {
   private final static int await_alive=17;
   private final static int reset_display=18;
 
-  final static int BroadcastQuery=1;
+  public final static int BroadcastQuery=1;
   final static int Query=2;
-  final static int IndirectQuery=3;
+  public final static int IndirectQuery=3;
   private final static int ForwardQuery=4;
   private final static int Willing=5;
   private final static int Unwilling=6;
@@ -116,11 +117,11 @@ final class XDMCP extends Thread implements ClientListener {
     this(Query, host, null, 0); 
   }
 
-  XDMCP(String query, String localhost, int num){ 
+  public XDMCP(String query, String localhost, int num){ 
     this(Query, query, localhost, num);
   }
 
-  XDMCP(int op, String host, String localhost, int num){ 
+  public XDMCP(int op, String host, String localhost, int num){ 
     super();
 
     this.host=host;

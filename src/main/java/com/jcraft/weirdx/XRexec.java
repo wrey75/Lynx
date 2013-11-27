@@ -33,7 +33,7 @@ import javax.swing.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-class XRexec implements ActionListener{
+public class XRexec implements ActionListener{
 	private static Log LOG = LogFactory.getLog(XRexec.class);
 	
   private final JTextField name=new JTextField(8);
@@ -44,7 +44,7 @@ class XRexec implements ActionListener{
 
   private String display="localhost:2.0";
 
-  XRexec(String myName, int num){
+  public XRexec(String myName, int num){
     try{
       InetAddress local=null;
       if(myName!=null&&myName.length()>0){
