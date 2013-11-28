@@ -27,7 +27,6 @@ import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.KeyEvent;
-
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
@@ -35,6 +34,8 @@ import java.awt.event.InputEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.jcraft.weirdx.res.XFont;
 
 
 

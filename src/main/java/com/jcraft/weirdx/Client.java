@@ -28,6 +28,7 @@ import java.awt.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.res.XFont;
 import com.jcraft.weirdx.res.XResource;
 
 public final class Client extends Thread {
@@ -75,7 +76,7 @@ public final class Client extends Thread {
 
   static int servergraber=-1;
 
-  int seq;
+  public int seq;
   public int index;
   boolean swap=false;
   public int clientAsMask;
@@ -91,22 +92,22 @@ public final class Client extends Thread {
 
   int clientState=ClientStateInitial;
 
-  byte[] bbuffer=null;
+  public byte[] bbuffer=null;
   byte[] sevent=null;
-  char[] cbuffer=null;
+  public char[] cbuffer=null;
   int[] xarray=new int[4];
   int[] yarray=new int[4];
   Event cevent=new Event();
-  InputOutput client;
+  public InputOutput client;
 
   SaveSet saveSet=null;
 
   int reqType;
-  int data;
-  int length;
+  public int data;
+  public int length;
 
-  int errorValue;
-  int errorReason;
+  public int errorValue;
+  public int errorReason;
 
   	static List<ClientListener> LISTENERS = new ArrayList<ClientListener>();
 

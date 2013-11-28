@@ -36,10 +36,10 @@ import com.jcraft.weirdx.WeirdXBeanInfo;
 import com.jcraft.weirdx.XColormap;
 import com.jcraft.weirdx.XCursor;
 import com.jcraft.weirdx.XDMCP;
-import com.jcraft.weirdx.XFont;
 import com.jcraft.weirdx.XPixmap;
 import com.jcraft.weirdx.XRexec;
 import com.jcraft.weirdx.XWindow;
+import com.jcraft.weirdx.res.XFont;
 import com.jcraft.weirdx.res.XResource;
 
 public class LynX extends WeirdX {

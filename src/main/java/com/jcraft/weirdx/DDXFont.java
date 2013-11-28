@@ -30,8 +30,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.res.XFont;
 
-class DDXFont {
+
+public class DDXFont {
 	static private Log LOG = LogFactory.getLog(DDXFont.class);
 	static Map<String, RefCount> table = new HashMap<String, DDXFont.RefCount>();
 
@@ -78,33 +80,33 @@ class DDXFont {
     	}
     }
 
-    void delete() {
+    public void delete() {
     	delFont( font );
     	font = null;
     }
 
-    byte[] lfname;
+    public byte[] lfname;
     Font font;
-    FontMetrics metric;
+    public FontMetrics metric;
     int[] prop;
 
-    int min_char_or_byte2=32;
-    int max_char_or_byte2=255;
-    int min_byte1=0;
-    int max_byte1=0;
-    int default_char=32;
+    public int min_char_or_byte2 = 32;
+    public int max_char_or_byte2 = 255;
+    public int min_byte1 = 0;
+    public int max_byte1 = 0;
+    public int default_char = 32;
 
-    int min_width;
-    int max_width;
+    public int min_width;
+    public int max_width;
 
-    String encoding = null;
-  	Font_CharSet charset = null;
+    public String encoding = null;
+  	public Font_CharSet charset = null;
 
-  	DDXFont() {
-  		
+  	public DDXFont() {
+  		// Nothing to do
   	}
 
-  	void init( byte[] lfname ) throws UnsupportedEncodingException {
+  	public void init( byte[] lfname ) throws UnsupportedEncodingException {
   		if( encoding != null ){
   			if( charset==null ) return;
   			int tmp = default_char;
@@ -132,7 +134,7 @@ class DDXFont {
   	}
 
 
-  	Font getFont(){
+  	public Font getFont(){
   		if(font!=null) return font;
   		int size=12;
   		try {
@@ -217,7 +219,7 @@ class DDXFont {
 		return font;
   }
 
-  int[] getProp(){
+  public int[] getProp(){
     if(prop==null)
       initprop();
     return prop;
@@ -228,15 +230,15 @@ class DDXFont {
     prop[0]=XAtom.make("FONT", true);
     prop[1]=XAtom.make(new String(lfname), true);
   }
-  int getAscent(){ return metric.getAscent(); }
-  int getDescent(){ return metric.getDescent(); }
+  public int getAscent(){ return metric.getAscent(); }
+  public int getDescent(){ return metric.getDescent(); }
   int getLeading(){ return metric.getLeading(); }
   int getHeight(){ return metric.getHeight(); }
   int getMaxAdvance(){ return metric.charWidth('@'); }
-  int getMaxAscent(){ return metric.getAscent(); }
-  int getMaxDescent(){ return metric.getDescent(); }
-  int[] getWidths(){ return metric.getWidths(); }
-  int charWidth(char c){ return metric.charWidth(c); }
+  public int getMaxAscent(){ return metric.getAscent(); }
+  public int getMaxDescent(){ return metric.getDescent(); }
+  public int[] getWidths(){ return metric.getWidths(); }
+  public int charWidth(char c){ return metric.charWidth(c); }
 
   String getFamily(){ return chop(1); }
   String getWeight(){ return chop(2); }
@@ -258,14 +260,14 @@ class DDXFont {
     return i;
   }
 
-  boolean getScalable(){
+  public boolean getScalable(){
     int tmp=0;
     try{ tmp=Integer.parseInt(getFontSize()); }
     catch(Exception e){}
     return tmp==0;
   }
 
-  DDXFont getScalableFont(byte[] name){
+  public DDXFont getScalableFont(byte[] name){
     DDXFont f=null;
     try{f=new DDXFont(); f.init(XFont.genScaleName(lfname, name));}
     catch(Exception e){}

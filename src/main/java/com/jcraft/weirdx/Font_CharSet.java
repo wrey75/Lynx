@@ -20,7 +20,7 @@
 
 package com.jcraft.weirdx;
 
-interface Font_CharSet{
+public interface Font_CharSet{
   int getMinByte1();
   int getMaxByte1();
   int getMinCharOrByte2();

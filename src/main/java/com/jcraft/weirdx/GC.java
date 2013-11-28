@@ -21,6 +21,7 @@
 package com.jcraft.weirdx;
 import java.io.*;
 
+import com.jcraft.weirdx.res.XFont;
 import com.jcraft.weirdx.res.XResource;
 
 final class GC extends XResource {

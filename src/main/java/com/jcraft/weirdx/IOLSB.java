@@ -20,9 +20,11 @@
 
 package com.jcraft.weirdx;
 
+import java.io.IOException;
+
 
 final class IOLSB extends InputOutput{
-  int readShort() throws java.io.IOException{
+  public int readShort() throws IOException {
     if((inrest)<2){ read(2); }
     inrest-=2;
     int s=inbuffer[instart++]&0xff;
@@ -30,7 +32,7 @@ final class IOLSB extends InputOutput{
     return s;
   }
 
-  int readInt() throws java.io.IOException{
+  public int readInt() throws IOException{
     if((inrest)<4){ read(4); }
     inrest-=4;
     int i=inbuffer[instart++]&0xff;
@@ -40,13 +42,13 @@ final class IOLSB extends InputOutput{
     return i;
   }
 
-  void writeShort(int val) throws java.io.IOException{
+  public void writeShort(int val) throws IOException{
     if((outbuffer.length-outindex)<2){ flush(); }
     outbuffer[outindex++]=(byte)(val&0xff);
     outbuffer[outindex++]=(byte)((val >> 8)&0xff);
   }
 
-  void writeInt(int val) throws java.io.IOException{
+  public void writeInt(int val) throws IOException{
     if((outbuffer.length-outindex)<4){ flush(); }
     outbuffer[outindex++]=(byte)((val) & 0xff);
     outbuffer[outindex++]=(byte)((val >> 8) & 0xff);

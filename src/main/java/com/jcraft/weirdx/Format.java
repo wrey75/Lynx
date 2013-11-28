@@ -20,18 +20,24 @@
 
 package com.jcraft.weirdx;
 
+import java.io.IOException;
+
 public final class Format {
-  static Format[] format=null;
-  byte depth;
-  byte bpp;
-  byte scanLinePad;
-  Format(byte d, byte b, byte s) {
-    depth=d; bpp=b; scanLinePad=s;
-  }
-  void writeByte(InputOutput out) throws java.io.IOException{
-    out.writeByte(depth);
-    out.writeByte(bpp);
-    out.writeByte(scanLinePad);
-    out.writePad(5);
-  }
+	static Format[] format = null;
+	byte depth;
+	byte bpp;
+	byte scanLinePad;
+
+	Format(byte d, byte b, byte s) {
+		depth = d;
+		bpp = b;
+		scanLinePad = s;
+	}
+
+	void writeByte(InputOutput out) throws IOException {
+		out.writeByte(depth);
+		out.writeByte(bpp);
+		out.writeByte(scanLinePad);
+		out.writePad(5);
+	}
 }

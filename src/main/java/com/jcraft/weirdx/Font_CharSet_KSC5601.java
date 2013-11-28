@@ -20,6 +20,8 @@
 
 package com.jcraft.weirdx;
 
+import com.jcraft.weirdx.res.XFont;
+
 class Font_CharSet_KSC5601 implements Font_CharSet{
   static int min_byte1=0x21;
   static int max_byte1=0x7d;

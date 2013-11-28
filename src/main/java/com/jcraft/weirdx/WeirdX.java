@@ -33,6 +33,7 @@ import java.applet.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.res.XFont;
 import com.jcraft.weirdx.res.XResource;
                                  
 

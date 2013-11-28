@@ -25,7 +25,7 @@ import java.io.OutputStream;
 
 
 
-abstract class InputOutput {
+public abstract class InputOutput {
   InputStream in=null;
   OutputStream out=null;
   byte[] inbuffer=new byte[1024];
@@ -36,10 +36,10 @@ abstract class InputOutput {
   byte[] ia;
   InputOutput (){ ba=new byte[1]; sa=new byte[2]; ia=new byte[8]; }
 
-  abstract int readShort() throws java.io.IOException;
-  abstract int readInt() throws java.io.IOException;
-  abstract void writeShort(int val) throws java.io.IOException;
-  abstract  void writeInt(int val) throws java.io.IOException;
+  public abstract int readShort() throws java.io.IOException;
+  public abstract int readInt() throws java.io.IOException;
+  public abstract void writeShort(int val) throws java.io.IOException;
+  public abstract  void writeInt(int val) throws java.io.IOException;
 
   void setInputStream(InputStream in){this.in=in; }
   void setOutputStream(OutputStream out){ this.out=out; }
@@ -65,7 +65,7 @@ abstract class InputOutput {
     if(0<inrest) return 1;
     return in.available();
   }
-  int readByte() throws java.io.IOException{
+  public int readByte() throws java.io.IOException{
     if((inrest)<1){ read(1); }
     inrest--;
     return inbuffer[instart++]&0xff;
@@ -73,7 +73,7 @@ abstract class InputOutput {
   void readByte(byte[] array) throws java.io.IOException{
     readByte(array, 0, array.length);
   }
-  void readByte(byte[] array, int begin, int length) throws java.io.IOException{
+  public void readByte(byte[] array, int begin, int length) throws java.io.IOException{
     int i=0;
     while(true){
       if((i=(inrest))<length){
@@ -94,7 +94,7 @@ abstract class InputOutput {
     }
   }
 
-  void readPad(int n) throws java.io.IOException{
+  public void readPad(int n) throws java.io.IOException{
     while (n > 0){
       if(inrest<n){ 
 	n-=inrest;
@@ -131,11 +131,11 @@ abstract class InputOutput {
     outbuffer[outindex++]=val;
   }
 
-  void writeByte(int val) throws java.io.IOException{
+  public void writeByte(int val) throws java.io.IOException{
     writeByte((byte)val);
   }
 
-  void writeByte(byte[] array) throws java.io.IOException{
+  public void writeByte(byte[] array) throws java.io.IOException{
     writeByte(array, 0, array.length);
   }
 
@@ -181,7 +181,7 @@ abstract class InputOutput {
 		}
 	}
 
-  synchronized void flush() throws java.io.IOException{
+  public synchronized void flush() throws java.io.IOException{
     if(outindex==0)return;
     out.write(outbuffer, 0, outindex);
     outindex=0;

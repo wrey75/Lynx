@@ -18,7 +18,7 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-package com.jcraft.weirdx;
+package com.jcraft.weirdx.res;
 
 import java.io.*;
 import java.util.*;
@@ -26,21 +26,24 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.jcraft.weirdx.res.XResource;
+import com.jcraft.weirdx.Client;
+import com.jcraft.weirdx.DDXFont;
+import com.jcraft.weirdx.Font_CharSet;
+import com.jcraft.weirdx.InputOutput;
 
 public final class XFont extends XResource{ 
 	private static Log LOG = LogFactory.getLog(XFont.class);
 	
-  static XFont dflt;
-  static List<Font_CharSet> charSets = new ArrayList<Font_CharSet>();
+  public static XFont dflt;
+  public static List<Font_CharSet> charSets = new ArrayList<Font_CharSet>();
 
   byte[] name;
   byte[] lfname;
-  String encoding=null;
+  public String encoding=null;
   DDXFont font;
 
-  int ascent;
-  int descent;
+  public int ascent;
+  public int descent;
 
   private static String[] _flist={
     "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1", // fixed
@@ -154,7 +157,13 @@ public final class XFont extends XResource{
   static void addFont(String _name){
     byte[] name=_name.getBytes();
     DDXFont f=null;
-    try{ f=new DDXFont(); f.init(name); }catch(Exception e){}
+    try{ 
+    	f=new DDXFont(); 
+    	f.init(name); 
+    }
+    catch(Exception e){
+    	LOG.debug(e);
+    }
     if(f==null) return;
     DDXFont[] tmp=new DDXFont[flist.length+1];
     System.arraycopy(flist, 0, tmp, 1, flist.length);
@@ -162,7 +171,7 @@ public final class XFont extends XResource{
     flist[0]=f;
   }
 
-  static void addFont(String[] name){
+  public static void addFont(String[] name){
     List<DDXFont> v = new ArrayList<DDXFont>();
     for(int i=0; i<name.length; i++){
       try{
@@ -186,7 +195,7 @@ public final class XFont extends XResource{
     flist=tmp;
   }
 
-  static void addAlias(String[] name){
+  public static void addAlias(String[] name){
     List<Alias> v=new ArrayList<Alias>();
     for(int i=0; i<name.length; i+=2){
       byte[] b=name[i+1].getBytes();
@@ -238,7 +247,7 @@ public final class XFont extends XResource{
     "/tmp".getBytes()
   };
 
-  static void init(int id, String charset){
+  public static void init(int id, String charset){
     if(_flist!=null){
       addFont(_flist);
       _flist=null; // go away!!
@@ -278,13 +287,13 @@ static void loadCharSet(String name){
     catch(Exception e){ }
   }
 
-  java.awt.Font getFont(){ return font.getFont(); }
+  public java.awt.Font getFont(){ return font.getFont(); }
 
   int bytesWidth(byte[] b, int i, int j){ 
     return font.metric.bytesWidth(b, i, j);
   }
 
-  int charsWidth(char[] b, int i, int j){ 
+  public int charsWidth(char[] b, int i, int j){ 
     return font.metric.charsWidth(b, i, j);
   }
 
@@ -365,7 +374,7 @@ static void loadCharSet(String name){
     return true;
   }
 
-  static byte[] genScaleName(byte[] lfname, byte[] name){
+  public static byte[] genScaleName(byte[] lfname, byte[] name){
     return genScaleName(lfname, name, 0);
   }
 
@@ -522,7 +531,7 @@ static void loadCharSet(String name){
     encoding=font.encoding;
   }
 
-  static void reqQueryTextExtents(Client c) throws IOException{
+  public static void reqQueryTextExtents(Client c) throws IOException{
     int n, foo;
     boolean odd=false;
     InputOutput io=c.client;
@@ -584,6 +593,7 @@ static void loadCharSet(String name){
   
   
   @SuppressWarnings("unused")
+public
 static void reqListFontsWithInfo(Client c) throws IOException{
     int foo, n;
     int maxname;
@@ -652,8 +662,8 @@ static void reqListFontsWithInfo(Client c) throws IOException{
 
           // max-bounds
 	  io.writeShort(0);
-          io.writeShort(font.max_width);
-          io.writeShort(font.max_width);
+      io.writeShort(font.max_width);
+      io.writeShort(font.max_width);
 	  io.writeShort(font.getMaxAscent());
 	  io.writeShort(font.getMaxDescent());
 	  io.writeShort(0);
@@ -823,6 +833,7 @@ static void reqListFontsWithInfo(Client c) throws IOException{
   }
 
   @SuppressWarnings("unused")
+public
 static void reqSetFontPath(Client c) throws IOException{
     int foo, n;
     InputOutput io=c.client;
@@ -846,6 +857,7 @@ static void reqSetFontPath(Client c) throws IOException{
   }
 
   @SuppressWarnings("unused")
+public
 static void reqGetFontPath(Client c) throws IOException{
     int foo,n;
     InputOutput io=c.client;
@@ -873,6 +885,7 @@ static void reqGetFontPath(Client c) throws IOException{
   }
 
   @SuppressWarnings("unused")
+public
 static void reqListFonts(Client c) throws IOException{
     int foo, n;
     int maxname;
@@ -967,7 +980,7 @@ static void reqListFonts(Client c) throws IOException{
     }
   }
 
-  static void reqCloseFont(Client c) throws IOException{
+  public static void reqCloseFont(Client c) throws IOException{
     int foo;
     InputOutput io=c.client;
     foo=c.length;
@@ -984,6 +997,7 @@ static void reqListFonts(Client c) throws IOException{
   
   
   @SuppressWarnings("unused")
+public
 static void reqOpenFont(Client c) throws IOException{
     int foo;
     int n;
@@ -1016,6 +1030,7 @@ static void reqOpenFont(Client c) throws IOException{
   }
 
   @SuppressWarnings("unused")
+public
 static void reqQueryFont(Client c) throws IOException{
     int foo;
     int n;
@@ -1170,7 +1185,7 @@ static void reqQueryFont(Client c) throws IOException{
     }
   }	
 
-  int encode(byte[] bbuffer, int start, int len, char[] cbuffer){
+  public int encode(byte[] bbuffer, int start, int len, char[] cbuffer){
     if(font.charset==null){
       return 0;
     }

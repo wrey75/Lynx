@@ -20,6 +20,8 @@
 
 package com.jcraft.weirdx;
 
+import com.jcraft.weirdx.res.XFont;
+
 
 class Font_CharSet_FONTSPECIFIC implements Font_CharSet{
 

@@ -38,46 +38,48 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.res.XFont;
 import com.jcraft.weirdx.res.XResource;
 
                                 
 
 public class XPixmap extends XDrawable {
 	private static Log LOG = LogFactory.getLog(XPixmap.class);
+	
+	ColorModel filter;
+	  long time=0;
 
-  static void init(Screen[] screen){
-    ImageFactory.init(screen[0]);
-    screen[0].pixmaps=new XPixmap[Format.format.length];
-    for(int i=0; i < Format.format.length; i++){
-      screen[0].pixmaps[i]=
-	ResizablePixmap.createPixmap(XResource.fakeClientId(Client.clients[0]), 
-				     screen[0].root, 
-				     1, 1, Format.format[i].depth);
-    }
-  }
+	  int fg=1;
+	  int bg=0;
 
-  ColorModel filter;
-  long time=0;
+	  byte lpad;
 
-  int fg=1;
-  int bg=0;
+	  XColormap colormap;
+	  boolean dirty=true;
 
-  byte lpad;
+	  MemoryImageSource mis=null;
+	  XDrawable drawable=null;
+	  int refcnt;
+	  int datasize;
+	  Image img=null;
+	  Graphics imgg=null;
+	  byte[] data=null;
 
-  XColormap colormap;
-  boolean dirty=true;
+	  boolean imageDirty=false;
+	  int imageDirtyX, imageDirtyY, imageDirtyWidth, imageDirtyHeight;
 
-  MemoryImageSource mis=null;
-  XDrawable drawable=null;
-  int refcnt;
-  int datasize;
-  Image img=null;
-  Graphics imgg=null;
-  byte[] data=null;
 
-  boolean imageDirty=false;
-  int imageDirtyX, imageDirtyY, imageDirtyWidth, imageDirtyHeight;
+	static void init(Screen[] screen) {
+		ImageFactory.init(screen[0]);
+		screen[0].pixmaps = new XPixmap[Format.format.length];
+		for (int i = 0; i < Format.format.length; i++) {
+			screen[0].pixmaps[i] = ResizablePixmap.createPixmap(
+					XResource.fakeClientId(Client.clients[0]), screen[0].root,
+					1, 1, Format.format[i].depth);
+		}
+	}
 
+  
   XPixmap(int id, XDrawable d,
 		int width, int height, byte depth) {
     super(id, RT_PIXMAP);

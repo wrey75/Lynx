@@ -22,6 +22,7 @@ package com.jcraft.weirdx;
 
 import java.io.*;
 
+import com.jcraft.weirdx.res.XFont;
 import com.jcraft.weirdx.res.XResource;
 
 public final class XCursor extends XResource{
