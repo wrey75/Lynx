@@ -28,6 +28,8 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.res.XResource;
+
 
 final class Draw{
 	private static Log LOG = LogFactory.getLog(Draw.class);  

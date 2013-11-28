@@ -18,22 +18,24 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-package com.jcraft.weirdx;
+package com.jcraft.weirdx.res;
 
-class Clients extends XResource{
-  Clients next;
-  int resource;
-  Clients(int id){
+import com.jcraft.weirdx.Client;
+
+public class Clients extends XResource {
+  public Clients next;
+  public int resource;
+  protected Clients(int id){
     super(id, RT_OTHERCLIENT);
     this.id=id;
     this.resource=id;
   }
-  final boolean sameClient(Client c){
+  public final boolean sameClient(Client c){
     Client cc=getClient();
     if(cc==null)return false;
     return cc.index==c.index;
   }
-  final Client getClient(){
+  public final Client getClient(){
     return Client.clients[((resource & Client.CLIENTMASK) >> Client.CLIENTOFFSET)];
   }
 }

@@ -28,6 +28,8 @@ import java.awt.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.res.XResource;
+
 public final class Client extends Thread {
 	private static final Log LOG = LogFactory.getLog(Client.class);
 	
@@ -35,16 +37,16 @@ public final class Client extends Thread {
   private static final Object GrabServerLOCK=new Object();
 
   // BITSFORRESOURCES+BITSFORCLIENTS must be 29....
-  static final int BITSFORRESOURCES=22;
-  static final int BITSFORCLIENTS=7;
+  public static final int BITSFORRESOURCES=22;
+  public static final int BITSFORCLIENTS=7;
 
-  static final int MAXCLIENTS=(1<<BITSFORCLIENTS);
+  public static final int MAXCLIENTS=(1<<BITSFORCLIENTS);
 
-  static final int CLIENTOFFSET=BITSFORRESOURCES;
-  static final int CLIENTMASK=(((1<<BITSFORCLIENTS)-1)
+  public static final int CLIENTOFFSET=BITSFORRESOURCES;
+  public static final int CLIENTMASK=(((1<<BITSFORCLIENTS)-1)
                                <<BITSFORRESOURCES);
 
-  static final int IDMASK=(1<<BITSFORRESOURCES)-1;
+  public static final int IDMASK=(1<<BITSFORRESOURCES)-1;
   static final int FALSE=0;
   static final int TRUE=1;
 
@@ -67,16 +69,16 @@ public final class Client extends Thread {
   public static final int MAJOR_VERSION = 11;
   public static final int MINOR_VERSION = 0;
 
-  static final Client[] clients=new Client[MAXCLIENTS];
+  public static final Client[] clients=new Client[MAXCLIENTS];
   static int nextClient=1;
   static int currentMaxClients=1;
 
   static int servergraber=-1;
 
   int seq;
-  int index;
+  public int index;
   boolean swap=false;
-  int clientAsMask;
+  public int clientAsMask;
   int requestBuffer;
 
   boolean serverisgrabed=false;
@@ -1020,7 +1022,7 @@ private final void prolog() throws java.io.IOException{
     return null;
   }
 
-  static void flushCache(int id){        // synchronized in Resource.java
+  public static void flushCache(int id){        // synchronized in Resource.java
     for(int i=1; i<Client.clients.length;i++){
       Client c=Client.clients[i];
       if(c!=null){

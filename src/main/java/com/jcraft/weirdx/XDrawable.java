@@ -23,6 +23,8 @@ package com.jcraft.weirdx;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import com.jcraft.weirdx.res.XResource;
+
 
 public abstract class XDrawable extends XResource{
   public static final byte DRAWABLE_WINDOW=0;

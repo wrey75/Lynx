@@ -22,6 +22,8 @@ package com.jcraft.weirdx;
 
 import java.io.IOException;
 
+import com.jcraft.weirdx.res.XResource;
+
 
 
 

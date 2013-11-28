@@ -23,6 +23,8 @@ package com.jcraft.weirdx;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jcraft.weirdx.res.XResource;
+
 
 
 public final class Visual {

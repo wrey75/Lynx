@@ -22,6 +22,8 @@ package com.jcraft.weirdx;
 
 import java.io.*;
 
+import com.jcraft.weirdx.res.XResource;
+
 public final class XCursor extends XResource{
   static XCursor rootCursor;
   java.awt.Cursor cursor;

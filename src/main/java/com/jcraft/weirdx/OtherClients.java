@@ -22,6 +22,8 @@ package com.jcraft.weirdx;
 
 import java.io.IOException;
 
+import com.jcraft.weirdx.res.Clients;
+
 final class OtherClients extends Clients{
   int mask;
   XWindow window;

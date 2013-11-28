@@ -22,12 +22,13 @@ package com.jcraft.weirdx;
 
 import java.io.*;
 import java.util.*;
-
 import java.awt.*;
 import java.awt.image.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.jcraft.weirdx.res.XResource;
 
 public class XColormap extends XResource{
 	private static Log LOG = LogFactory.getLog(XResource.class);

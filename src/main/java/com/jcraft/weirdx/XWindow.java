@@ -25,6 +25,9 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.jcraft.weirdx.res.Clients;
+import com.jcraft.weirdx.res.XResource;
                        
 @SuppressWarnings("unused")
 public

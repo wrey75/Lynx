@@ -18,50 +18,53 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-package com.jcraft.weirdx;
+package com.jcraft.weirdx.res;
 import java.io.*;
 import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.jcraft.weirdx.Client;
+
 public class XResource{
 	private static Log LOG = LogFactory.getLog(XResource.class);
-  static Object LOCK=Client.class;
+	
+  protected static Object LOCK=Client.class;
   static final int RC_VANILLA=0;
   static final int RC_CACHED=1<<31;
-  static final int RC_DRAWABLE=1<<30;
+  public static final int RC_DRAWABLE=1<<30;
 
   static final int SERVER_BIT=0x20000000;
   static final int SERVER_MINID=32;
   static final int RESOURCE_ID_MASK=Client.IDMASK;
 
   static final int CLIENTOFFSET=Client.CLIENTOFFSET;
-  static final int CLIENTMASK=(((1<<Client.BITSFORCLIENTS)-1) 
+  protected static final int CLIENTMASK=(((1<<Client.BITSFORCLIENTS)-1) 
                                <<Client.BITSFORRESOURCES);  // 0x1fc00000
 
   static final int  RC_NEVERRETAIN=1<<29;
   static final int  RC_LASTPREDEF=RC_NEVERRETAIN;
   static final int  RC_ANY=~0;
 
-  static final int  RT_WINDOW=1|RC_CACHED|RC_DRAWABLE;
-  static final int  RT_PIXMAP=2|RC_CACHED|RC_DRAWABLE;
-  static final int  RT_GC=3|RC_CACHED;
-  static final int  RT_FONT=4;
-  static final int  RT_CURSOR=5;
-  static final int  RT_COLORMAP=6;
-  static final int  RT_CMAPENTRY=7;
-  static final int  RT_OTHERCLIENT=8|RC_NEVERRETAIN;
-  static final int  RT_PASSIVEGRAB=9|RC_NEVERRETAIN;
+  protected static final int  RT_WINDOW=1|RC_CACHED|RC_DRAWABLE;
+  protected static final int  RT_PIXMAP=2|RC_CACHED|RC_DRAWABLE;
+  public static final int  RT_GC=3|RC_CACHED;
+  public static final int  RT_FONT=4;
+  protected static final int  RT_CURSOR=5;
+  protected static final int  RT_COLORMAP=6;
+  protected static final int  RT_CMAPENTRY=7;
+  protected static final int  RT_OTHERCLIENT=8|RC_NEVERRETAIN;
+  protected static final int  RT_PASSIVEGRAB=9|RC_NEVERRETAIN;
   static final int  RT_LASTPREDEF=9;
-  static final int  RT_NONE=0;
+  protected static final int  RT_NONE=0;
 
   static ClientResource[] clients=new ClientResource[Client.MAXCLIENTS];
 
   static int lastResourceType=RT_LASTPREDEF;
   static int lastResourceClass=RC_LASTPREDEF;
 
-  static synchronized int newType(){
+  public static synchronized int newType(){
     int next=lastResourceType+1;
     if ((next & lastResourceClass)!=0) return 0;
     lastResourceType=next;
@@ -74,11 +77,11 @@ public class XResource{
     return next;
   }
 
-  int id;
+  public int id;
   int rtype;
 
   XResource(){}
-  XResource(int id, int rtype){
+  protected XResource(int id, int rtype){
     this.id=id; this.rtype=rtype;
   }
 
@@ -98,7 +101,7 @@ public class XResource{
     else{ return (rtype&key.clss)!=0; }
   }
 
-  static void add(XResource r){
+  public static void add(XResource r){
     int client=((r.id & CLIENTMASK) >> CLIENTOFFSET);
     ClientResource cr=clients[client];
     cr.put(r, r);
@@ -117,7 +120,7 @@ public class XResource{
     cr.remove(r);
   }
  
-  static void freeResource(int id, int skip) {
+  public static void freeResource(int id, int skip) {
     while(true){
       XResource r=lookupIDByClass(id, RC_ANY);
       if(r==null) break;
@@ -143,7 +146,7 @@ public class XResource{
     }
   }
 
-  static XResource lookupIDByClass(int id, int clss){
+  public static XResource lookupIDByClass(int id, int clss){
     int client=((id & CLIENTMASK) >> CLIENTOFFSET);
     if(clients.length<=client)return null;
     ClientResource cr=clients[client];
@@ -161,7 +164,7 @@ public class XResource{
     }
   }
 
-  static XResource lookupIDByType(int id, int rtype){
+  public static XResource lookupIDByType(int id, int rtype){
     int client=((id & CLIENTMASK) >> CLIENTOFFSET);
     if(clients.length<=client)return null;
     ClientResource cr=clients[client];
@@ -176,13 +179,13 @@ public class XResource{
     }
   }
 
-  static void freeClientNeverResources(Client c){
+  public static void freeClientNeverResources(Client c){
     if(c==null) return;
     ClientResource cr=clients[c.index];
     synchronized(LOCK){
       try{
-      for (Enumeration e=cr.elements() ; e.hasMoreElements();){
-	XResource r=(XResource)e.nextElement();
+      for (Enumeration<? extends XResource> e=cr.elements() ; e.hasMoreElements();){
+	XResource r = e.nextElement();
 	if ((r.rtype & RC_NEVERRETAIN)!=0){
           deleteit(r); 
 	  //System.out.println("freeclientResource: "+r);
@@ -193,7 +196,7 @@ public class XResource{
     }
   }
 
-  static void freeClientResources(Client c){
+  public static void freeClientResources(Client c){
     if(c==null) return;
     ClientResource cr=clients[c.index];
     synchronized(LOCK){
@@ -217,7 +220,7 @@ public class XResource{
 
   void delete() throws IOException{ }
 
-  static Client lookupClient(int rid){
+  public static Client lookupClient(int rid){
     XResource res=lookupIDByClass(rid, RC_ANY);
     int clientIndex=((rid & CLIENTMASK) >> CLIENTOFFSET);
     if (clientIndex!=0 && 
@@ -229,14 +232,14 @@ public class XResource{
     return null;
   }
 
-  static void initClientResource(Client c){
+  public static void initClientResource(Client c){
     ClientResource cr=clients[c.index]=new ClientResource();
     cr.fakeID=c.clientAsMask | (c.index!=0 ? SERVER_BIT : SERVER_MINID);
     cr.endFakeID=(cr.fakeID | RESOURCE_ID_MASK)+1;
     cr.expectID=c.clientAsMask;
   }
 
-  static int fakeClientId(Client c){
+  public static int fakeClientId(Client c){
     int id, maxid;
     id=clients[c.index].fakeID++;
     if (id !=clients[c.index].endFakeID){

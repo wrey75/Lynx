@@ -25,170 +25,196 @@ import java.awt.FontMetrics;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 class DDXFont {
-  static Map<String, RefCount> table = new HashMap<String, DDXFont.RefCount>();
+	static private Log LOG = LogFactory.getLog(DDXFont.class);
+	static Map<String, RefCount> table = new HashMap<String, DDXFont.RefCount>();
 
-  static class RefCount{
-    int count=1;
-    String key=null;
-    Font font=null;
-    RefCount(String key, Font font){ this.key=key; this.font=font; }
-  }
+	static class RefCount {
+		AtomicInteger count = new AtomicInteger(1);
+		String key = null;
+		Font font = null;
 
-  private static synchronized Font getFont(String name, int style, int size){
-    String key=name+style+size;
-    RefCount foo=(RefCount)table.get(key);
-    if(foo!=null){
-      foo.count++;
-      return foo.font;
+		RefCount(String key, Font font) {
+			this.key = key;
+			this.font = font;
+		}
+	}
+
+    private static synchronized Font getFont(String name, int style, int size){
+    	String key = name + ',' + style + ',' + size;
+    	RefCount foo = (RefCount)table.get(key);
+    	if( foo != null ){
+    		// We increment the refence. 
+    		foo.count.incrementAndGet();
+    		return foo.font;
+    	}
+    	
+    	// Create the font and store it.
+    	Font f = new Font(name, style, size);
+    	foo = new RefCount(key, f);
+    	table.put(key, foo);
+    	return f;
     }
-    Font f=new Font(name, style, size);
-    foo=new RefCount(key, f);
-    table.put(key, foo);
-    return f;
-  }
 
-  private static synchronized void delFont(Font f){
-
-    for( RefCount foo : table.values() ){
-      if(foo.font==f){
-        foo.count--; 
-        if(foo.count==0){
-          table.remove(foo.key);
-          foo.font=null;
-        }
+    private static synchronized void delFont(Font f){
+    	for( RefCount foo : table.values() ){
+    		if( foo.font == f ){
+    			int v = foo.count.decrementAndGet(); 
+    			if( v == 0 ){
+    				LOG.debug( "Font " + f + " removed from the cache." ); 
+    				table.remove( foo.key );
+    				foo.font = null;
+    			}
         
-        // Stop the enumeration now!
-        return;
-      }
-    }
-  }
-
-  void delete(){
-    delFont(font);
-    font=null;
-  }
-
-  byte[] lfname;
-  Font font;
-  FontMetrics metric;
-  int[] prop;
-
-  int min_char_or_byte2=32;
-  int max_char_or_byte2=255;
-  int min_byte1=0;
-  int max_byte1=0;
-  int default_char=32;
-
-  int min_width;
-  int max_width;
-
-  String encoding=null;
-  Font_CharSet charset=null;
-
-  DDXFont(){ }
-
-  void init(byte[] lfname) throws UnsupportedEncodingException {
-    if(encoding!=null){
-      if(charset==null) return;
-      int tmp=default_char;
-      int i=0;
-      while(tmp!=0){
-	i++;
-	tmp>>=8; tmp&=0xffffff;
-      }
-      byte[] btmp=new byte[i];
-      tmp=default_char;
-      i--;
-      while(tmp!=0){
-	btmp[i]=(byte)(tmp&0xff);
-	tmp>>=8; tmp&=0xffffff;
-	i--; 
-      }
-      char[] ctmp=new char[1];
-      if(charset.encode(btmp, 0, btmp.length, ctmp)==0) return;
-    }
-    this.lfname=lfname;
-  }
-
-
-Font getFont(){
-    if(font!=null) return font;
-    int size=12;
-    try{
-      int tmp=Integer.parseInt(getFontSize());
-      if(tmp!=0) size=tmp;
-    }
-    catch(Exception e){}
-    int style=Font.PLAIN;
-    if(getWeight().equals("bold")) style|=Font.BOLD;
-    if(getStyle().equals("i")) style|=Font.ITALIC;
-    if(getFamily().equals("times") ||
-       getFamily().equals("times new roman") ||
-       getFamily().equals("new century schoolbook")){
-      font=getFont("Serif", style, size);
-    }
-    else if(getFamily().equals("helvetica") ||
-            getFamily().equals("helvetic") ||
-            getFamily().equals("courier")){
-      font=getFont("SansSerif", style, size);
-    }
-    else{
-      font=getFont("Monospaced", style, size);
+    			// Stop the enumeration now!
+    			return;
+    		}
+    	}
     }
 
-    metric=java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
-
-    String reg=getCharsetRegistry();
-    String enc=getCharsetEncoding();
-
-    for( Font_CharSet foo : XFont.charSets ){
-      if(reg.equals(foo.getCharset()) || enc.equals(foo.getCharset())){
-        min_byte1=foo.getMinByte1();
-        max_byte1=foo.getMaxByte1();
-        min_char_or_byte2=foo.getMinCharOrByte2();
-        max_char_or_byte2=foo.getMaxCharOrByte2();
-        default_char=foo.getDefaultChar();
-        encoding=foo.getEncoding();
-        charset=foo;
-        break;
-      }
+    void delete() {
+    	delFont( font );
+    	font = null;
     }
 
-    min_width=getMaxAdvance();
-    max_width=getMaxAdvance();
+    byte[] lfname;
+    Font font;
+    FontMetrics metric;
+    int[] prop;
 
-    if(encoding!=null){
-      int tmp=default_char;
-      int i=0;
-      while(tmp!=0){
-	i++;
-	tmp>>=8; tmp&=0xffffff;
-      }
-      byte[] btmp=new byte[i];
-      tmp=default_char;
-      i--;
-      while(tmp!=0){
-	btmp[i]=(byte)(tmp&0xff);
-	tmp>>=8; tmp&=0xffffff;
-	i--; 
-      }
-      char[] ctmp=new char[1];
-      if(charset!=null)
-        charset.encode(btmp, 0, btmp.length, ctmp);
-      max_width=min_width=metric.charWidth(ctmp[0]);
-      if(getSpace().equals("p")){
-        min_width=0;
-      }
-    }
-    else{
-      char[] ctmp=new char[1];
-      ctmp[0]='@'; max_width=metric.charsWidth(ctmp, 0, 1);
-      ctmp[0]=' '; min_width=metric.charsWidth(ctmp, 0, 1);
-    }
-    return font;
+    int min_char_or_byte2=32;
+    int max_char_or_byte2=255;
+    int min_byte1=0;
+    int max_byte1=0;
+    int default_char=32;
+
+    int min_width;
+    int max_width;
+
+    String encoding = null;
+  	Font_CharSet charset = null;
+
+  	DDXFont() {
+  		
+  	}
+
+  	void init( byte[] lfname ) throws UnsupportedEncodingException {
+  		if( encoding != null ){
+  			if( charset==null ) return;
+  			int tmp = default_char;
+  			int i = 0;
+  			while( tmp != 0){
+  				i++;
+  				tmp >>= 8; 
+  				tmp &= 0xffffff;
+  			}
+  			byte[] btmp = new byte[i];
+  			tmp = default_char;
+  			i--;
+  			while( tmp != 0 ){
+  				btmp[i] = (byte)(tmp&0xff);
+  				tmp >>= 8; 
+  				tmp &= 0xffffff;
+  				i--; 
+  			}
+  			char[] ctmp = new char[1];
+  			if( charset.encode(btmp, 0, btmp.length, ctmp) == 0 ){
+  				return;
+  			}
+  		}
+  		this.lfname=lfname;
+  	}
+
+
+  	Font getFont(){
+  		if(font!=null) return font;
+  		int size=12;
+  		try {
+  			int tmp = Integer.parseInt(getFontSize());
+  			if( tmp != 0 ){
+  				size=tmp;
+  			}
+  		}
+  		catch( Exception e ){
+  			LOG.error(e);
+  		}
+  		
+  		int style=Font.PLAIN;
+  		if( getWeight().equals("bold") ) style|=Font.BOLD;
+  		if( getStyle().equals("i") ) style|=Font.ITALIC;
+        if( getFamily().equals("times")
+        			|| getFamily().equals("times new roman")
+       				|| getFamily().equals("new century schoolbook")){
+        	font = getFont("Serif", style, size);
+        }
+        else if( getFamily().equals("helvetica") 
+        			|| getFamily().equals("helvetic") 
+        			|| getFamily().equals("courier") ){
+        	font = getFont("SansSerif", style, size);
+        }
+        else {
+        	font = getFont("Monospaced", style, size);
+        }
+
+        metric = java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
+
+        String reg=getCharsetRegistry();
+        String enc=getCharsetEncoding();
+
+		for( Font_CharSet foo : XFont.charSets ){
+			if (reg.equals(foo.getCharset()) || enc.equals(foo.getCharset())) {
+				min_byte1 = foo.getMinByte1();
+				max_byte1 = foo.getMaxByte1();
+				min_char_or_byte2 = foo.getMinCharOrByte2();
+				max_char_or_byte2 = foo.getMaxCharOrByte2();
+				default_char = foo.getDefaultChar();
+				encoding = foo.getEncoding();
+				charset = foo;
+				break;
+			}
+		}
+
+		min_width = getMaxAdvance();
+		max_width = getMaxAdvance();
+
+		if (encoding != null) {
+			int tmp = default_char;
+			int i = 0;
+			while (tmp != 0) {
+				i++;
+				tmp >>= 8;
+				tmp &= 0xffffff;
+			}
+			byte[] btmp = new byte[i];
+			tmp = default_char;
+			i--;
+			while (tmp != 0) {
+				btmp[i] = (byte) (tmp & 0xff);
+				tmp >>= 8;
+				tmp &= 0xffffff;
+				i--;
+			}
+			char[] ctmp = new char[1];
+			if (charset != null)
+				charset.encode(btmp, 0, btmp.length, ctmp);
+			max_width = min_width = metric.charWidth(ctmp[0]);
+			if (getSpace().equals("p")) {
+				min_width = 0;
+			}
+		} else {
+			char[] ctmp = new char[1];
+			ctmp[0] = '@';
+			max_width = metric.charsWidth(ctmp, 0, 1);
+			ctmp[0] = ' ';
+			min_width = metric.charsWidth(ctmp, 0, 1);
+		}
+		return font;
   }
 
   int[] getProp(){
@@ -196,6 +222,7 @@ Font getFont(){
       initprop();
     return prop;
   }
+  
   void initprop(){
     prop=new int[2];
     prop[0]=XAtom.make("FONT", true);

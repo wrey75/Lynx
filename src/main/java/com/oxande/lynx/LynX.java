@@ -38,9 +38,9 @@ import com.jcraft.weirdx.XCursor;
 import com.jcraft.weirdx.XDMCP;
 import com.jcraft.weirdx.XFont;
 import com.jcraft.weirdx.XPixmap;
-import com.jcraft.weirdx.XResource;
 import com.jcraft.weirdx.XRexec;
 import com.jcraft.weirdx.XWindow;
+import com.jcraft.weirdx.res.XResource;
 
 public class LynX extends WeirdX {
 	private static Log LOG = LogFactory.getLog(LynX.class);

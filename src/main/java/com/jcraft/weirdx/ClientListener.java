@@ -21,6 +21,7 @@
 package com.jcraft.weirdx;
 
 interface ClientListener {
-  void connected(int index);
-  void disconnected(int index);
+	void connected(int index);
+
+	void disconnected(int index);
 }

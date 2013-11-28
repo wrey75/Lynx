@@ -21,6 +21,8 @@
 package com.jcraft.weirdx;
 import java.io.*;
 
+import com.jcraft.weirdx.res.XResource;
+
 final class GC extends XResource {
   static final byte GXclear=0;
   static final byte GXand=1;
